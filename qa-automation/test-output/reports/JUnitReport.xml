@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite errors="0" failures="2" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="6" time="150.371">
+    <testcase classname="Member Login" name="Member Login" time="20.589">
+        <system-out><![CDATA[Given a member navigates to IWC home page...................................passed
+When member accepts terms of use............................................passed
+And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
+Then the IWC home page is displayed.........................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Add Item to Wishlist" name="Add Item to Wishlist" time="16.12">
+        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
+When member accepts terms of use............................................passed
+And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
+Then the IWC home page is displayed.........................................passed
+When user adds item 3128469 to wishlist.....................................passed
+Then item 3128469 is displayed in user wishlist.............................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Update My Account Information" name="Update My Account Information" time="21.154">
+        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
+When member accepts terms of use............................................passed
+And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
+Then the IWC home page is displayed.........................................passed
+When user navigates to IWC sub page My Account..............................passed
+And user updates account information from P123456789 to P123456789..........passed
+Then updated account information is saved...................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Update My Account Information" name="Update My Account Information 2" time="45.92">
+        <failure message="Cannot invoke &quot;org.openqa.selenium.WebElement.isDisplayed()&quot; because &quot;element&quot; is null" type="java.lang.NullPointerException"><![CDATA[Given user navigates to IWC home page.......................................passed
+When member accepts terms of use............................................passed
+And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
+Then the IWC home page is displayed.........................................failed
+When user navigates to IWC sub page My Account..............................skipped
+And user updates account information from P12345 to P123456789..............skipped
+Then updated account information is saved...................................skipped
+
+StackTrace:
+java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.WebElement.isDisplayed()" because "element" is null
+	at org.openqa.selenium.support.ui.ExpectedConditions.elementIfVisible(ExpectedConditions.java:307)
+	at org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:40)
+	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:293)
+	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:290)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)
+	at stepdefinitions.IWC_MemberSteps.the_iwc_home_page_is_displayed(IWC_MemberSteps.java:120)
+	at ✽.the IWC home page is displayed(file:///C:/Users/Kevin%20McGowan/repository/qa-automation/src/test/java/features/2022.07.19/Demo/Auto_016_UpdateMyAccountInformation.feature:9)
+]]></failure>
+    </testcase>
+    <testcase classname="Add Artists To My Favorites" name="Add Artists To My Favorites" time="31.825">
+        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
+When member accepts terms of use............................................passed
+And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
+Then the IWC home page is displayed.........................................passed
+When user navigates to Artists page.........................................passed
+And user navigates to artist store 800302...................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Artist Login" name="Artist Login" time="14.591">
+        <failure message="Compound class names not permitted&#10;For documentation on this error, please visit: https://selenium.dev/exceptions/#invalid_selector_exception&#10;Build info: version: '4.2.2', revision: '683ccb65d6'&#10;System info: host: 'KEVIKNMSTACKU', ip: '192.168.0.108', os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.1.1'&#10;Driver info: driver.version: unknown" type="org.openqa.selenium.InvalidSelectorException"><![CDATA[Given artist navigates to IWC home page.....................................passed
+When member accepts terms of use............................................passed
+And artist submits IWC usernameqaartist@stackunited.com and passwordqaartist.passed
+Then the artist updates page is displayed...................................failed
+
+StackTrace:
+org.openqa.selenium.InvalidSelectorException: Compound class names not permitted
+For documentation on this error, please visit: https://selenium.dev/exceptions/#invalid_selector_exception
+Build info: version: '4.2.2', revision: '683ccb65d6'
+System info: host: 'KEVIKNMSTACKU', ip: '192.168.0.108', os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.1.1'
+Driver info: driver.version: unknown
+	at org.openqa.selenium.By$ByClassName.<init>(By.java:310)
+	at org.openqa.selenium.By.className(By.java:100)
+	at pageObjects.IWC_ArtistHomePage.<init>(IWC_ArtistHomePage.java:53)
+	at stepdefinitions.IWC_MemberSteps.artist_updates_page_is_displayed(IWC_MemberSteps.java:270)
+	at ✽.the artist updates page is displayed(file:///C:/Users/Kevin%20McGowan/repository/qa-automation/src/test/java/features/2022.07.19/Demo/Auto_025_ArtistLogin.feature:9)
+]]></failure>
+    </testcase>
+</testsuite>
