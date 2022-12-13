@@ -18,6 +18,7 @@ public class IWC_AdminHomePage extends BasePage {
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
 	 * They are declared in the Page class, which is a super (parent) class of the BasePage 
 	 * class.
+	 * 
 	 */
 	public IWC_AdminHomePage(WebDriver driver, WebDriverWait wait) {
 		
