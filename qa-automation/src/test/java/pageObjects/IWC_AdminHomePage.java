@@ -18,6 +18,7 @@ public class IWC_AdminHomePage extends BasePage {
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
 	 * They are declared in the Page class, which is a super (parent) class of the BasePage 
 	 * class.
+	 * 
 	 */
 	public IWC_AdminHomePage(WebDriver driver, WebDriverWait wait) {
 		
@@ -25,6 +26,8 @@ public class IWC_AdminHomePage extends BasePage {
 		
 	}
 
+	
+	/// ere
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 

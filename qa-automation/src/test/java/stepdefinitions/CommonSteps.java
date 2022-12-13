@@ -21,6 +21,7 @@ public class CommonSteps {
 	long startTime, endTime, totalTime;
 /*	
 	@Before
+	
 	public void setUp(String browser, String url){
 		
 		switch(browser) {
