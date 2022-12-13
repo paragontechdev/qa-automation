@@ -26,6 +26,8 @@ public class IWC_AdminHomePage extends BasePage {
 		
 	}
 
+	
+	/// ere
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
