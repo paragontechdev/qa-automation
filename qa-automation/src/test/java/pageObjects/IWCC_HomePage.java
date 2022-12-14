@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 //Author: Marina Lozko
+//Co-Author: Kevin McGowan
+>>>>>>> branch 'main' of https://github.com/paragontechdev/qa-automation/
 
 
 //// broken picture link src="/images/avatar480.png"  Store jennajustice
