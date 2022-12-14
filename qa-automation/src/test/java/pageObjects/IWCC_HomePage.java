@@ -1,4 +1,4 @@
-//Author: marina.l@stackunited.com
+//Author: Marina Lozko
 
 
 //// broken picture link src="/images/avatar480.png"  Store jennajustice
