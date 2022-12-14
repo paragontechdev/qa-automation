@@ -2,9 +2,6 @@
 //Co-Author: Kevin McGowan
 
 
-
-//// broken picture link src="/images/avatar480.png"  Store jennajustice
-
 package pageObjects;
 
 import java.awt.AWTException;
