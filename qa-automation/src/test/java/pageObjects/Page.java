@@ -34,7 +34,7 @@ public abstract class Page {
 	public abstract String getPageHeader(By locator);
 	public abstract String getText(WebElement locator); 
 	public abstract String getCurrentMethodName();
-	public abstract String getHttpResponseCode();
+	public abstract String getHttpResponseCode(String linkUrl);
 	public abstract WebElement getElement(By locator);
 	
 	public abstract void waitForElementPresent(WebElement element);

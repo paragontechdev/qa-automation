@@ -24,6 +24,7 @@ public class IWG_LoginPage extends BasePage {
 		
 	}
 
+	
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
@@ -34,6 +35,7 @@ public class IWG_LoginPage extends BasePage {
 	private By rememberMeChk = By.xpath("//input[@id='remember']");
 	private By loginBtn = By.xpath("//button[@type='submit']");
 	private By forgotYourPasswordLnk = By.linkText("Forgot Your Password?");
+	
 	
 	/**
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
@@ -46,30 +48,33 @@ public class IWG_LoginPage extends BasePage {
 		return getElement(emailEdt);
 		
 	}
-	
 	public WebElement getPasswordEdt() {
 
 		return getElement(passwordEdt);
 		
 	}
-		
 	public WebElement getForgotYourPasswordLnk() {
 		
 		return getElement(forgotYourPasswordLnk);
 		
 	}
-
 	public WebElement getLoginBtn() {
 		
 		return getElement(loginBtn);
 		
 	}
-	
 	public WebElement getRememberMeChk() {
 		
 		return getElement(rememberMeChk);
 	
 	}
+	public void setEmailEdt(By username) {
+		this.emailEdt = username;
+	}
+	public void setPasswordEdt(By password) {
+		this.passwordEdt = password;
+	}
+		
 	
 	/**
 	 * These are the methods that will be used with this class. The return type should be the next 
@@ -77,10 +82,10 @@ public class IWG_LoginPage extends BasePage {
 	 */
 	public IWC_HomePage login(String username, String password) {
 		
-		getEmailEdt().sendKeys(username);
-		getPasswordEdt().sendKeys(username);
-		getLoginBtn().click();
-		
+		setEmailEdt(emailEdt);
+		setPasswordEdt(passwordEdt);
+		doClick(getLoginBtn());
+				
 		// return next landing page class object
 		return getInstance(IWC_HomePage.class);
 	}

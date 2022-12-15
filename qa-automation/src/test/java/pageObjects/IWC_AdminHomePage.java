@@ -27,7 +27,6 @@ public class IWC_AdminHomePage extends BasePage {
 	}
 
 	
-	/// ere
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
@@ -42,47 +41,40 @@ public class IWC_AdminHomePage extends BasePage {
 	private By cancelBtn = By.xpath("//input[@value='Cancel']");
 	private By forgotPasswordLnk = By.linkText("Forgot Password");
 	
+	
 	/**
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
 	 * converted to WebElements so that relative actions can be taken against the web element
 	 * instead of the locator.
 	 */
-	
 	public WebElement getBiometricConsentMod() {
 			
 			return getElement(biometricConsentMod);
 			
 		}
-	
 	public WebElement getIAgreeBtn() {
 		
 		return getElement(iAgreeBtn);
 		
 	}
-	
 	public WebElement getIDisagreeBtn() {
 		
 		return getElement(iDisagreeBtn);
 		
 	}
-	
 	public WebElement getEmailEdt() {
 		return getElement(emailEdt);
 	}
-	
 	public WebElement getPasswordEdt() {
 		return getElement(passwordEdt);
 	}
-	
 	public WebElement getLoginBtn() {
 		return getElement(loginBtn);
 	}
-	
 	public WebElement getCancelBtn() {
 		return getElement(cancelBtn);
 	}
-	
 	public WebElement getForgotPasswordLnk() {
 		return getElement(forgotPasswordLnk);
 	}

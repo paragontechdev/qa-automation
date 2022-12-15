@@ -90,7 +90,7 @@ public class IWC_MemberSteps {
 	}
 	
 	@Given("^(.*) navigates to IWC home page$")
-	public void navigate_to_home_page(String userType) {
+	public void navigate_to_home_page() {
 		
 		driver.manage().deleteAllCookies();
 		driver.get("https://qa.iwantclips.com");
@@ -250,7 +250,7 @@ public class IWC_MemberSteps {
 	 * Terms of Use modal methods
 	 */
 	@When("^(.*) accepts terms of use$")
-	public void termsOfUse_accepted() {
+	public void termsOfUse_accepted(String userType) {
 	    
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 				

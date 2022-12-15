@@ -9,8 +9,7 @@ import io.cucumber.junit.CucumberOptions;
 		features = {"src/test/java/features/2022.07.19/Demo",
 				"src/test/java/features/2022.08.2"
 				}
-		,glue = {"stepdefinitions"}
-		,tags = "@demo"
+		,glue = {"src/test/java/stepdefinitions"}
 		,monochrome = true,
 		plugin = {"pretty",
 				 "junit:test-output/reports/JUnitReport.xml",

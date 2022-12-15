@@ -95,13 +95,16 @@ public class BasePage extends Page{
 			
 	}
 
-    public String getHttpResponseCode(String linkUrl){
+	
+	/*
+	@Override
+    public String getHttpResponseCode(String linkUrl) {
     	
         try{
             URL url = new URL(linkUrl);
 
-            //Now we will be creating url connection and getting the response code
-            HttpURLConnection httpURLConnect=(HttpURLConnection)url.openConnection();
+            //create url connection and get response code
+	        HttpURLConnection httpURLConnect=(HttpURLConnection)url.openConnection();
             httpURLConnect.setConnectTimeout(5000);
             httpURLConnect.connect();
             
@@ -111,16 +114,12 @@ public class BasePage extends Page{
                 System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage());
             }
         }catch (Exception e) {
-                
+        	
         }
         
-        // return httpURLConnect.getResponseCode();
-        return getHttpResponseCode();
-        
-        
-   }
-	
-	
+        // return getHttpResponseCode();
+    }
+	*/
 	
 	
 	/**
@@ -405,6 +404,12 @@ public class BasePage extends Page{
 	  }
 	
 	}
-	
-	
+
+	@Override
+	public String getHttpResponseCode(String linkUrl) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

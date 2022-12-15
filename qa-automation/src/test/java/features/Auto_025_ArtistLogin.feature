@@ -1,4 +1,3 @@
-#Author: Kevin McGowan
 Feature: Artist Login
 
   Scenario Outline: Artist Login

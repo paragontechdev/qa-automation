@@ -56,78 +56,65 @@ public class IWC_CustomHomePage extends BasePage{
 		return getElement(customTopStorePage1Image1);
 		
 	}
-	
 	public WebElement getCustomTopStorePage1Image2() {
 		
 		return getElement(customTopStorePage1Image2);
 		
 	}
-	
 	public WebElement getCustomTopStorePage1Image3() {
 		
 		return getElement(customTopStorePage1Image3);
 		
 	}
-
 	public WebElement getCustomTopStorePage1Image4() {
 		
 		return getElement(customTopStorePage1Image4);
 		
 	}
-	
 	public WebElement getCustomTopStorePage2Image1() {
 		
 		return getElement(customTopStorePage2Image1);
 		
 	}
-
 	public WebElement getCustomTopStorePage2Image2() {
 		
 		return getElement(customTopStorePage2Image2);
 		
 	}
-
 	public WebElement getCustomTopStorePage2Image3() {
 		
 		return getElement(customTopStorePage2Image3);
 		
 	}
-
 	public WebElement getCustomTopStorePage2Image4() {
 		
 		return getElement(customTopStorePage2Image4);
 		
 	}
-
 	public WebElement getCustomTopStorePage3Image1() {
 		
 		return getElement(customTopStorePage3Image1);
 		
 	}
-
 	public WebElement getCustomTopStorePage3Image2() {
 		
 		return getElement(customTopStorePage3Image2);
 		
 	}
-
 	public WebElement getCustomTopStorePage3Image3() {
 		
 		return getElement(customTopStorePage3Image3);
 		
 	}
-
 	public WebElement getCustomTopStorePage3Image4() {
 		
 		return getElement(customTopStorePage3Image4);
 		
 	}
-
 	public WebElement getSelectCategoryDropDown() {
 			
 			return getElement(selectCategoryDropDown);
 	}	
-	
 	public WebElement getSearchCustomStore() {
 				
 			return getElement(searchCustomStore);	
