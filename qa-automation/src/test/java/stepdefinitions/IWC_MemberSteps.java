@@ -335,7 +335,7 @@ public class IWC_MemberSteps {
 		
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
-		iwcHome.waitForElementPresent(iwcHome.getJoinUsernameEdt());
+		iwcHome.waitUntilElementIsDisplayed(iwcHome.getJoinUsernameEdt());
 		
 	}
 	

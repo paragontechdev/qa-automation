@@ -248,7 +248,7 @@ public class IWC_HomePage extends BasePage {
 		
 		// shared fields
 		doSendKeys(getJoinUsernameEdt(), username);
-		waitForElementPresent(getUsernameAvailableAlr());
+		waitUntilElementIsDisplayed(getUsernameAvailableAlr());
 		doSendKeys(getJoinEmailEdt(), username);
 		doSendKeys(getJoinPasswordEdt(), password);
 		doSendKeys(getJoinConfirmPasswordEdt(), password);

@@ -47,15 +47,11 @@ public class BasePage extends Page{
 		return driver.getTitle();
 		
 	}
-
-	@Override
 	public String getPageHeader(By locator) {
 
 		return getElement(locator).getText();
 				
 	}
-
-	@Override
 	public WebElement getElement(By locator) {
 		
 		WebElement element = null;
@@ -71,7 +67,6 @@ public class BasePage extends Page{
 		
 		return element;
 	}
-
 	@Override
 	public String getText(WebElement element) {
 		
@@ -85,7 +80,7 @@ public class BasePage extends Page{
 		return element.getText();
 	
 	}
-
+	@Override
 	public String getCurrentMethodName() {
 		
 		// getStackTrace() method, return current method name at 0th index
@@ -94,72 +89,33 @@ public class BasePage extends Page{
         return currentMethodName;
 			
 	}
-
-	
-	/*
 	@Override
-    public String getHttpResponseCode(String linkUrl) {
+    public String getHttpResponse(String linkUrl) {
     	
         try{
             URL url = new URL(linkUrl);
 
-            //create url connection and get response code
+            //create URL connection and get response code
 	        HttpURLConnection httpURLConnect=(HttpURLConnection)url.openConnection();
             httpURLConnect.setConnectTimeout(5000);
             httpURLConnect.connect();
             
-            if(httpURLConnect.getResponseCode() >= 400) {
-            	System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage() + " is a broken link");
-            }else {
-                System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage());
-            }
+            Assert.assertTrue(httpURLConnect.getResponseCode() < 400);
+            System.out.println("URL: " + linkUrl);
+            System.out.print(httpURLConnect.getResponseCode() + ": " + httpURLConnect.getResponseMessage());
+            
         }catch (Exception e) {
-        	
+        	System.out.println("Error checking HTTP response.");
         }
         
-        // return getHttpResponseCode();
+        return null;
     }
-	*/
 	
+
 	
 	/**
 	 * Waits and checks
 	 */
-	@Override
-	public void waitForElementPresent(WebElement element) {
-
-		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
-		} catch(Exception e){
-			System.out.println("Element not found: " + element.toString());
-			e.printStackTrace();
-		}
-		
-	}
-	
-	@Override
-	public void waitForElementNotPresent(WebElement element) {
-
-		try {
-			wait.until(ExpectedConditions.invisibilityOf(element));
-		} catch(Exception e){
-			System.out.println("Element found unexpectedly: " + element.toString());
-			e.printStackTrace();
-		}
-		
-	}
-
-	@Override
-	public void waitForPageTitle(String expectedPageTitle) {
-
-		try {
-			wait.until(ExpectedConditions.titleContains(expectedPageTitle));
-		} catch(Exception e){
-			System.out.println("Error occurred while waiting for page title: " + expectedPageTitle);
-		}
-		
-	}
-	
 	@Override
 	public void doStartTimer(String description) {
 		
@@ -170,7 +126,7 @@ public class BasePage extends Page{
 			System.out.println("Error occurred while starting clock: " + description);
 		}
 	}
-	
+	@Override
 	public void doStopTimer() {
 		
 		try {
@@ -181,7 +137,38 @@ public class BasePage extends Page{
 			System.out.println("Error occurred while stopping clock.");
 		}
 	}
-	
+	@Override
+	public void waitUntilElementIsDisplayed(WebElement element) {
+
+		try {
+			wait.until(ExpectedConditions.visibilityOf(element));
+		} catch(Exception e){
+			System.out.println("Element not found: " + element.toString());
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void waitUntilElementIsNotDisplayed(WebElement element) {
+
+		try {
+			wait.until(ExpectedConditions.invisibilityOf(element));
+		} catch(Exception e){
+			System.out.println("Element found unexpectedly: " + element.toString());
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void waitForPageTitle(String expectedPageTitle) {
+
+		try {
+			wait.until(ExpectedConditions.titleContains(expectedPageTitle));
+		} catch(Exception e){
+			System.out.println("Error occurred while waiting for page title: " + expectedPageTitle);
+		}
+		
+	}
 	@Override
 	public void verifyElementIsDisplayed(WebElement element) {
 		
@@ -193,7 +180,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-	
 	@Override
 	public void verifyElementIsNotDisplayed(WebElement element) {
 	
@@ -205,7 +191,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public void verifyElementIsEnabled(WebElement element) {
 		try {
@@ -216,7 +201,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public void verifyElementIsDisabled(WebElement element) {
 		try {
@@ -227,7 +211,12 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	public void verifyPageIsDisplayed(String webPage) {
+		
+	}
+	
 	
 	/**
 	 * Mouse movements
@@ -241,8 +230,7 @@ public class BasePage extends Page{
 		} catch(Exception e){
 			System.out.println("Error occurred while trying to locate element: " + element);
 		}
-	}
-	
+	}	
 	@Override
 	public void doClick(WebElement element) {
 		
@@ -255,8 +243,7 @@ public class BasePage extends Page{
 			
 			// click sign-on button
 		}
-	}
-	
+	}	
 	@Override
 	public void doSendKeys(WebElement element, String text) {
 		
@@ -269,7 +256,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public void doMouseOver(WebElement element) {
 		try {
@@ -283,7 +269,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
 	@Override
 	public void doSelect(WebElement element, String option) {
 		
@@ -296,7 +281,6 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}		
 	}
-	
 	@Override
 	public void doClear(WebElement element) {
 		
@@ -310,7 +294,6 @@ public class BasePage extends Page{
 		
 	}
 	
-		
 
 
 	public void doCreateFile(String filepath) {
@@ -379,37 +362,9 @@ public class BasePage extends Page{
         {
             WebElement E1= strLinks.get(i);
             String url= E1.getAttribute("href");
-            checkLinks(url);
+            getHttpResponse(url);
         }
         
     }
-	    
-	public static void checkLinks(String linkUrl) {
-	    try{
-	        URL url = new URL(linkUrl);
-	
-	        //create url connection and get response code
-	        HttpURLConnection httpURLConnect = (HttpURLConnection)url.openConnection();
-	        httpURLConnect.setConnectTimeout(5000);
-	        httpURLConnect.connect();
-	        
-	        if(httpURLConnect.getResponseCode()>=400){
-	        	System.out.println(linkUrl + " - " + httpURLConnect.getResponseMessage() + "is a broken link");
-	        }    
-	        //Fetching and Printing the response code obtained
-	        else{
-	            System.out.println(linkUrl+" - "+httpURLConnect.getResponseMessage());
-	        }
-	    }catch (Exception e){
-	  }
-	
-	}
-
-	@Override
-	public String getHttpResponseCode(String linkUrl) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

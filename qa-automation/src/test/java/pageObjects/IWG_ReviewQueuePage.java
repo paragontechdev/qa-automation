@@ -292,7 +292,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	// methods
 	public IWG_ReviewQueuePage clickStoreLink() {
 		
-		waitForElementPresent(getStoreNameLnk());
+		waitUntilElementIsDisplayed(getStoreNameLnk());
 		getStoreNameLnk().click();
 		
 		return getInstance(IWG_ReviewQueuePage.class);		
@@ -300,7 +300,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage clickStudioLink() {
 		
-		waitForElementPresent(getStudioNameLnk());
+		waitUntilElementIsDisplayed(getStudioNameLnk());
 		getStudioNameLnk().click();
 		
 		return getInstance(IWG_ReviewQueuePage.class);	
@@ -309,7 +309,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage clickReviewButton() {
 		
-		waitForElementPresent(getReviewBtn());
+		waitUntilElementIsDisplayed(getReviewBtn());
 		getReviewBtn().click();
 		
 		return getInstance(IWG_ReviewQueuePage.class);	
@@ -319,7 +319,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	public IWG_ReviewQueuePage clickReviewButton(int instance) {
 			
 		WebElement reviewBtn = getElement(By.xpath("//tr[" + instance + "]/td[*]/a[@class='edit btn btn-success btn-sm']"));
-		waitForElementPresent(reviewBtn);
+		waitUntilElementIsDisplayed(reviewBtn);
 		getReviewBtn().click();
 		
 		return getInstance(IWG_ReviewQueuePage.class);	
@@ -336,7 +336,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 		
 	public IWG_ReviewQueuePage selectByStoreName(String storeName) {
 		
-		waitForElementPresent(getSearchStoreNameEdt());
+		waitUntilElementIsDisplayed(getSearchStoreNameEdt());
 		getSearchStoreNameEdt().clear();
 		getSearchStoreNameEdt().sendKeys(storeName);
 		clickReviewButton(1);
@@ -346,7 +346,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByStoreName(String storeName, int instance) {
 		
-		waitForElementPresent(getSearchStoreNameEdt());
+		waitUntilElementIsDisplayed(getSearchStoreNameEdt());
 		getSearchStoreNameEdt().clear();
 		getSearchStoreNameEdt().sendKeys(storeName);
 		clickReviewButton(instance);
@@ -356,7 +356,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByTitle(String title) {
 		
-		waitForElementPresent(getSearchTitleEdt());
+		waitUntilElementIsDisplayed(getSearchTitleEdt());
 		getSearchTitleEdt().clear();
 		getSearchTitleEdt().sendKeys(title);
 		clickReviewButton(1);
@@ -366,7 +366,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByTitle(String title, int instance) {
 		
-		waitForElementPresent(getSearchTitleEdt());
+		waitUntilElementIsDisplayed(getSearchTitleEdt());
 		getSearchTitleEdt().clear();
 		getSearchTitleEdt().sendKeys(title);
 		clickReviewButton(instance);
@@ -377,7 +377,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByStatus(String status) {
 		
-		waitForElementPresent(getSearchStatusEdt());
+		waitUntilElementIsDisplayed(getSearchStatusEdt());
 		getSearchStatusEdt().clear();
 		getSearchStatusEdt().sendKeys(status);
 		clickReviewButton(1);
@@ -388,7 +388,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByStatus(String status, int instance) {
 		
-		waitForElementPresent(getSearchStatusEdt());
+		waitUntilElementIsDisplayed(getSearchStatusEdt());
 		getSearchStatusEdt().clear();
 		getSearchStatusEdt().sendKeys(status);
 		clickReviewButton(instance);
@@ -399,7 +399,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByPublishDate(String publishDate) {
 		
-		waitForElementPresent(getSearchPublishDateEdt());
+		waitUntilElementIsDisplayed(getSearchPublishDateEdt());
 		getSearchPublishDateEdt().clear();
 		getSearchPublishDateEdt().sendKeys(publishDate);
 		clickReviewButton(1);
@@ -410,7 +410,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 			
 	public IWG_ReviewQueuePage selectByPublishDate(String publishDate, int instance) {
 		
-		waitForElementPresent(getSearchPublishDateEdt());
+		waitUntilElementIsDisplayed(getSearchPublishDateEdt());
 		getSearchPublishDateEdt().clear();
 		getSearchPublishDateEdt().sendKeys(publishDate);
 		clickReviewButton(instance);
@@ -421,7 +421,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 
 	public IWG_ReviewQueuePage selectByHive(String hive) {
 
-		waitForElementPresent(getSearchHiveEdt());
+		waitUntilElementIsDisplayed(getSearchHiveEdt());
 		getSearchHiveEdt().clear();
 		getSearchHiveEdt().sendKeys(hive);
 		clickReviewButton(1);
@@ -432,7 +432,7 @@ public class IWG_ReviewQueuePage extends BasePage {
 	
 	public IWG_ReviewQueuePage selectByHive(String hive, int instance) {
 
-		waitForElementPresent(getSearchHiveEdt());
+		waitUntilElementIsDisplayed(getSearchHiveEdt());
 		getSearchHiveEdt().clear();
 		getSearchHiveEdt().sendKeys(hive);
 		clickReviewButton(instance);

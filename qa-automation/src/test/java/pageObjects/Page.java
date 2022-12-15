@@ -34,17 +34,18 @@ public abstract class Page {
 	public abstract String getPageHeader(By locator);
 	public abstract String getText(WebElement locator); 
 	public abstract String getCurrentMethodName();
-	public abstract String getHttpResponseCode(String linkUrl);
+	public abstract String getHttpResponse(String linkUrl);
 	public abstract WebElement getElement(By locator);
 	
-	public abstract void waitForElementPresent(WebElement element);
-	public abstract void waitForElementNotPresent(WebElement element);
+	public abstract void waitUntilElementIsDisplayed(WebElement element);
+	public abstract void waitUntilElementIsNotDisplayed(WebElement element);
 	public abstract void waitForPageTitle(String title);
 	
 	public abstract void verifyElementIsDisplayed(WebElement element); 
 	public abstract void verifyElementIsNotDisplayed(WebElement element); 
 	public abstract void verifyElementIsEnabled(WebElement locator);
 	public abstract void verifyElementIsDisabled(WebElement element);
+	public abstract void verifyPageIsDisplayed(String webPage);
 	
 	public abstract void doStartTimer(String description);
 	public abstract void doStopTimer();

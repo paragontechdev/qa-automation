@@ -24,6 +24,7 @@ public class IWC_ArtistHomePage extends BasePage {
 		
 	}
 	
+	
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
@@ -77,6 +78,7 @@ public class IWC_ArtistHomePage extends BasePage {
 	private By addAPictureBtn =  By.partialLinkText("content_factory/pictures/add");
 	private By addAPdfDocAudioBtn =  By.partialLinkText("content_factory/items/add");
 	
+	
 	/** 
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
@@ -99,12 +101,14 @@ public class IWC_ArtistHomePage extends BasePage {
 	public WebElement getArtistLinkLnk() {
 		return getElement(artistLinkLnk);
 	}
+	
 	public WebElement getNewsTab() {
 		return getElement(newsTab);
 	}
 	public WebElement getAccountTab() {
 		return getElement(accountTab);
 	}
+		
 	public WebElement getSellItemsTab() {
 		return getElement(sellItemsTab);
 	}
@@ -157,23 +161,7 @@ public class IWC_ArtistHomePage extends BasePage {
 		return getElement(addAPdfDocAudioBtn);
 	}
 	
-	// Sell tab getters/setters
-	
-	
-	/**
-	 * These custom methods will be used with this class. The return type should be the next
-	 * landing page object class.
-	 */
-	public IWC_ArtistHomePage login(String username, String password) {
-		
-		//doSendKeys(getEmailEdt(), username);
-		//doSendKeys(getPasswordEdt(), password);
-		//doClick(getLoginBtn());
-		//doVerifyNotDisplayed(getLoginBtn());
- 		
-		return getInstance(IWC_ArtistHomePage.class);
-	}
-	
+	// Sell tab 
  	public WebElement getTitleEdt() {
 		return getElement(titleEdt);
 	}
@@ -231,6 +219,8 @@ public class IWC_ArtistHomePage extends BasePage {
 	public WebElement getAgreementChk() {
 		return getElement(agreementChk);
 	}
+	
+
 	public void setSaveProgressRad(By saveProgressRad) {
 		this.saveProgressRad = saveProgressRad;
 	}
@@ -254,10 +244,22 @@ public class IWC_ArtistHomePage extends BasePage {
 	}
 	
 	
+	/**
+	 * These custom methods will be used with this class. The return type should be the next
+	 * landing page object class.
+	 */
+	public IWC_ArtistHomePage login(String username, String password) {
+		
+		//setEmailEdt(username);
+		//doSendKeys(getPasswordEdt(), password);
+		//doClick(getLoginBtn());
+		//doVerifyNotDisplayed(getLoginBtn());
+ 		
+		return getInstance(IWC_ArtistHomePage.class);
+	}
 	
 	public IWC_ArtistHomePage agreeToBiometricDataUse() {
  		
- 		//doClick(getIAgreeBtn());
  		doClick(getBiometricInfoIAgreeBtn());
  		
  		return getInstance(IWC_ArtistHomePage.class);

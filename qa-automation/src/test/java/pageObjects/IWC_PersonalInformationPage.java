@@ -124,7 +124,7 @@ public class IWC_PersonalInformationPage extends BasePage {
 	
 	public IWC_PersonalInformationPage verifySucessfulUpdate() {
 		
-		waitForElementPresent(getUpdateSuccessfulMsg());
+		waitUntilElementIsDisplayed(getUpdateSuccessfulMsg());
 		
 		return getInstance(IWC_PersonalInformationPage.class);
 				

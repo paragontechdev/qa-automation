@@ -89,7 +89,7 @@ public class IWG_ReviewHistoryPage extends BasePage {
 	// methods
 	public IWG_ReviewHistoryPage selectVerdict(String verdict) {
 		
-		waitForElementPresent(getApprovedRad());
+		waitUntilElementIsDisplayed(getApprovedRad());
 		
 		switch(verdict.toLowerCase()) {
 			case "other": getOtherRad();
