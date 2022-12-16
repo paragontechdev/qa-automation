@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -53,19 +56,23 @@ public class BasePage extends Page{
 				
 	}
 	public WebElement getElement(By locator) {
-		
-		WebElement element = null;
-		
-		try {
-			wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-			element = driver.findElement(locator);
-			return element;
-		}catch(Exception e) {
-			System.out.println("Error occured while getting element: " + locator.toString());
-			e.printStackTrace();
-		}
-		
-		return element;
+	    WebElement element = null;
+
+	    try {
+	        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	        element = driver.findElement(locator);
+	        return element;
+	    } catch (NoSuchElementException e) {
+	        System.out.println("Error occured while getting element: " + locator.toString() + ". Element not found.");
+	        return null;
+	    } catch (TimeoutException e) {
+	        System.out.println("Error occured while getting element: " + locator.toString() + ". Element not visible.");
+	        return null;
+	    } catch (Exception e) {
+	        System.out.println("Error occured while getting element: " + locator.toString());
+	        e.printStackTrace();
+	        return null;
+	    }
 	}
 	@Override
 	public String getText(WebElement element) {
@@ -90,28 +97,22 @@ public class BasePage extends Page{
 			
 	}
 	@Override
-    public String getHttpResponse(String linkUrl) {
-    	
-        try{
-            URL url = new URL(linkUrl);
+	public int getHttpResponseCode(String link) throws MalformedURLException, IOException {
 
-            //create URL connection and get response code
-	        HttpURLConnection httpURLConnect=(HttpURLConnection)url.openConnection();
-            httpURLConnect.setConnectTimeout(5000);
-            httpURLConnect.connect();
-            
-            Assert.assertTrue(httpURLConnect.getResponseCode() < 400);
-            System.out.println("URL: " + linkUrl);
-            System.out.print(httpURLConnect.getResponseCode() + ": " + httpURLConnect.getResponseMessage());
-            
-        }catch (Exception e) {
-        	System.out.println("Error checking HTTP response.");
-        }
+		URL url = new URL(link);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(5000);
+        connection.connect();
+
+        int intResponseCode = connection.getResponseCode();
+        String strResponseMessage = connection.getResponseMessage();
+        System.out.println("Response: " + intResponseCode + " - " + strResponseMessage);
         
-        return null;
-    }
+        return intResponseCode;
+        
+	 }
 	
-
 	
 	/**
 	 * Waits and checks
@@ -213,13 +214,13 @@ public class BasePage extends Page{
 	}
 	
 	@Override
-	public void verifyPageIsDisplayed(String webPage) {
-		
+	public void verifyPageIsDisplayed(String expectedPage) {
+		//TODO
 	}
 	
 	
 	/**
-	 * Mouse movements
+	 * Interface actions
 	 */
 	@Override
 	public void doScrollToElement(WebElement element) {
@@ -294,21 +295,85 @@ public class BasePage extends Page{
 		
 	}
 	
+	public void doNavigateMenu(String page) {
+		
+		WebElement menuItem = driver.findElement(By.xpath("//a[contains(text(), '" + page + "')]"));
+		verifyElementIsDisplayed(menuItem);
+		verifyElementIsEnabled(menuItem);
+		doClick(menuItem);
+				
+		switch (page) {
+			case "home": 
+				getInstance(IWC_HomePage.class);
+			case "artist": 
+				getInstance(IWC_ArtistsPage.class);
+			default: break;
+	    }
+	
+	}
 
-
+	/**
+	 * Other useful methods
+	 */
+	@Override
+	public void getCurrentPageBrokenLinks() throws MalformedURLException, IOException {
+		   
+		// Get all page links
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		System.out.println("Total link count: " + links.size());
+                
+ 	    // Iterate through each link
+ 	    for (WebElement link : links) {
+ 	    	String url = link.getAttribute("href");
+ 	    	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+ 	    	connection.setRequestMethod("HEAD");
+ 	    	connection.connect();
+ 	    	
+ 	    	// If the response code is not 200 (OK), the link may be broken
+ 	    	if (connection.getResponseCode() != 200) {
+ 	    		int intResponseCode = connection.getResponseCode();
+ 	    		String strResponseMessage = connection.getResponseMessage();
+ 	    		System.out.println("Verify response: " + intResponseCode + " - " + strResponseMessage);
+ 	        }
+ 	    }
+    }
+	@Override
+	public void getStatusOfAllLinksOnCurrentPage() throws MalformedURLException, IOException {
+		   
+		// Get all page links
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		System.out.println("Total link count: " + links.size());
+                
+ 	    // Iterate through each link
+ 	    for (WebElement link : links) {
+ 	    	String url = link.getAttribute("href");
+ 	    	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+ 	    	connection.setRequestMethod("HEAD");
+ 	    	connection.connect();
+ 	    	
+ 	    	// Print link status
+ 	    	int intResponseCode = connection.getResponseCode();
+ 	    	String strResponseMessage = connection.getResponseMessage();
+ 	    	System.out.println("Verify response: " + intResponseCode + " - " + strResponseMessage);
+ 	    }
+    }
 	public void doCreateFile(String filepath) {
 
-        try {
-        	File file = new File(filepath);
-        	file.getParentFile().mkdirs();
-            boolean isFileCreated = file.createNewFile();
-        }catch(IOException e){
-        	System.out.println("Error creating file: " + filepath);
-			e.printStackTrace();   
-        }
-            
+	    try {
+	    	File file = new File(filepath);
+	    	file.getParentFile().mkdirs();
+	        boolean isFileCreated = file.createNewFile();
+	        if (!isFileCreated) {
+		        throw new IOException("File already exists: " + filepath);
+	        }
+	    } catch (SecurityException e) {
+		      System.out.println("Error creating file: " + filepath);
+		      System.out.println("Cause: " + e.getMessage());
+	    } catch (IOException e) {
+		      System.out.println("Error creating file: " + filepath);
+		      System.out.println("Cause: " + e.getMessage());
+	    }
     }
-  
 	public void doFileUpload(WebElement element, String filepath) {
 		try {
 			doClick(element);
@@ -333,38 +398,5 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-	
-	public void doGetAllUrls() {
-
-		String url="";
-		List<WebElement> allUrls = driver.findElements(By.tagName("a"));
-		System.out.println("Total links on the Wb Page: " + allUrls.size());
-
-		//iterate through the list and check the elements in the list.
-		Iterator<WebElement> iterator = allUrls.iterator();
-		while (iterator.hasNext()) {
-			url = iterator.next().getText();
-			System.out.println(url);
-		}
-	
-	}
-	
-	public void BrokenLinks() {
-	   
-        //Storing the links in a list and traversing through the links
-        List<WebElement> strLinks = driver.findElements(By.tagName("a"));
-
-        // This line will print the number of links and the count of links.
-        // System.out.println("No of links are " + strLinks.size());  
-      
-        //checking the links fetched.
-        for(int i=0; i<strLinks.size(); i++)
-        {
-            WebElement E1= strLinks.get(i);
-            String url= E1.getAttribute("href");
-            getHttpResponse(url);
-        }
-        
-    }
 
 }

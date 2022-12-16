@@ -71,16 +71,12 @@ public class IWC_MemberSteps {
 		
 	public void setup() {
 		
-		// CrpBaseObjects crp = new CrpBaseObjects(driver, wait);
 		System.setProperty("webdriver.chrome.driver", "drivers\\chromedriver.exe");
 		System.setProperty("webdriver.chrome.silentOutput", "true");
 		
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		driver.manage().deleteAllCookies();
-		
-		// driver.get("https://dev.admin.iwantglobal.com/review/dashboard");
-		
 	}
 
 	@After
@@ -139,9 +135,8 @@ public class IWC_MemberSteps {
 			
 	}
 	
-
 	
-		
+	
 	/**
 	 * Artist and artist store methods
 	 */
@@ -164,7 +159,7 @@ public class IWC_MemberSteps {
 	}
 		
 	@Given("^(.*) navigates to an artist(.*) store page$")
-	public void artistStore_navigate_to_artist_store(String userType, String artistId) {
+	public void artistStore_navigate_to_artist_store(String artistId) {
 
 		IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
 		driver.get("https://qa.iwantclips.com/store/" + artistId);

@@ -1,5 +1,7 @@
 package pageObjects;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.Duration;
 
 import org.junit.Assert;
@@ -34,7 +36,7 @@ public abstract class Page {
 	public abstract String getPageHeader(By locator);
 	public abstract String getText(WebElement locator); 
 	public abstract String getCurrentMethodName();
-	public abstract String getHttpResponse(String linkUrl);
+	public abstract int getHttpResponseCode(String linkUrl) throws MalformedURLException, IOException;
 	public abstract WebElement getElement(By locator);
 	
 	public abstract void waitUntilElementIsDisplayed(WebElement element);
@@ -55,8 +57,11 @@ public abstract class Page {
 	public abstract void doMouseOver(WebElement element);
 	public abstract void doSelect(WebElement element, String option); 
 	public abstract void doClear(WebElement element); 
-	public abstract void doCreateFile(String filepath);
 	public abstract void doFileUpload(WebElement element, String filepath);
+	
+	public abstract void getCurrentPageBrokenLinks() throws MalformedURLException, IOException;
+	public abstract void getStatusOfAllLinksOnCurrentPage() throws MalformedURLException, IOException;
+	public abstract void doCreateFile(String filepath);
 	
 	
 	/**
@@ -73,6 +78,9 @@ public abstract class Page {
 		}
 				
 	}
+
+	
+	
 
 	
 
