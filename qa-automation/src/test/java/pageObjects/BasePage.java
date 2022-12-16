@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -294,27 +296,33 @@ public class BasePage extends Page{
 		}	
 		
 	}
-	
-	public void doNavigateMenu(String page) {
+	public void doNavigateMenu(String page) throws Exception {
+		// Create a mapping of page names to page classes. Add more page names and classes as needed.
+		Map<String, Class<? extends BasePage>> pageClassMap = new HashMap<>();
+		pageClassMap.put("home", IWC_HomePage.class);
+		pageClassMap.put("artist", IWC_ArtistsPage.class);
 		
 		try {
+			// Locate the menu item using an XPath
 			WebElement menuItem = driver.findElement(By.xpath("//a[contains(text(), '" + page + "')]"));
 			verifyElementIsDisplayed(menuItem);
 			verifyElementIsEnabled(menuItem);
 			doClick(menuItem);
-					
-			switch (page) {
-				case "home": 
-					getInstance(IWC_HomePage.class);
-				case "artist": 
-					getInstance(IWC_ArtistsPage.class);
-				default: break;
-		    }
-		}catch (Exception e){
-			e.printStackTrace();
+			
+			// Get the page class for the specified page name
+			Class<? extends BasePage> pageClass = pageClassMap.get(page);
+			if (pageClass == null) {
+				throw new IllegalArgumentException("Invalid page name: " + page);
+			}
+			
+			// Instantiate the page object
+			getInstance(pageClass);
+		} catch (RuntimeException e) {
+			// Handle the error in a more meaningful way, such as by throwing a custom exception
+			throw new Exception("Error navigating to page: " + page, e);
 		}
-	
 	}
+
 
 	/**
 	 * Other useful methods
