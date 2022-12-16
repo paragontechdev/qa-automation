@@ -297,18 +297,22 @@ public class BasePage extends Page{
 	
 	public void doNavigateMenu(String page) {
 		
-		WebElement menuItem = driver.findElement(By.xpath("//a[contains(text(), '" + page + "')]"));
-		verifyElementIsDisplayed(menuItem);
-		verifyElementIsEnabled(menuItem);
-		doClick(menuItem);
-				
-		switch (page) {
-			case "home": 
-				getInstance(IWC_HomePage.class);
-			case "artist": 
-				getInstance(IWC_ArtistsPage.class);
-			default: break;
-	    }
+		try {
+			WebElement menuItem = driver.findElement(By.xpath("//a[contains(text(), '" + page + "')]"));
+			verifyElementIsDisplayed(menuItem);
+			verifyElementIsEnabled(menuItem);
+			doClick(menuItem);
+					
+			switch (page) {
+				case "home": 
+					getInstance(IWC_HomePage.class);
+				case "artist": 
+					getInstance(IWC_ArtistsPage.class);
+				default: break;
+		    }
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	
 	}
 
