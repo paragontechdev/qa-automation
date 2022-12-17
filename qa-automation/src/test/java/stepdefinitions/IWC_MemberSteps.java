@@ -69,7 +69,7 @@ public class IWC_MemberSteps {
 			
 	}
 		
-	public void setup() {
+	public void setUp() {
 		
 		System.setProperty("webdriver.chrome.driver", "drivers\\chromedriver.exe");
 		System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -81,12 +81,12 @@ public class IWC_MemberSteps {
 
 	@After
 	public void teardown() {
-		driver.close();
-		driver.quit();
+		//driver.close();
+		//driver.quit();
 	}
 	
 	@Given("^(.*) navigates to IWC home page$")
-	public void navigate_to_home_page() {
+	public void navigate_to_home_page(String userType) {
 		
 		driver.manage().deleteAllCookies();
 		driver.get("https://qa.iwantclips.com");
@@ -99,25 +99,41 @@ public class IWC_MemberSteps {
 	/**
 	 * Landing and login methods 
 	 */
-	@Then("^(.*) navigates to ([^\"]+) subpage$")
-	public void user_navigates_to_IWC_page(String page) {
+	@Then("^(.*) navigates to the ([^\"]+) page$")
+	public void navigate_to_page(String page) {
 		
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		iwcHome.navigateMenu(page);
+				
 		
 	}	
 	
-	@Then("^the IWC home page is displayed$")
-	public void the_iwc_home_page_is_displayed() {
-
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+	@Then("the ([^\"]+) page is displayed")
+	public void verify_page_is_displayed(String page) {
 		
-		wait.until(ExpectedConditions.visibilityOf(iwcHome.getUserMenuLst()));
+		String currentUrl = driver.getCurrentUrl();
 		
+		if (currentUrl.contains(page)) {
+			
+			switch(page.toLowerCase()){
+			case "home":
+				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+				wait.until(ExpectedConditions.visibilityOf(iwcHome.getUserMenuLst()));
+				break;
+			case "artists":
+				IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
+				wait.until(ExpectedConditions.visibilityOf(iwcArtists.getSearchArtistsEdt()));
+				break;
+			
+			}
+		} else {
+			System.out.println(page + ": Page does not exist");
+		}
+				
 	}
 	
+	
+	
 	@When("^(.*) submits IWC username(.*) and password(.*)$")
+	@When("^(.*)(user|member) logs in with ([^\"]*) and ([^\"]*)$")
 	public void login(String username, String password) {
 
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
@@ -137,6 +153,7 @@ public class IWC_MemberSteps {
 	
 	
 	
+	
 	/**
 	 * Artist and artist store methods
 	 */
@@ -144,6 +161,9 @@ public class IWC_MemberSteps {
 	public void artist_navigate_to_artists_page() {
 
 		IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
+		
+		// iwcArtists.doNavigateMenu("Artists");
+		
 		driver.get("https://qa.iwantclips.com/artists/");
 		wait.until(ExpectedConditions.visibilityOf(iwcArtists.getSearchArtistsEdt()));
 			
@@ -240,7 +260,6 @@ public class IWC_MemberSteps {
 		
 	
 	
-		
 	/**
 	 * Terms of Use modal methods
 	 */
@@ -279,8 +298,7 @@ public class IWC_MemberSteps {
 	}
 	
 	
-
-		
+	
 	/**
 	 * Sign-up methods
 	 */
@@ -386,8 +404,7 @@ public class IWC_MemberSteps {
 		
 	}
 
-	
-	
+
 	
 	
 	

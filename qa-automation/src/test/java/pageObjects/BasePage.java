@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +25,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+// import stepdefinitions.DashboardPage;
 
 public class BasePage extends Page{
 	
@@ -114,6 +114,23 @@ public class BasePage extends Page{
         return intResponseCode;
         
 	 }
+	public String getCurrentPage() {
+		
+		String currentUrl = driver.getCurrentUrl();
+		String currentPage;
+		
+		if (currentUrl.contains("artist")) {
+			currentPage = "Artist";
+		} else if (currentUrl.contains("store")) {
+			currentPage = "Home";
+		} else {
+			currentPage = "Home";
+		}
+		
+		return currentPage;
+				
+	}
+	
 	
 	
 	/**

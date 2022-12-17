@@ -203,5 +203,6 @@ public class IWC_ShoppingCartPage extends BasePage {
 		
 		return getInstance(IWC_ShoppingCartPage.class);
 	}
+	
 
 }

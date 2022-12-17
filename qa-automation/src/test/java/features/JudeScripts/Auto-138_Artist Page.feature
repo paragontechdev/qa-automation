@@ -2,11 +2,11 @@
 Feature: Auto-138 Artist Page
 
   Scenario Outline: Title of your scenario
-    Given user navigates to IWC home page
-    When user accepts terms of use
-    And user submits IWC username<username> and password<password>
-    Then the IWC home page is displayed
-    #And verify artist images are correctly displayed
+    Given <userType> navigates to IWC home page
+    And <userType> accepts terms of use
+    When <userType> logs in with <username> and <password>
+    Then the <iwcPage> page is displayed
+    #And artist images are correctly displayed
     When user navigates to the Artists page
     #Then the IWC Artists page is displayed
     When user navigates to an artist<artistId> store page
