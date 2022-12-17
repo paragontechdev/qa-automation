@@ -15,7 +15,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -43,10 +45,10 @@ public class IWC_MemberSteps {
 		
 	
 	/**
-	 * Setup (@ Before) and tear-down (@ After) methods
+	 * Setup (@Before) and tear-down (@After) methods
 	 */
 	@Before
-	public void initializeDriver() throws InterruptedException{
+	public void InitializeBowser() throws InterruptedException{
 		
 		// WebDriverManager.chromedriver().setup();
 		
@@ -66,6 +68,7 @@ public class IWC_MemberSteps {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		page = new BasePage(driver, wait);
 		driver.manage().deleteAllCookies();
+		
 			
 	}
 		
@@ -77,6 +80,7 @@ public class IWC_MemberSteps {
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		driver.manage().deleteAllCookies();
+		
 	}
 
 	@After
@@ -98,59 +102,60 @@ public class IWC_MemberSteps {
 
 	/**
 	 * Landing and login methods 
+	 * @throws Exception 
 	 */
 	@Then("^(.*) navigates to the ([^\"]+) page$")
-	public void navigate_to_page(String page) {
+	public void navigate_to_a_page(String page) throws Exception {
 		
-				
+		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+		
+		iwcHome.doNavigateMenu("Artists");
 		
 	}	
 	
-	@Then("the ([^\"]+) page is displayed")
+	@Then("^the ([^\"]+) page is displayed$")
 	public void verify_page_is_displayed(String page) {
 		
 		String currentUrl = driver.getCurrentUrl();
-		
-		if (currentUrl.contains(page)) {
-			
-			switch(page.toLowerCase()){
-			case "home":
+		try {
+			if (currentUrl.contains(page)) {
+				
+				switch(page.toLowerCase()){
+				case "store":
+					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
+					//iwcStorePage.waitUntilElementIsDisplayed(iwcStorePage.getUserMenuLst());
+					break;
+				case "artists":
+					IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
+					iwcArtists.waitUntilElementIsDisplayed(iwcArtists.getSearchArtistsEdt());
+					break;
+				default:
+					IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+					iwcHome.waitUntilElementIsDisplayed(iwcHome.getUserMenuLst());
+					break;
+				}
+			} else {
 				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-				wait.until(ExpectedConditions.visibilityOf(iwcHome.getUserMenuLst()));
-				break;
-			case "artists":
-				IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-				wait.until(ExpectedConditions.visibilityOf(iwcArtists.getSearchArtistsEdt()));
-				break;
-			
+				iwcHome.waitUntilElementIsDisplayed(iwcHome.getUserMenuLst());
 			}
-		} else {
-			System.out.println(page + ": Page does not exist");
+			
+			System.out.println(page + ": page found.");
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+		
 				
 	}
 	
-	
-	
 	@When("^(.*) submits IWC username(.*) and password(.*)$")
-	@When("^(.*)(user|member) logs in with ([^\"]*) and ([^\"]*)$")
-	public void login(String username, String password) {
+	@When("^(.*) logs in with ([^\"]*) and ([^\"]*)$")
+	public void login(String userType, String username, String password) {
 
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
 		iwcHome.login(username, password);
 		
 	}
-	
-	@When("^user submits IWC username(.*) and password(.*)$")
-	public void the_user_submits_username_and_password(String username, String password) {
-
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		iwcHome.login(username, password);
-			
-	}
-	
 	
 	
 	

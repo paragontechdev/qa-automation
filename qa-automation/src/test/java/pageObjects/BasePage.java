@@ -157,6 +157,29 @@ public class BasePage extends Page{
 			System.out.println("Error occurred while stopping clock.");
 		}
 	}
+
+	@Override
+	public void waitUntilElementIsEnabled(WebElement element) {
+
+		try {
+			Assert.assertTrue(element.isEnabled());
+		} catch(Exception e){
+			System.out.println("Element not found: " + element.toString());
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void waitUntilElementIsDisabled(WebElement element) {
+
+		try {
+			Assert.assertFalse(element.isEnabled());
+		} catch(Exception e){
+			System.out.println("Element not found: " + element.toString());
+			e.printStackTrace();
+		}
+		
+	}
 	@Override
 	public void waitUntilElementIsDisplayed(WebElement element) {
 
@@ -189,6 +212,7 @@ public class BasePage extends Page{
 		}
 		
 	}
+
 	@Override
 	public void verifyElementIsDisplayed(WebElement element) {
 		
@@ -214,7 +238,7 @@ public class BasePage extends Page{
 	@Override
 	public void verifyElementIsEnabled(WebElement element) {
 		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
+			verifyElementIsDisplayed(element);
 			Assert.assertTrue(element.isEnabled());
 		}catch (Exception e){
 			System.out.println("Error finding enabled object: " + element.toString());
@@ -224,7 +248,7 @@ public class BasePage extends Page{
 	@Override
 	public void verifyElementIsDisabled(WebElement element) {
 		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
+			verifyElementIsDisplayed(element);
 			Assert.assertFalse(element.isEnabled());
 		}catch (Exception e){
 			System.out.println("Error finding disabled object: " + element.toString());
@@ -255,7 +279,7 @@ public class BasePage extends Page{
 	public void doClick(WebElement element) {
 		
 		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
+			waitUntilElementIsEnabled(element);
 			element.click();
 		}catch(Exception e){
 			System.out.println("Error clicking web element: " + element.toString());
@@ -268,18 +292,19 @@ public class BasePage extends Page{
 	public void doSendKeys(WebElement element, String text) {
 		
 		try{
-			wait.until(ExpectedConditions.visibilityOf(element));
-			element.clear();
+			waitUntilElementIsEnabled(element);
+			doClear(element);
 			element.sendKeys(text);
 		}catch(Exception e){
 			System.out.println("Error setting text value: " + element.toString());
 			e.printStackTrace();
 		}
+		
 	}
 	@Override
 	public void doMouseOver(WebElement element) {
 		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
+			waitUntilElementIsDisplayed(element);
 			element.clear();
 			
 			Actions actions = new Actions(driver);
@@ -293,7 +318,7 @@ public class BasePage extends Page{
 	public void doSelect(WebElement element, String option) {
 		
 		try{
-			wait.until(ExpectedConditions.visibilityOf(element));
+			waitUntilElementIsDisplayed(element);
 			Select dropdownOpt = new Select(element);
 			dropdownOpt.selectByVisibleText(option);
 		}catch(Exception e){
@@ -305,7 +330,7 @@ public class BasePage extends Page{
 	public void doClear(WebElement element) {
 		
 		try {
-			wait.until(ExpectedConditions.visibilityOf(element));
+			waitUntilElementIsDisplayed(element);
 			element.clear();
 		}catch(Exception e){
 			System.out.println("Error clearing text object: " + element.toString());

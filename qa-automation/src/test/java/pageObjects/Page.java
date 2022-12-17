@@ -41,6 +41,8 @@ public abstract class Page {
 	
 	public abstract void waitUntilElementIsDisplayed(WebElement element);
 	public abstract void waitUntilElementIsNotDisplayed(WebElement element);
+	public abstract void waitUntilElementIsEnabled(WebElement element);
+	public abstract void waitUntilElementIsDisabled(WebElement element);
 	public abstract void waitForPageTitle(String title);
 	
 	public abstract void verifyElementIsDisplayed(WebElement element); 
@@ -78,10 +80,4 @@ public abstract class Page {
 		}
 				
 	}
-
-	
-	
-
-	
-
 }

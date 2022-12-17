@@ -222,6 +222,7 @@ public class IWC_HomePage extends BasePage {
 		return getElement(accountSuccessfullyCreatedLab);
 	}
 	
+		
 	/**
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
