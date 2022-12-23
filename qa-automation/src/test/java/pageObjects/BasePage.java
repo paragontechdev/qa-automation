@@ -1,5 +1,7 @@
 package pageObjects;
 
+import static org.junit.Assert.assertTrue;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -161,24 +163,14 @@ public class BasePage extends Page{
 	@Override
 	public void waitUntilElementIsEnabled(WebElement element) {
 
-		try {
-			Assert.assertTrue(element.isEnabled());
-		} catch(Exception e){
-			System.out.println("Element not found: " + element.toString());
-			e.printStackTrace();
-		}
+		Assert.assertTrue(element.isEnabled());
 		
 	}
 	@Override
 	public void waitUntilElementIsDisabled(WebElement element) {
 
-		try {
-			Assert.assertFalse(element.isEnabled());
-		} catch(Exception e){
-			System.out.println("Element not found: " + element.toString());
-			e.printStackTrace();
-		}
-		
+		Assert.assertFalse(element.isEnabled());
+				
 	}
 	@Override
 	public void waitUntilElementIsDisplayed(WebElement element) {
@@ -339,6 +331,7 @@ public class BasePage extends Page{
 		
 	}
 	public void doNavigateMenu(String page) throws Exception {
+		
 		// Create a mapping of page names to page classes. Add more page names and classes as needed.
 		Map<String, Class<? extends BasePage>> pageClassMap = new HashMap<>();
 		pageClassMap.put("home", IWC_HomePage.class);
@@ -452,5 +445,10 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
-
+	public void doLogMessage(String logMessage) {
+		
+		System.out.println(logMessage);
+		
+	}
+	
 }

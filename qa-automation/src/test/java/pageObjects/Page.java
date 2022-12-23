@@ -64,7 +64,7 @@ public abstract class Page {
 	public abstract void getCurrentPageBrokenLinks() throws MalformedURLException, IOException;
 	public abstract void getStatusOfAllLinksOnCurrentPage() throws MalformedURLException, IOException;
 	public abstract void doCreateFile(String filepath);
-	
+	public abstract void doLogMessage(String logMessage);
 	
 	/**
 	 *  GENERIC CLASSES & METHODS 

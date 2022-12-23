@@ -89,13 +89,7 @@ public class IWC_MemberSteps {
 		//driver.quit();
 	}
 	
-	@Given("^(.*) navigates to IWC home page$")
-	public void navigate_to_home_page(String userType) {
-		
-		driver.manage().deleteAllCookies();
-		driver.get("https://qa.iwantclips.com");
-		
-	}
+
 	
 	
 	
@@ -104,7 +98,6 @@ public class IWC_MemberSteps {
 	 * Landing and login methods 
 	 * @throws Exception 
 	 */
-	@Then("^(.*) navigates to the ([^\"]+) page$")
 	public void navigate_to_a_page(String page) throws Exception {
 		
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
@@ -112,6 +105,35 @@ public class IWC_MemberSteps {
 		iwcHome.doNavigateMenu("Artists");
 		
 	}	
+	
+	@Then("^(.*) navigates to the ([^\"]+) page$")
+	public void navigate_to_iwc_page(String userType, String iwcPage) {
+		
+		BasePage basePage = new BasePage(driver, wait);
+				
+		String navigationMessage = "Navigating to " + iwcPage + " page...";
+		try {
+			
+			basePage.doNavigateMenu(iwcPage);
+			switch (iwcPage.toLowerCase()) {
+					
+			case "home":
+				driver.get("https://qa.iwantclips.com");
+				IWC_HomePage homePage = new IWC_HomePage(driver, wait);
+				// homePage.doLogMessage(navigationMessage);
+				break;
+				
+			case "artists":
+				driver.get("https://qa.iwantclips.com/artists");
+				IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
+				artistsPage.doLogMessage(navigationMessage);
+				break;
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Then("^the ([^\"]+) page is displayed$")
 	public void verify_page_is_displayed(String page) {
@@ -125,26 +147,27 @@ public class IWC_MemberSteps {
 					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
 					//iwcStorePage.waitUntilElementIsDisplayed(iwcStorePage.getUserMenuLst());
 					break;
+				
 				case "artists":
 					IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-					iwcArtists.waitUntilElementIsDisplayed(iwcArtists.getSearchArtistsEdt());
+					Assert.assertTrue(iwcArtists.getSearchArtistsEdt().isDisplayed());
 					break;
+				
 				default:
 					IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-					iwcHome.waitUntilElementIsDisplayed(iwcHome.getUserMenuLst());
+					Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
 					break;
 				}
 			} else {
 				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-				iwcHome.waitUntilElementIsDisplayed(iwcHome.getUserMenuLst());
+				Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
 			}
 			
-			System.out.println(page + ": page found.");
+			System.out.println("The " + page + ": page was found.");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-				
+	
 	}
 	
 	@When("^(.*) submits IWC username(.*) and password(.*)$")
