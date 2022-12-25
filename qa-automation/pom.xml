@@ -21,35 +21,59 @@
 
     <dependencies>
 
+
+
  
- <!-- Cucumber -->       
+ <!-- Cucumber -->   
+     
     	<dependency>
    			<groupId>io.cucumber</groupId>
     		<artifactId>cucumber-core</artifactId>
-    		<version>7.3.4</version>
+    		<version>7.10.1</version>
     	</dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.3.4</version>
+            <version>7.10.1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>7.3.4</version>
+            <version>7.10.1</version>
             <scope>test</scope>
         </dependency>
                 
 		<dependency>
     		<groupId>io.cucumber</groupId>
     		<artifactId>cucumber-junit</artifactId>
-    		<version>7.3.4</version>
+    		<version>7.10.1</version>
     		<scope>test</scope>
 		</dependency>
+		
 <!-- /Cucumber -->
+
+
+
+
+
+<!-- Selenium -->		                
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.7.2</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-chrome-driver</artifactId>
+		    <version>4.7.2</version>
+		</dependency>
+<!-- /Selenium -->
+
+
 
 
 <!-- JUnit  -->              
@@ -63,14 +87,14 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
-            <version>1.9.0-M1</version>
+            <version>1.9.1</version>
             <scope>test</scope>
         </dependency>
         
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.9.0-M1</version>
+		    <version>5.9.1</version>
 		    <scope>test</scope>
 		</dependency>        
 <!-- /JUnit -->
@@ -80,17 +104,15 @@
 		<dependency>
 		    <groupId>org.junit</groupId>
 		    <artifactId>junit-bom</artifactId>
-		    <version>5.9.0-M1</version>
+		    <version>5.9.1</version>
 		    <type>pom</type>
 		    <scope>import</scope>
 		</dependency>
 	
-
-	
 		<dependency>
 		    <groupId>io.cucumber</groupId>
 		    <artifactId>cucumber-bom</artifactId>
-		    <version>7.3.4</version>
+		    <version>7.10.1</version>
 		    <type>pom</type>
 		    <scope>test</scope>
 		</dependency>
@@ -139,27 +161,35 @@
 		<dependency>
 		    <groupId>io.github.bonigarcia</groupId>
 		    <artifactId>webdrivermanager</artifactId>
-		    <version>5.2.1</version>
+		    <version>5.3.1</version>
 		</dependency>
 <!-- /WebDriver MAnager -->
 
 
-<!-- Selenium -->		                
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>4.2.2</version>
-		</dependency>
+
+ <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.19.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-log4j12</artifactId>
+    <version>2.0.6</version>
+    <scope>runtime</scope>
+</dependency>
 		
-		<dependency>
-		    <groupId>org.seleniumhq.selenium</groupId>
-		    <artifactId>selenium-chrome-driver</artifactId>
-		    <version>4.2.2</version>
-		</dependency>
-<!-- /Selenium -->			
-		
-		
-		
+<!-- https://mvnrepository.com/artifact/com.sun.tools.jxc.maven2/maven-jaxb-schemagen-plugin -->
+<dependency>
+    <groupId>com.sun.tools.jxc.maven2</groupId>
+    <artifactId>maven-jaxb-schemagen-plugin</artifactId>
+    <version>1.2</version>
+</dependency>
+
+	
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi</artifactId>
@@ -225,6 +255,26 @@
                     </properties>
                 </configuration>
             </plugin>
+            
+            <plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>jaxb2-maven-plugin</artifactId>
+			    <version>3.1.0</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>schemagen</goal>
+			            </goals>
+			            <phase>generate-resources</phase>
+			            <configuration>
+			                <sources>
+			                    <source>src/main/java/com/foo/model/xml</source>
+			                </sources>
+			                <outputDirectory>${project.build.directory}/schemas</outputDirectory>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
             
         </plugins>
     </build>

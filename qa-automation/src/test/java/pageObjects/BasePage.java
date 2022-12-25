@@ -122,9 +122,9 @@ public class BasePage extends Page{
 		String currentPage;
 		
 		if (currentUrl.contains("artist")) {
-			currentPage = "Artist";
+			currentPage = "Artists";
 		} else if (currentUrl.contains("store")) {
-			currentPage = "Home";
+			currentPage = "Store";
 		} else {
 			currentPage = "Home";
 		}
@@ -206,51 +206,75 @@ public class BasePage extends Page{
 	}
 
 	@Override
-	public void verifyElementIsDisplayed(WebElement element) {
+	public void verifyElementIsDisplayed(WebElement element) throws Exception{
 		
 		try{
 			wait.until(ExpectedConditions.visibilityOf(element));
 			Assert.assertTrue(element.isDisplayed());
 		}catch(Exception e){
-			System.out.println("Expected web element not displayed: " + element.toString());
-			e.printStackTrace();
+			throw new Exception("Expected web element not displayed: " + element.toString());
 		}
 	}
 	@Override
-	public void verifyElementIsNotDisplayed(WebElement element) {
+	public void verifyElementIsNotDisplayed(WebElement element) throws Exception {
 	
 		try{
 			wait.until(ExpectedConditions.invisibilityOf(element));
 			Assert.assertFalse(element.isDisplayed());
 		}catch(Exception e){
-			System.out.println("Unexpected web element displayed: " + element.toString());
-			e.printStackTrace();
+			throw new Exception("Expected web element displayed: " + element.toString());
 		}
 	}
 	@Override
-	public void verifyElementIsEnabled(WebElement element) {
+	public void verifyElementIsEnabled(WebElement element) throws Exception {
 		try {
 			verifyElementIsDisplayed(element);
 			Assert.assertTrue(element.isEnabled());
-		}catch (Exception e){
-			System.out.println("Error finding enabled object: " + element.toString());
-			e.printStackTrace();
+		}catch(Exception e){
+			throw new Exception("Enabled object not found: " + element.toString());
 		}
 	}
 	@Override
-	public void verifyElementIsDisabled(WebElement element) {
+	public void verifyElementIsDisabled(WebElement element) throws Exception {
 		try {
 			verifyElementIsDisplayed(element);
 			Assert.assertFalse(element.isEnabled());
-		}catch (Exception e){
-			System.out.println("Error finding disabled object: " + element.toString());
-			e.printStackTrace();
+		}catch(Exception e){
+			throw new Exception("Disabled object not found: " + element.toString());
 		}
 	}
-	
 	@Override
-	public void verifyPageIsDisplayed(String expectedPage) {
-		//TODO
+	public void verifyPageIsDisplayed(String expectedPage) throws Exception {
+
+		String currentUrl = driver.getCurrentUrl();
+		try {
+			if (currentUrl.contains(expectedPage)) {
+				
+				switch(expectedPage.toLowerCase()){
+				case "store":
+					//IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
+					//iwcStorePage.waitUntilElementIsDisplayed(iwcStorePage.getUserMenuLst());
+					break;
+				
+				case "artists":
+					IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
+					Assert.assertEquals(iwcArtists.getCurrentPage(), "Artists");
+					break;
+				
+				default:
+					IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+					Assert.assertEquals(iwcHome.getCurrentPage(), "Home");
+					break;
+				}
+			} else {
+				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+				Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
+			}
+			
+		} catch(Exception e) {
+			throw new Exception("Error getting current page name.");
+		}
+		
 	}
 	
 	
@@ -271,20 +295,19 @@ public class BasePage extends Page{
 	public void doClick(WebElement element) {
 		
 		try {
+			waitUntilElementIsDisplayed(element);
 			waitUntilElementIsEnabled(element);
 			element.click();
+
 		}catch(Exception e){
 			System.out.println("Error clicking web element: " + element.toString());
-			e.printStackTrace();
-			
-			// click sign-on button
 		}
 	}	
 	@Override
-	public void doSendKeys(WebElement element, String text) {
+	public void doSendKeys(WebElement element, String text) throws Exception {
 		
 		try{
-			waitUntilElementIsEnabled(element);
+			waitUntilElementIsDisplayed(element);
 			doClear(element);
 			element.sendKeys(text);
 		}catch(Exception e){
@@ -330,40 +353,59 @@ public class BasePage extends Page{
 		}	
 		
 	}
-	public void doNavigateMenu(String page) throws Exception {
+	public void doNavigateToPage(String page) throws Exception {
 		
 		// Create a mapping of page names to page classes. Add more page names and classes as needed.
 		Map<String, Class<? extends BasePage>> pageClassMap = new HashMap<>();
 		pageClassMap.put("home", IWC_HomePage.class);
-		pageClassMap.put("artist", IWC_ArtistsPage.class);
+		pageClassMap.put("Artists", IWC_ArtistsPage.class);
 		
 		try {
 			// Locate the menu item using an XPath
-			WebElement menuItem = driver.findElement(By.xpath("//a[contains(text(), '" + page + "')]"));
-			verifyElementIsDisplayed(menuItem);
-			verifyElementIsEnabled(menuItem);
-			doClick(menuItem);
+			//By menuItem = By.partialLinkText(page);
+			//getElement(menuItem).click();
 			
 			// Get the page class for the specified page name
 			Class<? extends BasePage> pageClass = pageClassMap.get(page);
 			if (pageClass == null) {
 				throw new IllegalArgumentException("Invalid page name: " + page);
+			} else {
+				try {
+					By menuItem = By.partialLinkText(page);
+
+					switch (page.toLowerCase()) {
+					case "home":
+						driver.get("https://qa.iwantclips.com");
+						IWC_HomePage homePage = new IWC_HomePage(driver, wait);
+						Assert.assertEquals(homePage.getCurrentPage(), "Home");
+						break;
+						
+					case "artists":
+						getElement(menuItem).click();
+						IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
+						Assert.assertEquals(artistsPage.getCurrentPage(), "Artists");
+						break;
+						
+					}
+				} catch (Exception e) {
+					throw new Exception("");
+				}
 			}
 			
 			// Instantiate the page object
 			getInstance(pageClass);
 		} catch (RuntimeException e) {
 			// Handle the error in a more meaningful way, such as by throwing a custom exception
-			throw new Exception("Error navigating to page: " + page, e);
+			throw new Exception("Error navigating to " + page + " page.");
 		}
 	}
-
-
+	
+	
 	/**
 	 * Other useful methods
 	 */
 	@Override
-	public void getCurrentPageBrokenLinks() throws MalformedURLException, IOException {
+ 	public void getCurrentPageBrokenLinks() throws MalformedURLException, IOException {
 		   
 		// Get all page links
 		List<WebElement> links = driver.findElements(By.tagName("a"));
@@ -450,5 +492,5 @@ public class BasePage extends Page{
 		System.out.println(logMessage);
 		
 	}
-	
+
 }

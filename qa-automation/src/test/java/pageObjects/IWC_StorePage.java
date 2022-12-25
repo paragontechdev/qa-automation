@@ -112,8 +112,9 @@ public class IWC_StorePage extends BasePage {
 	/** 
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
+	 * @throws Exception 
 	 */
-	public IWC_StorePage tipOrTribute(String userType, String amount) {
+	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
 		setAmountRad(By.xpath("//input[@type='radio' and @value='" + amount + "']"));
 		
@@ -153,7 +154,7 @@ public class IWC_StorePage extends BasePage {
 		
 		return getInstance(IWC_StorePage.class);
 	}
-	public IWC_ShoppingCartPage goToShoppingCart(){
+	public IWC_ShoppingCartPage goToShoppingCart() throws Exception{
 		
 		IWC_ShoppingCartPage iwcCart = new IWC_ShoppingCartPage(driver, wait);
 		
@@ -162,7 +163,7 @@ public class IWC_StorePage extends BasePage {
 		
 		return getInstance(IWC_ShoppingCartPage.class);
 	}
-	public IWC_ShoppingCartPage checkout(String userType) {
+	public IWC_ShoppingCartPage checkout(String userType) throws Exception {
 		
 		IWC_ShoppingCartPage iwcCart = new IWC_ShoppingCartPage(driver, wait);
 		
@@ -173,7 +174,7 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_ShoppingCartPage.class);
 		
 	}
-	public IWC_ShoppingCartPage verifyTipOrTributeSent(String amount) {
+	public IWC_ShoppingCartPage verifyTipOrTributeSent(String amount) throws Exception {
 		
 		setTipAmountAlr(By.xpath("//span[text()='" + amount + ".00'"));
 		

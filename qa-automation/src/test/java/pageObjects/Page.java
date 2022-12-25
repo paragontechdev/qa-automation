@@ -45,17 +45,17 @@ public abstract class Page {
 	public abstract void waitUntilElementIsDisabled(WebElement element);
 	public abstract void waitForPageTitle(String title);
 	
-	public abstract void verifyElementIsDisplayed(WebElement element); 
-	public abstract void verifyElementIsNotDisplayed(WebElement element); 
-	public abstract void verifyElementIsEnabled(WebElement locator);
-	public abstract void verifyElementIsDisabled(WebElement element);
-	public abstract void verifyPageIsDisplayed(String webPage);
+	public abstract void verifyElementIsDisplayed(WebElement element) throws Exception; 
+	public abstract void verifyElementIsNotDisplayed(WebElement element) throws Exception; 
+	public abstract void verifyElementIsEnabled(WebElement locator) throws Exception;
+	public abstract void verifyElementIsDisabled(WebElement element) throws Exception;
+	public abstract void verifyPageIsDisplayed(String webPage) throws Exception;
 	
 	public abstract void doStartTimer(String description);
 	public abstract void doStopTimer();
 	public abstract void doScrollToElement(WebElement element);
 	public abstract void doClick(WebElement element);
-	public abstract void doSendKeys(WebElement element, String text);
+	public abstract void doSendKeys(WebElement element, String text) throws Exception;
 	public abstract void doMouseOver(WebElement element);
 	public abstract void doSelect(WebElement element, String option); 
 	public abstract void doClear(WebElement element); 

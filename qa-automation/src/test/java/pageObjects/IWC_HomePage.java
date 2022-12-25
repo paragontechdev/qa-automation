@@ -226,8 +226,9 @@ public class IWC_HomePage extends BasePage {
 	/**
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
+	 * @throws Exception 
 	 */
-	public IWC_HomePage join(String memberType, String accountType, String username, String password, String question, String answer, String country) {
+	public IWC_HomePage join(String memberType, String accountType, String username, String password, String question, String answer, String country) throws Exception {
 		
 		doClick(getJoinFreeLnk());
 		
@@ -261,7 +262,7 @@ public class IWC_HomePage extends BasePage {
 		return getInstance(IWC_HomePage.class);
 	}
 	
-	public IWC_HomePage login(String username, String password) {
+	public IWC_HomePage login(String username, String password) throws Exception {
 		
 		// driver.get("https://qa.iwantclips.com/logout");
 		// driver.get("https://qa.iwantclips.com/home/login?redirect=https://qa.iwantclips.com/");
@@ -312,7 +313,7 @@ public class IWC_HomePage extends BasePage {
 		
 	}
 
- 	public IWC_HomePage acceptTermsOfUse() {
+ 	public IWC_HomePage acceptTermsOfUse() throws Exception {
  		
  		doClick(getTermsOfUseEnterBtn());
  		verifyElementIsNotDisplayed(getTermsOfUseEnterBtn());
@@ -320,7 +321,7 @@ public class IWC_HomePage extends BasePage {
  		return getInstance(IWC_HomePage.class);
  	}
 
- 	public IWC_HomePage rejectTermsOfUse() {
+ 	public IWC_HomePage rejectTermsOfUse() throws Exception {
 
  		doClick(getIAmNot18Lnk());
  		verifyElementIsDisplayed(getTermsOfUseAlr());

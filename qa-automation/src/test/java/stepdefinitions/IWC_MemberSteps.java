@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -47,17 +48,19 @@ public class IWC_MemberSteps {
 	/**
 	 * Setup (@Before) and tear-down (@After) methods
 	 */
-	@Before
 	public void InitializeBowser() throws InterruptedException{
 		
 		// WebDriverManager.chromedriver().setup();
-		
 		System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
 		System.setProperty("webdriver.chrome.silentOutput", "true");
+		System.setProperty("webdriver.chrome.whitelistedIps", "75.245.21.167");
 		
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("disable-infobars");
+		//chromeOptions.addArguments("--log-level=3");
 		//chromeOptions.addArguments("start-maximized");
+		
+		
 		
 		driver = new ChromeDriver(chromeOptions);
 		//driver.get("chrome://settings/clearBrowserData");
@@ -72,20 +75,28 @@ public class IWC_MemberSteps {
 			
 	}
 		
+	@Before
 	public void setUp() {
 		
+		System.setProperty(ChromeDriverService.CHROME_DRIVER_VERBOSE_LOG_PROPERTY, "false");
+		System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
 		System.setProperty("webdriver.chrome.driver", "drivers\\chromedriver.exe");
 		System.setProperty("webdriver.chrome.silentOutput", "true");
 		
+		ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments("disable-infobars");
+		chromeOptions.addArguments("start-maximized");
+		
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		page = new BasePage(driver, wait);
 		driver.manage().deleteAllCookies();
 		
 	}
 
 	@After
 	public void teardown() {
-		//driver.close();
+		driver.close();
 		//driver.quit();
 	}
 	
@@ -98,81 +109,25 @@ public class IWC_MemberSteps {
 	 * Landing and login methods 
 	 * @throws Exception 
 	 */
-	public void navigate_to_a_page(String page) throws Exception {
-		
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		iwcHome.doNavigateMenu("Artists");
-		
-	}	
 	
 	@Then("^(.*) navigates to the ([^\"]+) page$")
-	public void navigate_to_iwc_page(String userType, String iwcPage) {
+	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
 		
 		BasePage basePage = new BasePage(driver, wait);
-				
-		String navigationMessage = "Navigating to " + iwcPage + " page...";
-		try {
-			
-			basePage.doNavigateMenu(iwcPage);
-			switch (iwcPage.toLowerCase()) {
-					
-			case "home":
-				driver.get("https://qa.iwantclips.com");
-				IWC_HomePage homePage = new IWC_HomePage(driver, wait);
-				// homePage.doLogMessage(navigationMessage);
-				break;
-				
-			case "artists":
-				driver.get("https://qa.iwantclips.com/artists");
-				IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
-				artistsPage.doLogMessage(navigationMessage);
-				break;
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		basePage.doNavigateToPage(iwcPage);
+
 	}
-	
 	@Then("^the ([^\"]+) page is displayed$")
-	public void verify_page_is_displayed(String page) {
+	public void verify_page_is_displayed(String page) throws Exception {
 		
-		String currentUrl = driver.getCurrentUrl();
-		try {
-			if (currentUrl.contains(page)) {
-				
-				switch(page.toLowerCase()){
-				case "store":
-					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
-					//iwcStorePage.waitUntilElementIsDisplayed(iwcStorePage.getUserMenuLst());
-					break;
-				
-				case "artists":
-					IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-					Assert.assertTrue(iwcArtists.getSearchArtistsEdt().isDisplayed());
-					break;
-				
-				default:
-					IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-					Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
-					break;
-				}
-			} else {
-				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-				Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
-			}
-			
-			System.out.println("The " + page + ": page was found.");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		BasePage basePage = new BasePage(driver, wait);
+		basePage.verifyPageIsDisplayed(page);
 	
 	}
 	
 	@When("^(.*) submits IWC username(.*) and password(.*)$")
 	@When("^(.*) logs in with ([^\"]*) and ([^\"]*)$")
-	public void login(String userType, String username, String password) {
+	public void login(String userType, String username, String password) throws Exception {
 
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
@@ -185,6 +140,8 @@ public class IWC_MemberSteps {
 	/**
 	 * Artist and artist store methods
 	 */
+	 
+	/*
 	@Given("^(.*) navigates to the Artists page$")
 	public void artist_navigate_to_artists_page() {
 
@@ -205,7 +162,7 @@ public class IWC_MemberSteps {
 		artistHome.verifyElementIsDisplayed(artistHome.getArtistLinkLnk());
 				
 	}
-		
+	*/	
 	@Given("^(.*) navigates to an artist(.*) store page$")
 	public void artistStore_navigate_to_artist_store(String artistId) {
 
@@ -225,7 +182,7 @@ public class IWC_MemberSteps {
 	}
 		
 	@When("^user(.*) tributes (.*) dollars$")
-	public void artistStore_send_tribute(String userType, String amount) {
+	public void artistStore_send_tribute(String userType, String amount) throws Exception {
 
 		IWC_StorePage iwcStore = new IWC_StorePage(driver, wait);
 		
@@ -234,7 +191,7 @@ public class IWC_MemberSteps {
 	}
     
 	@Then("^tribute(.*) has been sent$")
-	public void artistStore_verify_tribute_has_been_sent(String amount){
+	public void artistStore_verify_tribute_has_been_sent(String amount) throws Exception{
 		
 		IWC_StorePage iwcStore = new IWC_StorePage(driver, wait);
 		
@@ -252,7 +209,7 @@ public class IWC_MemberSteps {
 	}
 
 	@When("^user(.*) checks out$")
-	public void artistStore_check_out(String userType) {
+	public void artistStore_check_out(String userType) throws Exception {
 		
 		IWC_StorePage iwcStore = new IWC_StorePage(driver, wait);
 		
@@ -262,7 +219,7 @@ public class IWC_MemberSteps {
 	}
 
 	@Then("a purchase confirmation message is displayed")
-	public void artistStore_verify_purchase_confirmation_displays() {
+	public void artistStore_verify_purchase_confirmation_displays() throws Exception {
 
 		IWC_ShoppingCartPage iwcCart = new IWC_ShoppingCartPage(driver, wait);
 		
@@ -290,9 +247,10 @@ public class IWC_MemberSteps {
 	
 	/**
 	 * Terms of Use modal methods
+	 * @throws Exception 
 	 */
 	@When("^(.*) accepts terms of use$")
-	public void termsOfUse_accepted(String userType) {
+	public void termsOfUse_accepted(String userType) throws Exception {
 	    
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 				
@@ -301,7 +259,7 @@ public class IWC_MemberSteps {
 	}
 
 	@When("^(.*) rejects terms of use$")
-	public void termsOfUse_rejected() {
+	public void termsOfUse_rejected() throws Exception {
 	    
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
@@ -329,9 +287,10 @@ public class IWC_MemberSteps {
 	
 	/**
 	 * Sign-up methods
+	 * 
 	 */
 	@When("^artist clicks I (Agree|Disagree) on the Biometric Information notice$")
-	public void agree_with_biometric_info_notice(boolean agree) {
+	public void agree_with_biometric_info_notice(boolean agree) throws Exception {
 		
 		IWC_ArtistHomePage artistHome = new IWC_ArtistHomePage(driver, wait);
 		
@@ -382,7 +341,7 @@ public class IWC_MemberSteps {
 	
 	@When("^user submits signup form$")
 	public void user_submits_signup_form(String accountType, String gender, String month, String day, String year, 
-			String username, String email, String password, String question, String answer, String country) {
+			String username, String email, String password, String question, String answer, String country) throws Exception {
 		
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
@@ -424,7 +383,7 @@ public class IWC_MemberSteps {
 
 	@Then("new user account is created")
 
-	public void new_user_account_is_created() {
+	public void new_user_account_is_created() throws Exception {
 		
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		
@@ -455,7 +414,7 @@ public class IWC_MemberSteps {
 	}
 	
 	@Then("^item ([^\"]+) is displayed in user wishlist$")
-	public void verify_wishlist_item(String itemId) {
+	public void verify_wishlist_item(String itemId) throws Exception {
 		
 		IWC_MemberWishlistPage iwcWishlist = new IWC_MemberWishlistPage(driver, wait);
 		

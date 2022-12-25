@@ -83,8 +83,9 @@ public class IWC_AdminHomePage extends BasePage {
 	/**
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
+	 * @throws Exception 
 	 */
-	public IWC_AdminHomePage login(String username, String password) {
+	public IWC_AdminHomePage login(String username, String password) throws Exception {
 		
 		doSendKeys(getEmailEdt(), username);
 		doSendKeys(getPasswordEdt(), password);
@@ -94,7 +95,7 @@ public class IWC_AdminHomePage extends BasePage {
 		return getInstance(IWC_AdminHomePage.class);
 	}
 	
- 	public IWC_AdminHomePage agreeToBiometricDataUse() {
+ 	public IWC_AdminHomePage agreeToBiometricDataUse() throws Exception {
  		
  		doClick(getIAgreeBtn());
  		verifyElementIsNotDisplayed(getBiometricConsentMod());
@@ -102,7 +103,7 @@ public class IWC_AdminHomePage extends BasePage {
  		return getInstance(IWC_AdminHomePage.class);
  	}
 
- 	public IWC_AdminHomePage disagreeWithBiometricDataUse() {
+ 	public IWC_AdminHomePage disagreeWithBiometricDataUse() throws Exception {
 
  		verifyElementIsDisplayed(getBiometricConsentMod());
  		doClick(getIDisagreeBtn());

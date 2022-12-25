@@ -9,7 +9,7 @@ import io.cucumber.junit.CucumberOptions;
 		features = {"src/test/java/features/2022.07.19/Demo",
 				"src/test/java/features/2022.08.2"
 				}
-		,glue = {"src/test/java/stepdefinitions"}
+		,glue = {"src/test/java/stepdefinitions/IWC_MemberSteps.java"}
 		,monochrome = true,
 		plugin = {"pretty",
 				 "junit:test-output/reports/JUnitReport.xml",

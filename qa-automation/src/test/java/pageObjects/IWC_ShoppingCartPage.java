@@ -157,8 +157,9 @@ public class IWC_ShoppingCartPage extends BasePage {
 	/** 
 	 * These custom methods will be used with this class. 
 	 * For submitted pages, the return type should be the next landing page object class.
+	 * @throws Exception 
 	 */
- 	public IWC_ShoppingCartPage checkout(String userType) {
+ 	public IWC_ShoppingCartPage checkout(String userType) throws Exception {
 		
 		doClick(getCheckoutBtn());
 		submitPaymentInfo(userType);
@@ -175,7 +176,7 @@ public class IWC_ShoppingCartPage extends BasePage {
 		return getInstance(IWC_ShoppingCartPage.class);
 	
 	}
-	protected IWC_ShoppingCartPage submitPaymentInfo(String userType) {
+	protected IWC_ShoppingCartPage submitPaymentInfo(String userType) throws Exception {
 		
 		// cc info, name , address and phone
 		doSendKeys(getCreditCardNumberEdt(), "378282246310005");

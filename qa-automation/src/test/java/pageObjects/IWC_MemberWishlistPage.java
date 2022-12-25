@@ -75,7 +75,7 @@ public class IWC_MemberWishlistPage extends BasePage {
 		return getInstance(IWC_MemberWishlistPage.class);		
 	}
 
-	public IWC_MemberWishlistPage verifyWishlistItem(String itemId) {
+	public IWC_MemberWishlistPage verifyWishlistItem(String itemId) throws Exception {
 		
 		driver.get("https://qa.iwantclips.com/member/content/wishlist");
 		

@@ -265,7 +265,7 @@ public class IWC_ArtistHomePage extends BasePage {
  		return getInstance(IWC_ArtistHomePage.class);
  	}
 
- 	public IWC_ArtistHomePage disagreeWithBiometricDataUse() {
+ 	public IWC_ArtistHomePage disagreeWithBiometricDataUse() throws Exception {
 
  		verifyElementIsDisplayed(getBiometricInfoIDisagreeBtn());
  		doClick(getBiometricInfoIDisagreeBtn());
@@ -275,7 +275,7 @@ public class IWC_ArtistHomePage extends BasePage {
  	}
  	
 	// Step 1: File Upload Details
-	public IWC_ArtistHomePage setUploadDetails(String title, String filepath ){
+	public IWC_ArtistHomePage setUploadDetails(String title, String filepath ) throws Exception{
 		
 		doSendKeys(getTitleEdt(), title);
 		doSendKeys(getDescriptionEdt(), "Test Description");
