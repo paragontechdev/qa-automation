@@ -268,6 +268,7 @@ public class IWC_HomePage extends BasePage {
 		// driver.get("https://qa.iwantclips.com/home/login?redirect=https://qa.iwantclips.com/");
 		
 		doClick(getSignInLnk());
+		Thread.sleep(2000);
 		doSendKeys(getEmailEdt(), username);
 		doSendKeys(getPasswordEdt(), password);
 		doClick(getLoginBtn());

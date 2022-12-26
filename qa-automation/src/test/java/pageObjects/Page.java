@@ -22,6 +22,8 @@ public abstract class Page {
 	
 	WebDriver driver;
 	WebDriverWait wait;
+	public String siteUrl = "https://qa.iwantclips.com/";
+	
 	
 	// constructor
 	public Page(WebDriver driver, WebDriverWait wait) {
@@ -61,8 +63,7 @@ public abstract class Page {
 	public abstract void doClear(WebElement element); 
 	public abstract void doFileUpload(WebElement element, String filepath);
 	
-	public abstract void getCurrentPageBrokenLinks() throws MalformedURLException, IOException;
-	public abstract void getStatusOfAllLinksOnCurrentPage() throws MalformedURLException, IOException;
+	public abstract void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException;
 	public abstract void doCreateFile(String filepath);
 	public abstract void doLogMessage(String logMessage);
 	
@@ -80,4 +81,6 @@ public abstract class Page {
 		}
 				
 	}
+
+
 }

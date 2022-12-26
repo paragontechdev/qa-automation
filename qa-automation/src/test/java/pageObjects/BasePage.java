@@ -252,8 +252,8 @@ public class BasePage extends Page{
 				
 				switch(expectedPage.toLowerCase()){
 				case "store":
-					//IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
-					//iwcStorePage.waitUntilElementIsDisplayed(iwcStorePage.getUserMenuLst());
+					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
+					Assert.assertEquals(iwcStorePage.getCurrentPage(), "Store");
 					break;
 				
 				case "artists":
@@ -361,10 +361,6 @@ public class BasePage extends Page{
 		pageClassMap.put("Artists", IWC_ArtistsPage.class);
 		
 		try {
-			// Locate the menu item using an XPath
-			//By menuItem = By.partialLinkText(page);
-			//getElement(menuItem).click();
-			
 			// Get the page class for the specified page name
 			Class<? extends BasePage> pageClass = pageClassMap.get(page);
 			if (pageClass == null) {
@@ -403,49 +399,52 @@ public class BasePage extends Page{
 	
 	/**
 	 * Other useful methods
+	 * 
 	 */
 	@Override
- 	public void getCurrentPageBrokenLinks() throws MalformedURLException, IOException {
-		   
+	public void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException {
+		int i = 0, intResponseCode = 0;
+		String url = null, strResponseMsg = null;
+		HttpURLConnection connection = null;
+		
 		// Get all page links
 		List<WebElement> links = driver.findElements(By.tagName("a"));
-		System.out.println("Total link count: " + links.size());
-                
- 	    // Iterate through each link
- 	    for (WebElement link : links) {
- 	    	String url = link.getAttribute("href");
- 	    	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
- 	    	connection.setRequestMethod("HEAD");
- 	    	connection.connect();
- 	    	
- 	    	// If the response code is not 200 (OK), the link may be broken
- 	    	if (connection.getResponseCode() != 200) {
- 	    		int intResponseCode = connection.getResponseCode();
- 	    		String strResponseMessage = connection.getResponseMessage();
- 	    		System.out.println("Verify response: " + intResponseCode + " - " + strResponseMessage);
- 	        }
- 	    }
-    }
+		     
+		try {
+		 	// Iterate through each link
+		 	for (WebElement link : links) {
+		 		i++;
+		 		url = link.getAttribute("href");
+		 		
+		 		// open a connection and get http response
+		 		try {
+			 		connection = (HttpURLConnection) new URL(url).openConnection();
+			 		connection.setRequestMethod("HEAD");
+			 		connection.connect();
+			 		intResponseCode = connection.getResponseCode();
+			 		strResponseMsg = connection.getResponseMessage();
+			 		
+			 		// log response
+			 		if (logBrokenLinksOnly & intResponseCode >= 400) {
+			 			System.out.println("Link #" + i + " of " + links.size());
+			 			System.out.println(url);
+			 			System.out.println("Response: " + intResponseCode + "-" + strResponseMsg + "\n");
+			 		}else {
+			 			Assert.assertTrue(intResponseCode < 400);
+			 		}
+			 		
+		 		} catch (IOException e) {
+		 			// Log the exception and continue iterating through the links
+		 			System.out.println(e.getMessage());
+		 			System.out.println("Error establishing connection to URL: " + i + ": " + url + "\n");
+		 			continue;
+		 		}
+		 	}
+		} catch (Exception e) {
+			System.out.println("Error retreiving link attributes: " + i + ": " + url + "\n");
+		}
+	}
 	@Override
-	public void getStatusOfAllLinksOnCurrentPage() throws MalformedURLException, IOException {
-		   
-		// Get all page links
-		List<WebElement> links = driver.findElements(By.tagName("a"));
-		System.out.println("Total link count: " + links.size());
-                
- 	    // Iterate through each link
- 	    for (WebElement link : links) {
- 	    	String url = link.getAttribute("href");
- 	    	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
- 	    	connection.setRequestMethod("HEAD");
- 	    	connection.connect();
- 	    	
- 	    	// Print link status
- 	    	int intResponseCode = connection.getResponseCode();
- 	    	String strResponseMessage = connection.getResponseMessage();
- 	    	System.out.println("Verify response: " + intResponseCode + " - " + strResponseMessage);
- 	    }
-    }
 	public void doCreateFile(String filepath) {
 
 	    try {
@@ -463,6 +462,7 @@ public class BasePage extends Page{
 		      System.out.println("Cause: " + e.getMessage());
 	    }
     }
+	@Override
 	public void doFileUpload(WebElement element, String filepath) {
 		try {
 			doClick(element);
@@ -487,6 +487,7 @@ public class BasePage extends Page{
 			e.printStackTrace();
 		}
 	}
+	@Override
 	public void doLogMessage(String logMessage) {
 		
 		System.out.println(logMessage);

@@ -1,5 +1,9 @@
 package pageObjects;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -114,7 +118,33 @@ public class IWC_StorePage extends BasePage {
 	 * landing page object class.
 	 * @throws Exception 
 	 */
-	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
+	public IWC_StorePage doNavigateToArtistStorePage(String artistId) throws Exception {
+		
+		try {
+			// By menuItem = By.partialLinkText(artistId);
+			// IWC_StorePage storePage = new IWC_StorePage(driver, wait);
+			driver.get(siteUrl + "store/" + artistId);
+			String currentUrl = driver.getCurrentUrl();
+			Assert.assertTrue(currentUrl.contains(artistId));
+		} catch (Exception e) {
+			throw new Exception("");
+		}
+			
+		return getInstance(IWC_StorePage.class);
+		
+	}
+	
+	public IWC_StorePage verifyArtistStoreIsDisplayed(String artistId) {
+		
+		String currentUrl = driver.getCurrentUrl();
+		Assert.assertTrue(currentUrl.contains(artistId));
+		
+		return getInstance(IWC_StorePage.class);
+		
+	}
+	
+
+ 	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
 		setAmountRad(By.xpath("//input[@type='radio' and @value='" + amount + "']"));
 		

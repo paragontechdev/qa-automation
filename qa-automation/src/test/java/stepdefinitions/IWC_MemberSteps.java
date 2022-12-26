@@ -1,5 +1,7 @@
 package stepdefinitions;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.Duration;
 
 import org.junit.Assert;
@@ -88,34 +90,28 @@ public class IWC_MemberSteps {
 		chromeOptions.addArguments("start-maximized");
 		
 		driver = new ChromeDriver();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		page = new BasePage(driver, wait);
 		driver.manage().deleteAllCookies();
 		
 	}
-
 	@After
 	public void teardown() {
 		driver.close();
 		//driver.quit();
 	}
-	
-
-	
-	
-	
+		
 
 	/**
 	 * Landing and login methods 
 	 * @throws Exception 
 	 */
-	
 	@Then("^(.*) navigates to the ([^\"]+) page$")
 	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
 		
 		BasePage basePage = new BasePage(driver, wait);
 		basePage.doNavigateToPage(iwcPage);
-
+		
 	}
 	@Then("^the ([^\"]+) page is displayed$")
 	public void verify_page_is_displayed(String page) throws Exception {
@@ -124,8 +120,15 @@ public class IWC_MemberSteps {
 		basePage.verifyPageIsDisplayed(page);
 	
 	}
+	@Then("^the artist store page ([^\"]*) is displayed$")
+	public void verify_artist_store_is_displayed(String artistId) {
+		
+		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
+		storePage.verifyArtistStoreIsDisplayed(artistId);
+		
+	}
 	
-	@When("^(.*) submits IWC username(.*) and password(.*)$")
+	@When("^(.*) submits IWC username (.*) and password (.*)$")
 	@When("^(.*) logs in with ([^\"]*) and ([^\"]*)$")
 	public void login(String userType, String username, String password) throws Exception {
 
@@ -134,11 +137,18 @@ public class IWC_MemberSteps {
 		iwcHome.login(username, password);
 		
 	}
-	
+	@Then("^there are no broken links on the page$")
+	public void verify_there_are_no_broken_links() throws Exception {
+		
+		BasePage basePage = new BasePage(driver, wait);
+		basePage.getStatusOfCurrentPageLinks(true);
+		
+	}
 	
 	
 	/**
 	 * Artist and artist store methods
+	 * @throws Exception 
 	 */
 	 
 	/*
@@ -163,13 +173,14 @@ public class IWC_MemberSteps {
 				
 	}
 	*/	
-	@Given("^(.*) navigates to an artist(.*) store page$")
-	public void artistStore_navigate_to_artist_store(String artistId) {
+	//@Given("^(.*) navigates to an artist(.*) store page$")
+	@Given("^(.*) navigates to an artist store page ([^\"]+)")
+	public void artistStore_navigate_to_artist_store(String userType, String artistId) throws Exception {
 
-		IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-		driver.get("https://qa.iwantclips.com/store/" + artistId);
-		wait.until(ExpectedConditions.visibilityOf(iwcArtists.getSearchArtistsEdt()));
+		IWC_StorePage iwcStore = new IWC_StorePage(driver, wait);
 		
+		iwcStore.doNavigateToArtistStorePage(artistId);
+
 	}
 
 	@When("user clicks Tribute Me button")
@@ -247,7 +258,7 @@ public class IWC_MemberSteps {
 	
 	/**
 	 * Terms of Use modal methods
-	 * @throws Exception 
+	 *  
 	 */
 	@When("^(.*) accepts terms of use$")
 	public void termsOfUse_accepted(String userType) throws Exception {

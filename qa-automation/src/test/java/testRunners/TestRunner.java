@@ -6,9 +6,11 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = {"src/test/java/features/2022.07.19/Demo",
-				"src/test/java/features/2022.08.2"
+		features = {"src/test/java/features.JudeScripts/",
+				//"src/test/java/features/2022.07.19/Demo",
+				//"src/test/java/features/2022.08.2"
 				}
+		//,tags = "@basicFunctionality"
 		,glue = {"src/test/java/stepdefinitions/IWC_MemberSteps.java"}
 		,monochrome = true,
 		plugin = {"pretty",
@@ -17,7 +19,7 @@ import io.cucumber.junit.CucumberOptions;
 				 "html:test-output/reports/HTMLReport.html",
 				 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
 				}
-		//dryRun = true
+		,dryRun = true
 		)
 
 public class TestRunner {}
