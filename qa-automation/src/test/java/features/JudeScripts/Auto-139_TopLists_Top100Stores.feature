@@ -9,9 +9,11 @@ Feature: Auto-138 Artist Page
     #And there are no broken links on the page
     When <userType> navigates to the <iwcPage2> page
     Then the <iwcPage2> page is displayed
-    When <userType> navigates to an artist store page <artistId>
+    When <userType> clicks the <link> link
+    Then all top 100 stores are displayed
+    When <userType> clicks an artists profile image
     Then the artist store page <artistId> is displayed
 
     Examples: 
-      | username                | password   | userType | artistId | iwcPage | artistId | iwcPage2 | iwcPage3 |
-      | kevin.m@stackunited.com | P123456789 | member   |   138463 | home    |   138463 | Artists  | Store    |
+      | username                | password   | userType | artistId | iwcPage | artistId | iwcPage2  | iwcPage3 |
+      | kevin.m@stackunited.com | P123456789 | member   |   138463 | home    |   138463 | top lists | Store    |
