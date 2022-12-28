@@ -1,19 +1,19 @@
 #Author: Kevin McGowan
-Feature: Auto-138 Artist Page
+Feature: Auto-139 Top Lists: Top 100 Stores
 
-  Scenario Outline: Title of your scenario
-    Given <userType> navigates to the <iwcPage> page
-    And <userType> accepts terms of use
-    And <userType> logs in with <username> and <password>
-    Then the <iwcPage> page is displayed
+  Scenario Outline: Top Lists: Top 100 Stores
+    Given a user navigates to the "Home" page
+    And the user accepts terms of use
+    #And the user logs in with <username> and <password>
+    #Then the "Home" page is displayed
     #And there are no broken links on the page
-    When <userType> navigates to the <iwcPage2> page
-    Then the <iwcPage2> page is displayed
-    When <userType> clicks the <link> link
-    Then all top 100 stores are displayed
-    When <userType> clicks an artists profile image
-    Then the artist store page <artistId> is displayed
+    When the user navigates to the "Top Lists" page
+    Then the "Top Lists" page is displayed
+    When the user clicks link "Show all 100 Top Stores"
+    Then the top 100 stores are displayed
+    When the user clicks any artist profile image
+    Then the random artist store page is displayed
 
     Examples: 
-      | username                | password   | userType | artistId | iwcPage | artistId | iwcPage2  | iwcPage3 |
-      | kevin.m@stackunited.com | P123456789 | member   |   138463 | home    |   138463 | top lists | Store    |
+      | username                | password   | artistId |
+      | kevin.m@stackunited.com | P123456789 |   138463 |

@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -34,6 +35,7 @@ public abstract class Page {
 	}
 	
 	// abstract methods: every class that extends this class must have the following abstract methods
+	public abstract String getCurrentPage();
 	public abstract String getPageTitle();
 	public abstract String getPageHeader(By locator);
 	public abstract String getText(WebElement locator); 
@@ -81,6 +83,7 @@ public abstract class Page {
 		}
 				
 	}
+
 
 
 }

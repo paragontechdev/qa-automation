@@ -3,6 +3,7 @@ package stepdefinitions;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -33,6 +34,7 @@ import pageObjects.IWC_MemberWishlistPage;
 import pageObjects.IWC_PersonalInformationPage;
 import pageObjects.IWC_ShoppingCartPage;
 import pageObjects.IWC_StorePage;
+import pageObjects.IWC_TopListsPage;
 import pageObjects.IWG_DashboardPage;
 import pageObjects.IWG_LoginPage;
 import pageObjects.IWG_ReviewHistoryPage;
@@ -45,38 +47,12 @@ public class IWC_MemberSteps {
 	WebDriverWait wait;
 	public Page page;
 	long startTime, endTime, totalTime;
+	String artistName = null;
 		
 	
 	/**
 	 * Setup (@Before) and tear-down (@After) methods
 	 */
-	public void InitializeBowser() throws InterruptedException{
-		
-		// WebDriverManager.chromedriver().setup();
-		System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-		System.setProperty("webdriver.chrome.silentOutput", "true");
-		System.setProperty("webdriver.chrome.whitelistedIps", "75.245.21.167");
-		
-		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.addArguments("disable-infobars");
-		//chromeOptions.addArguments("--log-level=3");
-		//chromeOptions.addArguments("start-maximized");
-		
-		
-		
-		driver = new ChromeDriver(chromeOptions);
-		//driver.get("chrome://settings/clearBrowserData");
-		//Thread.sleep(1000);
-		//driver.switchTo().activeElement();
-		
-		
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		page = new BasePage(driver, wait);
-		driver.manage().deleteAllCookies();
-		
-			
-	}
-		
 	@Before
 	public void setUp() {
 		
@@ -97,58 +73,130 @@ public class IWC_MemberSteps {
 	}
 	@After
 	public void teardown() {
-		driver.close();
-		//driver.quit();
-	}
 		
+		//driver.close();
+	
+		//driver.quit();
+		
+	}
 
+	
 	/**
 	 * Landing and login methods 
-	 * @throws Exception 
+	 *  
 	 */
-	@Then("^(.*) navigates to the ([^\"]+) page$")
-	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
-		
-		BasePage basePage = new BasePage(driver, wait);
-		basePage.doNavigateToPage(iwcPage);
-		
-	}
-	@Then("^the ([^\"]+) page is displayed$")
-	public void verify_page_is_displayed(String page) throws Exception {
-		
-		BasePage basePage = new BasePage(driver, wait);
-		basePage.verifyPageIsDisplayed(page);
-	
-	}
-	@Then("^the artist store page ([^\"]*) is displayed$")
-	public void verify_artist_store_is_displayed(String artistId) {
-		
-		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-		storePage.verifyArtistStoreIsDisplayed(artistId);
-		
-	}
-	
-	@When("^(.*) submits IWC username (.*) and password (.*)$")
-	@When("^(.*) logs in with ([^\"]*) and ([^\"]*)$")
+	@When("^([^\"]*) logs in with (.*) and (.*)$")
 	public void login(String userType, String username, String password) throws Exception {
 
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
 		iwcHome.login(username, password);
+		
+	}	
+	@Then("^([^\"]*) navigates to the \"([^\"]*)\" page$")
+	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
+		
+		BasePage base = new BasePage(driver, wait);
+		base.doNavigateToPage(iwcPage);
+		
+	}
+	@When("^([^\"]*) clicks link \"([^\"]*)\"$")
+	public void click_link(String userType, String link) throws Exception {
+		
+		BasePage base = new BasePage(driver, wait);
+		By tmpLink = By.partialLinkText(link);
+		base.doClick(base.getElement(tmpLink));
+		
+	}
+
+	@Then("^the \"([^\"]*)\" page is displayed$")
+	public void verify_page_is_displayed(String page) throws Exception {
+		
+		BasePage base = new BasePage(driver, wait);
+		base.verifyPageIsDisplayed(page);
+	
+	}
+	@Then("^the artist store page ([^\"]*) is displayed$")
+	public void verify_artist_store_is_displayed_by_id(String artistId) {
+		
+		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
+		storePage.verifyArtistStoreIsDisplayedById(artistId);
+		
+	}
+	@Then("^the random artist store page is displayed$")
+	public void verify_artist_store_is_displayed_by_name(String artistName) {
+		
+		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
+		storePage.verifyArtistStoreIsDisplayedByName(this.artistName);
 		
 	}
 	@Then("^there are no broken links on the page$")
 	public void verify_there_are_no_broken_links() throws Exception {
 		
-		BasePage basePage = new BasePage(driver, wait);
-		basePage.getStatusOfCurrentPageLinks(true);
+		BasePage base = new BasePage(driver, wait);
+		base.getStatusOfCurrentPageLinks(true);
+		
+	}
+	@Then("^the top (.*) stores are displayed$")
+	public void verify_top_stores_are_displayed(int storeCount) throws Exception{
+		
+		BasePage base = new BasePage(driver, wait);
+		By tmp = null;
+		
+		switch (storeCount) {
+		
+		case 15:
+			tmp = By.xpath("//h3[contains(text(), '#15')]");
+			base.doScrollToElement(base.getElement(tmp));
+			base.verifyElementIsEnabled(base.getElement(tmp));
+			break;
+			
+		case 100:
+			tmp = By.xpath("//h4[contains(text(), '#100')]");
+			base.doScrollToElement(base.getElement(tmp));
+			base.verifyElementIsEnabled(base.getElement(tmp));
+			break;
+			
+		default:
+			throw new Exception(storeCount + " is invalid. Views are top 15 or top 100.");
+		}
+		
+	}
+	@When("^([^\"]*) clicks any artist profile image$")
+	public void click_a_top_100_artist_profile_image(String userType) {
+
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+		Random random = new Random();
+		int intRank = random.nextInt(100) + 1;
+		String rank = Integer.toString(intRank);
+		
+		if (intRank > 0 && intRank <=100) { 
+			topLists.getRankedArtistName(rank);
+			topLists.doClickRankedArtistLink(rank);
+		} else {
+			System.out.println("Rank must be between 1 and 100.");
+		}
+		
+	}
+	@When("^([^\"]*) clicks an artist profile image$")
+	public void click_a_top_100_artists_profile_image(String userType, String rank) {
+
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+		int intRank = Integer.parseInt(rank);
+		artistName = null;
+		
+		if (intRank > 0 && intRank <=100) { 
+			artistName = topLists.getRankedArtistName(rank);
+			topLists.doClickRankedArtistLink(rank);
+		} else {
+			System.out.println("Rank must be between 1 and 100.");
+		}
 		
 	}
 	
 	
 	/**
 	 * Artist and artist store methods
-	 * @throws Exception 
+	 * 
 	 */
 	 
 	/*
@@ -260,7 +308,7 @@ public class IWC_MemberSteps {
 	 * Terms of Use modal methods
 	 *  
 	 */
-	@When("^(.*) accepts terms of use$")
+	@When("^([^\"]*) accepts terms of use$")
 	public void termsOfUse_accepted(String userType) throws Exception {
 	    
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
@@ -269,7 +317,7 @@ public class IWC_MemberSteps {
 				
 	}
 
-	@When("^(.*) rejects terms of use$")
+	@When("^([^\"]*) rejects terms of use$")
 	public void termsOfUse_rejected() throws Exception {
 	    
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);

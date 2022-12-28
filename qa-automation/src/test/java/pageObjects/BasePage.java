@@ -32,7 +32,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasePage extends Page{
 	
 	long startTime, endTime, totalTime;
-	
+		
 	// constructor
 	public BasePage(WebDriver driver, WebDriverWait wait) {
 		
@@ -49,16 +49,32 @@ public class BasePage extends Page{
 	 * Get object values
 	 */
 	@Override
+	public String getCurrentPage() {
+		
+		String currentUrl = driver.getCurrentUrl();
+		String currentPage;
+		
+		if (currentUrl.contains("artist")) currentPage = "Artists";
+			else if (currentUrl.contains("store")) currentPage = "Store";
+			else if (currentUrl.contains("top_lists")) currentPage = "Top Lists";
+		else currentPage = "Home";
+		
+		
+		return currentPage;
+	}
+	@Override
 	public String getPageTitle() {
 
 		return driver.getTitle();
 		
 	}
+	@Override
 	public String getPageHeader(By locator) {
 
 		return getElement(locator).getText();
 				
 	}
+	@Override
 	public WebElement getElement(By locator) {
 	    WebElement element = null;
 
@@ -102,64 +118,78 @@ public class BasePage extends Page{
 	}
 	@Override
 	public int getHttpResponseCode(String link) throws MalformedURLException, IOException {
-
-		URL url = new URL(link);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setConnectTimeout(5000);
-        connection.connect();
-
-        int intResponseCode = connection.getResponseCode();
-        String strResponseMessage = connection.getResponseMessage();
-        System.out.println("Response: " + intResponseCode + " - " + strResponseMessage);
-        
-        return intResponseCode;
-        
-	 }
-	public String getCurrentPage() {
+		int i = 0, intResponseCode = 0;
+		String url = null;
+		HttpURLConnection connection = null;
 		
-		String currentUrl = driver.getCurrentUrl();
-		String currentPage;
-		
-		if (currentUrl.contains("artist")) {
-			currentPage = "Artists";
-		} else if (currentUrl.contains("store")) {
-			currentPage = "Store";
-		} else {
-			currentPage = "Home";
+		try {
+			connection = (HttpURLConnection) new URL(url).openConnection();
+	        connection.setRequestMethod("GET");
+	        connection.setConnectTimeout(5000);
+	        connection.connect();
+	
+	        intResponseCode = connection.getResponseCode();
+	        String strResponseMessage = connection.getResponseMessage();
+	        System.out.println("Response: " + intResponseCode + " - " + strResponseMessage);
+	    }catch(Exception e) {
+			System.out.println("Error establishing connection to URL: " + i + ": " + url + "\n");
 		}
 		
-		return currentPage;
-				
+		return intResponseCode;
+	 }
+	@Override
+	public void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException {
+		int i = 0, intResponseCode = 0;
+		String url = null, strResponseMsg = null;
+		HttpURLConnection connection = null;
+		
+		// Get all page links
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		     
+		try {
+		 	// Iterate through each link
+		 	for (WebElement link : links) {
+		 		i++;
+		 		url = link.getAttribute("href");
+		 		
+		 		// open a connection and get http response
+		 		try {
+			 		connection = (HttpURLConnection) new URL(url).openConnection();
+			 		connection.setRequestMethod("HEAD");
+			 		connection.setConnectTimeout(5000);
+			        connection.connect();
+			 		
+			        // log response
+			 		intResponseCode = connection.getResponseCode();
+			 		strResponseMsg = connection.getResponseMessage();
+			 		
+			 		if (logBrokenLinksOnly & intResponseCode >= 400) {
+			 			System.out.println("Link #" + i + " of " + links.size());
+			 			System.out.println(url);
+			 			System.out.println("Response: " + intResponseCode + "-" + strResponseMsg + "\n");
+			 		}else {
+			 			Assert.assertTrue(intResponseCode < 400);
+			 		}
+			 		
+		 		} catch (IOException e) {
+		 			// Log the exception and continue iterating through the links
+		 			System.out.println(e.getMessage());
+		 			System.out.println("Error establishing connection to URL: " + i + ": " + url + "\n");
+		 			continue;
+		 		}
+		 	}
+		} catch (Exception e) {
+			System.out.println("Error retreiving link attributes: " + i + ": " + url + "\n");
+		}
 	}
 	
-	
+	public String getArtistId(String link){
+		return link;
+	}
 	
 	/**
-	 * Waits and checks
+	 * Wait for object property
 	 */
-	@Override
-	public void doStartTimer(String description) {
-		
-		try {
-			System.out.print(description + "...");
-			startTime = System.currentTimeMillis();
-		} catch(Exception e){
-			System.out.println("Error occurred while starting clock: " + description);
-		}
-	}
-	@Override
-	public void doStopTimer() {
-		
-		try {
-			endTime = System.currentTimeMillis();
-			totalTime = endTime - startTime;
-			System.out.println("Done in " + totalTime + "ms");
-		} catch(Exception e){
-			System.out.println("Error occurred while stopping clock.");
-		}
-	}
-
 	@Override
 	public void waitUntilElementIsEnabled(WebElement element) {
 
@@ -205,6 +235,10 @@ public class BasePage extends Page{
 		
 	}
 
+	
+	/**
+	 * Verify for object property
+	 */
 	@Override
 	public void verifyElementIsDisplayed(WebElement element) throws Exception{
 		
@@ -231,7 +265,7 @@ public class BasePage extends Page{
 			verifyElementIsDisplayed(element);
 			Assert.assertTrue(element.isEnabled());
 		}catch(Exception e){
-			throw new Exception("Enabled object not found: " + element.toString());
+			throw new Exception("Enabled object not found.");
 		}
 	}
 	@Override
@@ -251,6 +285,11 @@ public class BasePage extends Page{
 			if (currentUrl.contains(expectedPage)) {
 				
 				switch(expectedPage.toLowerCase()){
+				case "top lists":
+					IWC_TopListsPage iwcTopListsPage = new IWC_TopListsPage(driver, wait);
+					Assert.assertEquals(iwcTopListsPage.getCurrentPage(), "Top Lists");
+					break;
+				
 				case "store":
 					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
 					Assert.assertEquals(iwcStorePage.getCurrentPage(), "Store");
@@ -282,6 +321,27 @@ public class BasePage extends Page{
 	 * Interface actions
 	 */
 	@Override
+	public void doStartTimer(String description) {
+		
+		try {
+			System.out.print(description + "...");
+			startTime = System.currentTimeMillis();
+		} catch(Exception e){
+			System.out.println("Error occurred while starting clock: " + description);
+		}
+	}
+	@Override
+	public void doStopTimer() {
+		
+		try {
+			endTime = System.currentTimeMillis();
+			totalTime = endTime - startTime;
+			System.out.println("Done in " + totalTime + "ms");
+		} catch(Exception e){
+			System.out.println("Error occurred while stopping clock.");
+		}
+	}
+	@Override
 	public void doScrollToElement(WebElement element) {
 		
 		try {
@@ -297,10 +357,10 @@ public class BasePage extends Page{
 		try {
 			waitUntilElementIsDisplayed(element);
 			waitUntilElementIsEnabled(element);
-			element.click();
-
+			Actions actions = new Actions(driver);
+			actions.moveToElement(element).click().build().perform();
 		}catch(Exception e){
-			System.out.println("Error clicking web element: " + element.toString());
+			System.out.println("Error finding web element to click.");
 		}
 	}	
 	@Override
@@ -357,9 +417,10 @@ public class BasePage extends Page{
 		
 		// Create a mapping of page names to page classes. Add more page names and classes as needed.
 		Map<String, Class<? extends BasePage>> pageClassMap = new HashMap<>();
-		pageClassMap.put("home", IWC_HomePage.class);
+		pageClassMap.put("Home", IWC_HomePage.class);
 		pageClassMap.put("Artists", IWC_ArtistsPage.class);
-		
+		pageClassMap.put("Top Lists", IWC_TopListsPage.class);
+				
 		try {
 			// Get the page class for the specified page name
 			Class<? extends BasePage> pageClass = pageClassMap.get(page);
@@ -370,6 +431,7 @@ public class BasePage extends Page{
 					By menuItem = By.partialLinkText(page);
 
 					switch (page.toLowerCase()) {
+					// Expected values are found in the getCurrentPage() method
 					case "home":
 						driver.get("https://qa.iwantclips.com");
 						IWC_HomePage homePage = new IWC_HomePage(driver, wait);
@@ -380,6 +442,12 @@ public class BasePage extends Page{
 						getElement(menuItem).click();
 						IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
 						Assert.assertEquals(artistsPage.getCurrentPage(), "Artists");
+						break;
+						
+					case "top lists":
+						getElement(menuItem).click();
+						IWC_TopListsPage topListsPage = new IWC_TopListsPage(driver, wait);
+						Assert.assertEquals(topListsPage.getCurrentPage(), "Top Lists");
 						break;
 						
 					}
@@ -401,49 +469,6 @@ public class BasePage extends Page{
 	 * Other useful methods
 	 * 
 	 */
-	@Override
-	public void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException {
-		int i = 0, intResponseCode = 0;
-		String url = null, strResponseMsg = null;
-		HttpURLConnection connection = null;
-		
-		// Get all page links
-		List<WebElement> links = driver.findElements(By.tagName("a"));
-		     
-		try {
-		 	// Iterate through each link
-		 	for (WebElement link : links) {
-		 		i++;
-		 		url = link.getAttribute("href");
-		 		
-		 		// open a connection and get http response
-		 		try {
-			 		connection = (HttpURLConnection) new URL(url).openConnection();
-			 		connection.setRequestMethod("HEAD");
-			 		connection.connect();
-			 		intResponseCode = connection.getResponseCode();
-			 		strResponseMsg = connection.getResponseMessage();
-			 		
-			 		// log response
-			 		if (logBrokenLinksOnly & intResponseCode >= 400) {
-			 			System.out.println("Link #" + i + " of " + links.size());
-			 			System.out.println(url);
-			 			System.out.println("Response: " + intResponseCode + "-" + strResponseMsg + "\n");
-			 		}else {
-			 			Assert.assertTrue(intResponseCode < 400);
-			 		}
-			 		
-		 		} catch (IOException e) {
-		 			// Log the exception and continue iterating through the links
-		 			System.out.println(e.getMessage());
-		 			System.out.println("Error establishing connection to URL: " + i + ": " + url + "\n");
-		 			continue;
-		 		}
-		 	}
-		} catch (Exception e) {
-			System.out.println("Error retreiving link attributes: " + i + ": " + url + "\n");
-		}
-	}
 	@Override
 	public void doCreateFile(String filepath) {
 

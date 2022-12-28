@@ -121,8 +121,6 @@ public class IWC_StorePage extends BasePage {
 	public IWC_StorePage doNavigateToArtistStorePage(String artistId) throws Exception {
 		
 		try {
-			// By menuItem = By.partialLinkText(artistId);
-			// IWC_StorePage storePage = new IWC_StorePage(driver, wait);
 			driver.get(siteUrl + "store/" + artistId);
 			String currentUrl = driver.getCurrentUrl();
 			Assert.assertTrue(currentUrl.contains(artistId));
@@ -133,8 +131,7 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 		
 	}
-	
-	public IWC_StorePage verifyArtistStoreIsDisplayed(String artistId) {
+	public IWC_StorePage verifyArtistStoreIsDisplayedById(String artistId) {
 		
 		String currentUrl = driver.getCurrentUrl();
 		Assert.assertTrue(currentUrl.contains(artistId));
@@ -142,9 +139,15 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 		
 	}
-	
-
- 	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
+	public IWC_StorePage verifyArtistStoreIsDisplayedByName(String artistName) {
+		
+		String currentTitle = driver.getTitle();
+		Assert.assertTrue(currentTitle.contains(artistName));
+		
+		return getInstance(IWC_StorePage.class);
+		
+	}
+	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
 		setAmountRad(By.xpath("//input[@type='radio' and @value='" + amount + "']"));
 		
@@ -184,6 +187,7 @@ public class IWC_StorePage extends BasePage {
 		
 		return getInstance(IWC_StorePage.class);
 	}
+	
 	public IWC_ShoppingCartPage goToShoppingCart() throws Exception{
 		
 		IWC_ShoppingCartPage iwcCart = new IWC_ShoppingCartPage(driver, wait);
