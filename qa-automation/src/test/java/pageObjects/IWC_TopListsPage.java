@@ -74,12 +74,16 @@ public class IWC_TopListsPage extends BasePage {
 		int intRank = Integer.parseInt(rankNumber);
 		WebElement element = null;
 		
-		if (intRank <= 3){
-			element = driver.findElement(By.xpath("(//h3[@class='topName'])[" + intRank + "]"));
-		} else {
-			intRank -= 3;
-			//element = driver.findElement(By.xpath("(//div[@class='topBox']/h4[text()= '#" + intRank + "'])[1]"));
-			element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]"));
+		try {
+			if (intRank <= 3){
+				element = driver.findElement(By.xpath("(//h3[@class='topName'])[" + intRank + "]"));
+			} else {
+				intRank -= 3;
+				//element = driver.findElement(By.xpath("(//div[@class='topBox']/h4[text()= '#" + intRank + "'])[1]"));
+				element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]"));
+			}
+		} catch(Exception e) {
+			System.out.println("Error finding ranked artist.");
 		}
 		
 		return element.getText();
@@ -90,16 +94,19 @@ public class IWC_TopListsPage extends BasePage {
 		int intRank = Integer.parseInt(rankNumber);
 		WebElement element = null;
 		
-		if (intRank <= 3){
-			element = driver.findElement(By.xpath("(//div[@class='roundModelPic'])[" + intRank + "]/img[@class='img-circle img-responsive']"));
-		} else {
-			intRank -= 3;
-			element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]/div/img[@class='img-circle img-responsive']"));
+		try {
+			if (intRank <= 3){
+				element = driver.findElement(By.xpath("(//div[@class='roundModelPic'])[" + intRank+ "]/img[@class='img-circle img-responsive']"));
+			} else {
+				intRank -= 3;
+				element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]/div/img[@class='img-circle img-responsive']"));
+			}
+			
+			doClick(element);
+			
+		} catch(Exception e) {
+			System.out.println("Error clicking ranked artist list.");
 		}
-		
-		Actions actions = new Actions(driver);
-		actions.moveToElement(element).click().build().perform();
-		doClick(element);
 		
 		return getInstance(IWC_TopListsPage.class);
 		

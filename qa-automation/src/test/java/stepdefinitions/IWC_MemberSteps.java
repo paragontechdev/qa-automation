@@ -123,7 +123,7 @@ public class IWC_MemberSteps {
 		
 	}
 	@Then("^the random artist store page is displayed$")
-	public void verify_artist_store_is_displayed_by_name(String artistName) {
+	public void verify_artist_store_is_displayed_by_name() {
 		
 		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
 		storePage.verifyArtistStoreIsDisplayedByName(this.artistName);
@@ -142,22 +142,26 @@ public class IWC_MemberSteps {
 		BasePage base = new BasePage(driver, wait);
 		By tmp = null;
 		
-		switch (storeCount) {
-		
-		case 15:
-			tmp = By.xpath("//h3[contains(text(), '#15')]");
-			base.doScrollToElement(base.getElement(tmp));
-			base.verifyElementIsEnabled(base.getElement(tmp));
-			break;
+		try {
+			switch (storeCount) {
 			
-		case 100:
-			tmp = By.xpath("//h4[contains(text(), '#100')]");
-			base.doScrollToElement(base.getElement(tmp));
-			base.verifyElementIsEnabled(base.getElement(tmp));
-			break;
-			
-		default:
-			throw new Exception(storeCount + " is invalid. Views are top 15 or top 100.");
+			case 15:
+				tmp = By.xpath("//h3[contains(text(), '#15')]");
+				base.doScrollToElement(base.getElement(tmp));
+				base.verifyElementIsEnabled(base.getElement(tmp));
+				break;
+				
+			case 100:
+				tmp = By.xpath("//h4[contains(text(), '#100')]");
+				base.doScrollToElement(base.getElement(tmp));
+				base.verifyElementIsEnabled(base.getElement(tmp));
+				break;
+				
+			default:
+				throw new Exception(storeCount + " is invalid. Views are top 15 or top 100.");
+			}
+		} catch(Exception e) {
+			System.out.println("Error verifying top stores are displayed.");
 		}
 		
 	}
@@ -169,11 +173,15 @@ public class IWC_MemberSteps {
 		int intRank = random.nextInt(100) + 1;
 		String rank = Integer.toString(intRank);
 		
-		if (intRank > 0 && intRank <=100) { 
-			topLists.getRankedArtistName(rank);
-			topLists.doClickRankedArtistLink(rank);
-		} else {
-			System.out.println("Rank must be between 1 and 100.");
+		try {
+			if (intRank > 0 && intRank <=100) { 
+				this.artistName = topLists.getRankedArtistName(rank).split("\n")[1];;
+				topLists.doClickRankedArtistLink(rank);
+			} else {
+				System.out.println("Rank must be between 1 and 100.");
+			}
+		} catch(Exception e) {
+			System.out.println("Error clicking artist profile image.");
 		}
 		
 	}

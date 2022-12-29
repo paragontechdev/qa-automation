@@ -280,9 +280,11 @@ public class BasePage extends Page{
 	@Override
 	public void verifyPageIsDisplayed(String expectedPage) throws Exception {
 
-		String currentUrl = driver.getCurrentUrl();
+		String currentPage = driver.getTitle();
+		
 		try {
-			if (currentUrl.contains(expectedPage)) {
+			
+			if (currentPage.contains(expectedPage)) {
 				
 				switch(expectedPage.toLowerCase()){
 				case "top lists":

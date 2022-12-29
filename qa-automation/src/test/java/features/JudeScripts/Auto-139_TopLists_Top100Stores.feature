@@ -15,5 +15,5 @@ Feature: Auto-139 Top Lists: Top 100 Stores
     Then the random artist store page is displayed
 
     Examples: 
-      | username                | password   | artistId |
-      | kevin.m@stackunited.com | P123456789 |   138463 |
+      | username                | password   |
+      | kevin.m@stackunited.com | P123456789 |
