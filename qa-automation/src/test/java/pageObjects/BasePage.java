@@ -1,7 +1,5 @@
 package pageObjects;
 
-import static org.junit.Assert.assertTrue;
-
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -31,7 +29,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage extends Page{
 	
-	long startTime, endTime, totalTime;
+	public long startTime, endTime, totalTime;
 		
 	// constructor
 	public BasePage(WebDriver driver, WebDriverWait wait) {

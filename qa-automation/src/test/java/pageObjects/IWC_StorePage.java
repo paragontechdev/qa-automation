@@ -1,8 +1,5 @@
 package pageObjects;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

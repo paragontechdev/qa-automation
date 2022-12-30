@@ -1,9 +1,6 @@
 package stepdefinitions;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.time.Duration;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -12,23 +9,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import pageObjects.BasePage;
 import pageObjects.IWC_ArtistHomePage;
-import pageObjects.IWC_ArtistsPage;
 import pageObjects.IWC_HomePage;
 import pageObjects.IWC_MemberWishlistPage;
 import pageObjects.IWC_PersonalInformationPage;
@@ -41,7 +31,7 @@ import pageObjects.IWG_ReviewHistoryPage;
 import pageObjects.IWG_ReviewQueuePage;
 import pageObjects.Page;
 
-public class IWC_MemberSteps {
+public class IWC_StepDefinitions {
 	
 	WebDriver driver;
 	WebDriverWait wait;
@@ -63,7 +53,8 @@ public class IWC_MemberSteps {
 		
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("disable-infobars");
-		chromeOptions.addArguments("start-maximized");
+		//chromeOptions.addArguments("start-maximized");
+		chromeOptions.addArguments("--window-size=1024,768");
 		
 		driver = new ChromeDriver();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -74,9 +65,8 @@ public class IWC_MemberSteps {
 	@After
 	public void teardown() {
 		
-		//driver.close();
-	
-		//driver.quit();
+		driver.close();
+		driver.quit();
 		
 	}
 
@@ -107,7 +97,6 @@ public class IWC_MemberSteps {
 		base.doClick(base.getElement(tmpLink));
 		
 	}
-
 	@Then("^the \"([^\"]*)\" page is displayed$")
 	public void verify_page_is_displayed(String page) throws Exception {
 		
@@ -136,69 +125,27 @@ public class IWC_MemberSteps {
 		base.getStatusOfCurrentPageLinks(true);
 		
 	}
+	
 	@Then("^the top (.*) stores are displayed$")
 	public void verify_top_stores_are_displayed(int storeCount) throws Exception{
 		
-		BasePage base = new BasePage(driver, wait);
-		By tmp = null;
-		
-		try {
-			switch (storeCount) {
-			
-			case 15:
-				tmp = By.xpath("//h3[contains(text(), '#15')]");
-				base.doScrollToElement(base.getElement(tmp));
-				base.verifyElementIsEnabled(base.getElement(tmp));
-				break;
-				
-			case 100:
-				tmp = By.xpath("//h4[contains(text(), '#100')]");
-				base.doScrollToElement(base.getElement(tmp));
-				base.verifyElementIsEnabled(base.getElement(tmp));
-				break;
-				
-			default:
-				throw new Exception(storeCount + " is invalid. Views are top 15 or top 100.");
-			}
-		} catch(Exception e) {
-			System.out.println("Error verifying top stores are displayed.");
-		}
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+		topLists.verifyTopStoresAreDisplayed(100);
 		
 	}
 	@When("^([^\"]*) clicks any artist profile image$")
 	public void click_a_top_100_artist_profile_image(String userType) {
 
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		Random random = new Random();
-		int intRank = random.nextInt(100) + 1;
-		String rank = Integer.toString(intRank);
-		
-		try {
-			if (intRank > 0 && intRank <=100) { 
-				this.artistName = topLists.getRankedArtistName(rank).split("\n")[1];;
-				topLists.doClickRankedArtistLink(rank);
-			} else {
-				System.out.println("Rank must be between 1 and 100.");
-			}
-		} catch(Exception e) {
-			System.out.println("Error clicking artist profile image.");
-		}
-		
+		topLists.doClickRandomTop100ArtistProfileImage();
+				
 	}
 	@When("^([^\"]*) clicks an artist profile image$")
 	public void click_a_top_100_artists_profile_image(String userType, String rank) {
 
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		int intRank = Integer.parseInt(rank);
-		artistName = null;
-		
-		if (intRank > 0 && intRank <=100) { 
-			artistName = topLists.getRankedArtistName(rank);
-			topLists.doClickRankedArtistLink(rank);
-		} else {
-			System.out.println("Rank must be between 1 and 100.");
-		}
-		
+		topLists.doClickRankedArtistLink(rank);
+				
 	}
 	
 	

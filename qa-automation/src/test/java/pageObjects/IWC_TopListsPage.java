@@ -1,9 +1,9 @@
 package pageObjects;
 
+import java.util.Random;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /** 
@@ -35,7 +35,7 @@ public class IWC_TopListsPage extends BasePage {
 	private By topStore2Lnk = By.xpath("(//a[@class='topLink'])[2]");
 	private By topStore3Lnk = By.xpath("(//a[@class='topLink'])[3]");
 	private By showAllTop100StoresLnk = By.xpath("//input[@id='email']");
-	
+	public String artistNameStr = null;
 		
 	/**
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
@@ -79,9 +79,11 @@ public class IWC_TopListsPage extends BasePage {
 				element = driver.findElement(By.xpath("(//h3[@class='topName'])[" + intRank + "]"));
 			} else {
 				intRank -= 3;
-				//element = driver.findElement(By.xpath("(//div[@class='topBox']/h4[text()= '#" + intRank + "'])[1]"));
 				element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]"));
 			}
+			
+			artistNameStr = element.getText().split("\n")[1];
+						
 		} catch(Exception e) {
 			System.out.println("Error finding ranked artist.");
 		}
@@ -89,27 +91,80 @@ public class IWC_TopListsPage extends BasePage {
 		return element.getText();
 		
 	}	
-	public IWC_TopListsPage doClickRankedArtistLink(String rankNumber) {
-		
-		int intRank = Integer.parseInt(rankNumber);
-		WebElement element = null;
+	public IWC_TopListsPage doClickRandomTop100ArtistProfileImage() {
+
+		Random random = new Random();
+		int intRank = random.nextInt(100) + 1;
+		String rank = Integer.toString(intRank);
 		
 		try {
-			if (intRank <= 3){
-				element = driver.findElement(By.xpath("(//div[@class='roundModelPic'])[" + intRank+ "]/img[@class='img-circle img-responsive']"));
+			if (intRank > 0 && intRank <=100) { 
+				doClickRankedArtistLink(rank);
 			} else {
-				intRank -= 3;
-				element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]/div/img[@class='img-circle img-responsive']"));
+				System.out.println("Rank must be between 1 and 100.");
 			}
-			
-			doClick(element);
-			
 		} catch(Exception e) {
-			System.out.println("Error clicking ranked artist list.");
+			System.out.println("Error clicking artist profile image.");
 		}
 		
 		return getInstance(IWC_TopListsPage.class);
 		
 	}
-
+	public IWC_TopListsPage doClickRankedArtistLink(String rankNumber) {
+		
+		int intRank = Integer.parseInt(rankNumber);
+		WebElement element = null;
+		
+		if (intRank > 0 && intRank <=100) { 
+		
+			try {
+				if (intRank <= 3){
+					element = driver.findElement(By.xpath("(//div[@class='roundModelPic'])[" + intRank+ "]/img[@class='img-circle img-responsive']"));
+				} else {
+					intRank -= 3;
+					element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + intRank + "]/div/img[@class='img-circle img-responsive']"));
+				}
+				
+				doClick(element);
+				
+			} catch(Exception e) {
+				System.out.println("Error clicking ranked artist list.");
+			}
+		} else {
+			
+			System.out.println("Rank must be between 1 and 100.");
+		}
+		
+		return getInstance(IWC_TopListsPage.class);
+		
+	}
+	public IWC_TopListsPage verifyTopStoresAreDisplayed(int maxStoreCount) throws Exception{
+		
+		By tmp = null;
+		
+		try {
+			switch (maxStoreCount) {
+			case 15:
+				tmp = By.xpath("//h3[contains(text(), '#15')]");
+				doScrollToElement(getElement(tmp));
+				verifyElementIsEnabled(getElement(tmp));
+				break;
+				
+			case 100:
+				tmp = By.xpath("//h4[contains(text(), '#100')]");
+				doScrollToElement(getElement(tmp));
+				verifyElementIsEnabled(getElement(tmp));
+				break;
+				
+			default:
+				throw new Exception(maxStoreCount + " is invalid. Views are top 15 or top 100.");
+			}
+		} catch(Exception e) {
+			System.out.println("Error verifying top stores are displayed.");
+		}
+		
+		return getInstance(IWC_TopListsPage.class);
+		
+	}
+	
 }
