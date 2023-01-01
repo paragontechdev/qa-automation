@@ -51,6 +51,8 @@ public abstract class Page {
 	
 	public abstract void doStartTimer(String description);
 	public abstract void doStopTimer();
+	
+	public abstract void doNavigateToPage(String page) throws Exception;
 	public abstract void doScrollToElement(WebElement element);
 	public abstract void doHighlightElement(WebElement element) throws InterruptedException;
 	public abstract void doClick(WebElement element);
@@ -78,6 +80,5 @@ public abstract class Page {
 		}
 				
 	}
-
 	
 }

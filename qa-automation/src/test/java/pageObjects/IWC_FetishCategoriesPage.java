@@ -19,6 +19,7 @@ import org.testng.asserts.SoftAssert;
 public class IWC_FetishCategoriesPage extends BasePage {
 	
 	public static String fetishCategoryName;
+	public static String fetishCategorySearchTerm;
 		
 	/*
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
@@ -37,8 +38,8 @@ public class IWC_FetishCategoriesPage extends BasePage {
 	 * references (variables). These references have been declared private and as such, 
 	 * cannot be accessed outside of this class.
 	 */
-	private By fetishCategoriesLbl = By.xpath("((//h1)[2]"); 
-	private By searchFetishCategoriesEdt = By.xpath("");
+	private By fetishCategoriesLbl = By.xpath("(//h1)[2]"); 
+	private By searchFetishCategoriesEdt = By.xpath("//input[@placeholder='Search']");
 	
 	/*
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
@@ -46,9 +47,14 @@ public class IWC_FetishCategoriesPage extends BasePage {
 	 * converted to WebElements so that relative actions can be taken against the web element
 	 * instead of the locator.
 	 */
-	public String getfetishCategoryName() {
+	public String getFetishCategoryName() {
 		
 		return (fetishCategoryName);
+		
+	}
+	public String getFetishCategorySearchTerm() {
+		
+		return (fetishCategorySearchTerm);
 		
 	}
 	public WebElement getFetishCategoriesLbl() {
@@ -81,22 +87,39 @@ public class IWC_FetishCategoriesPage extends BasePage {
 	public IWC_FetishCategoriesPage verifyFetishCategoryLinks(String allOrMaxCount) throws InterruptedException {
 		
 		WebElement categoryLink = null;
-		int loopCounterMax = 0;
+		long loopCounterMax = 0;
 		
+		// collect all of the category links
 		List<WebElement> links = driver.findElements(By.xpath("//li[@class='col-xs-12 col-sm-6 col-md-3 fetish-item']"));
-		
-		if (links.size() < Integer.parseInt(allOrMaxCount) || allOrMaxCount == "all") {
+
+		// convert the value of the parameter to a number
+		if (allOrMaxCount.equals("all")) {
 			loopCounterMax = links.size();
 		} else {
-			loopCounterMax = Integer.parseInt(allOrMaxCount);
+			loopCounterMax = Long.parseLong(allOrMaxCount);
 		}
 		
+		// check each category link in the collection
 		for (int i = 1; i <= loopCounterMax; i++) {
 			driver.get(siteUrl + "fetishes");
 			categoryLink = getElement(By.xpath("(//li[@class='col-xs-12 col-sm-6 col-md-3 fetish-item']/a)[" + i + "]"));
 			fetishCategoryName = categoryLink.getText();
 			doClick(categoryLink);
-			verifyPageDisplaysFetishCategory(getfetishCategoryName());
+			verifyPageDisplaysFetishCategory(getFetishCategoryName());
+		}
+		softAssert.assertAll();
+		
+		return getInstance(IWC_FetishCategoriesPage.class);
+	}
+	public IWC_FetishCategoriesPage verifyFetishCategorySearchResults(String searchTerm) throws InterruptedException {
+		
+		WebElement categoryLink = null;
+		
+		List<WebElement> links = driver.findElements(By.xpath("//li[@class='col-xs-12 col-sm-6 col-md-3 fetish-item']"));
+		
+		for (int i = 1; i <= links.size(); i++) {
+			categoryLink = getElement(By.xpath("(//li[@class='col-xs-12 col-sm-6 col-md-3 fetish-item']/a)[" + i + "]"));
+			softAssert.assertTrue(categoryLink.getText().toLowerCase().contains(searchTerm.toLowerCase()), searchTerm + " not in " + categoryLink.getText());
 		}
 		softAssert.assertAll();
 		

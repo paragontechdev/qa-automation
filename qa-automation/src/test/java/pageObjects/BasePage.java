@@ -55,6 +55,7 @@ public class BasePage extends Page{
 			else if (currentUrl.contains("store")) currentPage = "Store";
 			else if (currentUrl.contains("top_lists")) currentPage = "Top Lists";
 			else if (currentUrl.contains("fetishes")) currentPage = "Fetish Categories";
+			else if (currentUrl.contains("custom-porn-videos")) currentPage = "Custom Clips Stores";
 		else currentPage = "Home";
 		
 		
@@ -285,51 +286,27 @@ public class BasePage extends Page{
 	}
 	@Override
 	public void verifyPageIsDisplayed(String expectedPage) throws Exception {
-
-		String currentPage = driver.getTitle();
 		
 		try {
-//			if (currentPage.contains(expectedPage)) {
-				
-				switch(expectedPage.toLowerCase()){
-				case "categories":
-					IWC_FetishCategoriesPage iwcFetishCategoriesPage = new IWC_FetishCategoriesPage(driver, wait);
-					Assert.assertEquals(iwcFetishCategoriesPage.getCurrentPage(), "Fetish Categories");
-					break;
-				
-				case "top lists":
-					IWC_TopListsPage iwcTopListsPage = new IWC_TopListsPage(driver, wait);
-					Assert.assertEquals(iwcTopListsPage.getCurrentPage(), "Top Lists");
-					break;
-				
-				case "store":
-					IWC_StorePage iwcStorePage = new IWC_StorePage(driver, wait);
-					Assert.assertEquals(iwcStorePage.getCurrentPage(), "Store");
-					break;
-				
-				case "artists":
-					IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-					Assert.assertEquals(iwcArtists.getCurrentPage(), "Artists");
-					break;
-				
-				default:
-					IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-					Assert.assertEquals(iwcHome.getCurrentPage(), "Home");
-					break;
-				}
-/*
-		} else {
-				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-				Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
+			switch(expectedPage.toLowerCase()){
+			case "iwantcustomclips": Assert.assertTrue(driver.getCurrentUrl().contains("custom-porn-videos"));
+				break;
+			case "store": Assert.assertTrue(driver.getCurrentUrl().contains("store"));
+				break;
+			case "categories": Assert.assertTrue(driver.getTitle().contains("iWantClips Categories"));
+				break;
+			case "top lists": Assert.assertTrue(driver.getTitle().contains("iWantClips Top Lists"));
+				break;
+			case "artists":	Assert.assertTrue(driver.getTitle().contains("iWantClips Models"));
+				break;
+			default: Assert.assertTrue(driver.getTitle().contains("The Hottest in Femdom Videos"));
+				break;
 			}
-*/			
 		} catch(Exception e) {
 			throw new Exception("Error getting current page name.");
 		}
-		
 	}
-	
-	
+		
 	/**
 	 * Interface actions
 	 */
@@ -448,6 +425,7 @@ public class BasePage extends Page{
 		}	
 		
 	}
+	@Override
 	public void doNavigateToPage(String page) throws Exception {
 		
 		// Create a mapping of page names to page classes. Add more page names and classes as needed.
@@ -462,39 +440,21 @@ public class BasePage extends Page{
 			if (pageClass == null) {
 				throw new IllegalArgumentException("Invalid page name: $page");
 			} else {
-				try {
-					By menuItem = By.partialLinkText(page);
-
-					switch (page.toLowerCase()) {
-					// Expected values are found in the getCurrentPage() method
-					case "home":
-						driver.get("https://qa.iwantclips.com");
-						IWC_HomePage homePage = new IWC_HomePage(driver, wait);
-						Assert.assertEquals(homePage.getCurrentPage(), "Home");
-						break;
-						
-					case "artists":
-						getElement(menuItem).click();
-						IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
-						Assert.assertEquals(artistsPage.getCurrentPage(), "Artists");
-						break;
-						
-					case "top lists":
-						getElement(menuItem).click();
-						IWC_TopListsPage topListsPage = new IWC_TopListsPage(driver, wait);
-						Assert.assertEquals(topListsPage.getCurrentPage(), "Top Lists");
-						break;
+				By menuItem = By.partialLinkText(page);
 					
-					case "categories":
-						getElement(menuItem).click();
-						IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
-						Assert.assertTrue(fetishPage.getCurrentPage().contains("Categories"));
-						break;
-						
-					}
-				} catch (Exception e) {
-					throw new Exception("");
+				switch (page.toLowerCase()) {
+				case "home": driver.get("https://qa.iwantclips.com");
+					break;
+				case "artists":	getElement(menuItem).click();
+					break;
+				case "top lists": getElement(menuItem).click();
+					break;
+				case "categories":getElement(menuItem).click();
+					break;
 				}
+				
+				// confirm that the correct page is diaplayed
+				verifyPageIsDisplayed(page.toLowerCase());
 			}
 			
 			// Instantiate the page object
@@ -504,8 +464,7 @@ public class BasePage extends Page{
 			throw new Exception("Error navigating to the " + page + " page.");
 		}
 	}
-	
-	
+		
 	/**
 	 * Other useful methods
 	 * 

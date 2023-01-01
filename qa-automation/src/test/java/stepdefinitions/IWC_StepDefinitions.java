@@ -136,7 +136,7 @@ public class IWC_StepDefinitions {
 			storePage.verifyItemPageDisplaysArtistName(storePage.getStoreArtistName());
 			break;
 		case "category":
-			fetishCategoriesPage.verifyPageDisplaysFetishCategory(fetishCategoriesPage.getfetishCategoryName());
+			fetishCategoriesPage.verifyPageDisplaysFetishCategory(fetishCategoriesPage.getFetishCategoryName());
 			break;
 		default:
 			throw new Exception("Invalid listType: $listType");
@@ -157,6 +157,22 @@ public class IWC_StepDefinitions {
 		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
 		fetishPage.verifyFetishCategoryLinks(allOrMaxCount);
 	}
+	
+	// Search
+	@When("^(.*) searches for a fetish category (.*)$")
+	public void search_FetishCategory(String userType, String searchTerm) throws Exception {
+	    IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
+	    fetishPage.doSendKeys(fetishPage.getSearchFetishCategoriesEdt(), searchTerm);
+	    IWC_FetishCategoriesPage.fetishCategorySearchTerm = searchTerm;
+	}
+		
+	@Then("categories that contain the search term are displayed")
+	public void categories_that_contain_the_search_term_are_displayed() throws InterruptedException {
+		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
+		fetishPage.verifyFetishCategorySearchResults(fetishPage.getFetishCategorySearchTerm());
+	}
+
+	
 	
 	
 	

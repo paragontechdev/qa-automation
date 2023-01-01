@@ -6,12 +6,12 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = {"src/test/java/features.JudeScripts/",
+		features = {"src/test/java/features.UserExperienceQA/",
 				//"src/test/java/features/2022.07.19/Demo",
 				//"src/test/java/features/2022.08.2"
 				}
 		//,tags = "@basicFunctionality"
-		,glue = {"src/test/java/stepdefinitions/IWC_MemberSteps.java"}
+		,glue = {"src/test/java/stepdefinitions/IWC_StepDefinitions.java"}
 		,monochrome = true,
 		plugin = {"pretty",
 				 "junit:test-output/reports/JUnitReport.xml",
