@@ -30,7 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class BasePage extends Page{
 	
 	public long startTime, endTime, totalTime;
-		
+			
 	// constructor
 	public BasePage(WebDriver driver, WebDriverWait wait) {
 		
@@ -180,7 +180,6 @@ public class BasePage extends Page{
 			System.out.println("Error retreiving link attributes: " + i + ": " + url + "\n");
 		}
 	}
-	
 	public String getArtistId(String link){
 		return link;
 	}
@@ -232,20 +231,29 @@ public class BasePage extends Page{
 		}
 		
 	}
-
+	public void waitForElementAttribute(WebElement element, String attribute, String attributeValue ) {
+		
+		try {	
+			attributeValue = element.getAttribute(attribute);
+			wait.until(ExpectedConditions.attributeToBe(element, attribute, attributeValue));
+		} catch (Exception e) {
+			System.out.println("Attribute not found: " + element.toString());
+			e.printStackTrace();
+		}
+		
+	}
+	public void waitUntilPresenceOfElementLocated(By element) {
 	
+		wait.until(ExpectedConditions.presenceOfElementLocated(element));
+	
+	}
+
 	/**
 	 * Verify for object property
 	 */
 	@Override
 	public void verifyElementIsDisplayed(WebElement element) throws Exception{
-		
-		try{
-			wait.until(ExpectedConditions.visibilityOf(element));
-			Assert.assertTrue(element.isDisplayed());
-		}catch(Exception e){
-			throw new Exception("Expected web element not displayed: " + element.toString());
-		}
+		Assert.assertTrue("Expected web element not displayed: " + element.toString(), element.isDisplayed());
 	}
 	@Override
 	public void verifyElementIsNotDisplayed(WebElement element) throws Exception {
@@ -342,6 +350,26 @@ public class BasePage extends Page{
 		}
 	}
 	@Override
+	public void doHighlightElement(WebElement element) throws InterruptedException {
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		int flashCount = 10;
+		
+		Actions actions = new Actions(driver);
+		actions.moveToElement(element).perform();
+		
+		for (int i = 0; i < flashCount; i++) {
+		    // change the border to red
+		    js.executeScript("arguments[0].style.border='3px solid red'", element);
+		    Thread.sleep(200); // wait for 0.2 seconds
+
+		    // change the border back to transparent
+		    js.executeScript("arguments[0].style.border='3px solid transparent'", element);
+		    Thread.sleep(200); // wait for 0.2 seconds
+		}
+	
+	}
+	@Override
 	public void doScrollToElement(WebElement element) {
 		
 		try {
@@ -358,7 +386,9 @@ public class BasePage extends Page{
 			waitUntilElementIsDisplayed(element);
 			waitUntilElementIsEnabled(element);
 			Actions actions = new Actions(driver);
-			actions.moveToElement(element).click().build().perform();
+			actions.moveToElement(element).perform();
+			Thread.sleep(1000);
+			actions.click(element).perform();
 		}catch(Exception e){
 			System.out.println("Error finding web element to click.");
 		}

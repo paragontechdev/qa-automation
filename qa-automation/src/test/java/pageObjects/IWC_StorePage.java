@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class IWC_StorePage extends BasePage {
 	
+	public static String storeArtistName;
+	public static String storeItemName;
+	
 	/**
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
 	 * They are declared in the Page class, which is a super (parent) class of the BasePage 
@@ -18,7 +21,7 @@ public class IWC_StorePage extends BasePage {
 		super(driver, wait);
 		
 	}
-	
+		
 	/**
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
@@ -29,7 +32,7 @@ public class IWC_StorePage extends BasePage {
 	private By artistClipImg;
 	private By artistClipAddToCartBtn;
 	private By inCartLbl;
-	
+		
 	private By buyMyClipsBtn = By.xpath("//div[@class='options stacked']");
 	private By tributeMeLnk = By.xpath("//div[@class='col-sm-10 col-sm-offset-1 actions']//*[contains(text(), 'Tribute Me')]");
 	private By messageMeLnk = By.xpath("//div[@class='col-sm-10 col-sm-offset-1 actions']//*[contains(text(), 'Message Me')]");
@@ -77,7 +80,7 @@ public class IWC_StorePage extends BasePage {
 	public WebElement getShoppingCartIco() {
 		return getElement(shoppingCartIco);
 	}
-
+	
 	// runtime setters
 	public WebElement getAmountRad() {
 		return getElement(amountRad);
@@ -94,6 +97,13 @@ public class IWC_StorePage extends BasePage {
 	public WebElement getInCartLbl() {
 		return getElement(inCartLbl);
 	}
+	public String getStoreArtistName() {
+		return (storeArtistName);
+	}
+	public String getStoreItemName() {
+		return (storeItemName);
+	}
+	
 	public void setAmountRad(By amountRad) {
 		this.amountRad = amountRad;
 	}
@@ -109,6 +119,7 @@ public class IWC_StorePage extends BasePage {
 	public void setInCartLbl(By inCartLbl) {
 		this.inCartLbl = inCartLbl;
 	}
+	
 	
 	/** 
 	 * These custom methods will be used with this class. The return type should be the next
@@ -128,7 +139,8 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 		
 	}
-	public IWC_StorePage verifyArtistStoreIsDisplayedById(String artistId) {
+	
+	public IWC_StorePage verifyCurrentUrlHasArtistId(String artistId) {
 		
 		String currentUrl = driver.getCurrentUrl();
 		Assert.assertTrue(currentUrl.contains(artistId));
@@ -136,20 +148,25 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 		
 	}
-	public IWC_StorePage verifyArtistStoreIsDisplayedByName(String artistName) {
+	public IWC_StorePage verifyStorePageDisplaysArtistName(String artistName) {
 		
-		String currentTitle = driver.getTitle();
-		//System.out.println(artistName);
-		//System.out.println(currentTitle);
-		try{
-			Assert.assertTrue(currentTitle.contains(artistName));
-		}catch(Exception e) {
-			System.out.println(artistName + " not found in page title: " + currentTitle);
-		}
-		
+		String currentPageArtistName = getElement(By.xpath("//span/h1")).getText();
+		Assert.assertEquals(artistName + " clicked, but current page is " + currentPageArtistName, currentPageArtistName, artistName);
 		return getInstance(IWC_StorePage.class);
-		
 	}
+	public IWC_StorePage verifyItemPageDisplaysItemName(String itemName){
+		
+		String currentPageItemName = getElement(By.xpath("//span[@class='headline hidden-xs']")).getText();
+		Assert.assertEquals(itemName + " clicked, but current page shows " + currentPageItemName, currentPageItemName, itemName);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyItemPageDisplaysArtistName(String artistName){
+		
+		String currentPageArtistName = getElement(By.xpath("//a[@class='modelLink']")).getText();
+		Assert.assertEquals(artistName + " expected, but current page shows " + currentPageArtistName, currentPageArtistName, artistName);
+		return getInstance(IWC_StorePage.class);
+	}
+	
 	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
 		setAmountRad(By.xpath("//input[@type='radio' and @value='" + amount + "']"));

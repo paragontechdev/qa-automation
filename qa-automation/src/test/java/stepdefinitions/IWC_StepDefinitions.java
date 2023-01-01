@@ -1,5 +1,7 @@
 package stepdefinitions;
 
+//import static pageObjects.IWC_StorePage.artistName;
+
 import java.time.Duration;
 
 import org.junit.Assert;
@@ -33,13 +35,11 @@ import pageObjects.Page;
 
 public class IWC_StepDefinitions {
 	
-	WebDriver driver;
-	WebDriverWait wait;
+	public WebDriver driver;
+	public WebDriverWait wait;
 	public Page page;
-	long startTime, endTime, totalTime;
-	String artistName = null;
+	public long startTime, endTime, totalTime;
 		
-	
 	/**
 	 * Setup (@Before) and tear-down (@After) methods
 	 */
@@ -53,7 +53,6 @@ public class IWC_StepDefinitions {
 		
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("disable-infobars");
-		//chromeOptions.addArguments("start-maximized");
 		chromeOptions.addArguments("--window-size=1024,768");
 		
 		driver = new ChromeDriver();
@@ -65,11 +64,9 @@ public class IWC_StepDefinitions {
 	@After
 	public void teardown() {
 		
-		driver.close();
-		driver.quit();
-		
+		//driver.close();
+		//driver.quit();
 	}
-
 	
 	/**
 	 * Landing and login methods 
@@ -77,75 +74,86 @@ public class IWC_StepDefinitions {
 	 */
 	@When("^([^\"]*) logs in with (.*) and (.*)$")
 	public void login(String userType, String username, String password) throws Exception {
-
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		iwcHome.login(username, password);
-		
 	}	
 	@Then("^([^\"]*) navigates to the \"([^\"]*)\" page$")
 	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
-		
 		BasePage base = new BasePage(driver, wait);
 		base.doNavigateToPage(iwcPage);
-		
 	}
-	@When("^([^\"]*) clicks link \"([^\"]*)\"$")
+	
+	@When("^(.*) clicks the \"Show all 100 Top (.*)\" link$")
 	public void click_link(String userType, String link) throws Exception {
 		
-		BasePage base = new BasePage(driver, wait);
-		By tmpLink = By.partialLinkText(link);
-		base.doClick(base.getElement(tmpLink));
+		By element = null;
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+				
+		if (link.contains("Stores")) {
+			topLists.doClick(topLists.getShowAllTop100StoresLnk());
+			element = By.xpath("(//div[@class='topContainer'][@style='height: 100%;'])[1]");
+		} else if (link.contains("Items")) {
+			topLists.doClick(topLists.getShowAllTop100ItemsLnk());
+			element = By.xpath("(//div[@class='topItemContainer'][@style='height: 100%;'])[1]");
+		} else {
+			topLists.doClick(topLists.getShowAllTop100CategoriesLnk());
+			element = By.xpath("(//div[@class='topFetishContainer'][@style='height: 100%;'])[1]");
+		}
 		
+		// Wait for the list to fully load before continuing
+		wait.until(ExpectedConditions.presenceOfElementLocated(element));	
 	}
+	
+	@When("^([^\"]*) clicks a random top 100 (.*)$")
+	public void click_a_random_top_100_artist_profile_image(String userType, String listType) throws Exception {
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+		topLists.doClickRandomTop100(listType);
+	}
+	/*
+	@When("^([^\"]*) clicks an artist profile image$")
+	public void click_a_top_100_artists_profile_image(String userType, String listType, int rank) throws Exception {
+		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
+		topLists.doClickRankedListElement(listType, rank);
+	}
+	*/
+		
 	@Then("^the \"([^\"]*)\" page is displayed$")
 	public void verify_page_is_displayed(String page) throws Exception {
-		
 		BasePage base = new BasePage(driver, wait);
 		base.verifyPageIsDisplayed(page);
-	
 	}
 	@Then("^the artist store page ([^\"]*) is displayed$")
 	public void verify_artist_store_is_displayed_by_id(String artistId) {
-		
 		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-		storePage.verifyArtistStoreIsDisplayedById(artistId);
-		
+		storePage.verifyCurrentUrlHasArtistId(artistId);
 	}
-	@Then("^the random artist store page is displayed$")
-	public void verify_artist_store_is_displayed_by_name() {
+	@Then("^the random ([^\"]*) page is displayed$")
+	public void verify_artist_store_is_displayed_by_name(String listType) {
 		
 		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-		storePage.verifyArtistStoreIsDisplayedByName(this.artistName);
+			
+		switch(listType) {
+		case "store":
+			storePage.verifyStorePageDisplaysArtistName(storePage.getStoreArtistName());
+			break;
+		case "item":
+			storePage.verifyItemPageDisplaysItemName(storePage.getStoreItemName());
+			storePage.verifyItemPageDisplaysArtistName(storePage.getStoreArtistName());
+			break;
+		}
+		
 		
 	}
 	@Then("^there are no broken links on the page$")
 	public void verify_there_are_no_broken_links() throws Exception {
 		
-		BasePage base = new BasePage(driver, wait);
-		base.getStatusOfCurrentPageLinks(true);
-		
+		BasePage basePage = new BasePage(driver, wait);
+		basePage.getStatusOfCurrentPageLinks(true);
 	}
-	
-	@Then("^the top (.*) stores are displayed$")
-	public void verify_top_stores_are_displayed(int storeCount) throws Exception{
-		
+	@Then("^the top (.*) ([^\"]*) are displayed$")
+	public void verify_top_items_are_displayed(int listCount, String listType) throws Exception{
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		topLists.verifyTopStoresAreDisplayed(100);
-		
-	}
-	@When("^([^\"]*) clicks any artist profile image$")
-	public void click_a_top_100_artist_profile_image(String userType) {
-
-		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		topLists.doClickRandomTop100ArtistProfileImage();
-				
-	}
-	@When("^([^\"]*) clicks an artist profile image$")
-	public void click_a_top_100_artists_profile_image(String userType, String rank) {
-
-		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		topLists.doClickRankedArtistLink(rank);
-				
+		topLists.verifyTopListsAreDisplayed(listCount, listType);
 	}
 	
 	
@@ -153,30 +161,7 @@ public class IWC_StepDefinitions {
 	 * Artist and artist store methods
 	 * 
 	 */
-	 
-	/*
-	@Given("^(.*) navigates to the Artists page$")
-	public void artist_navigate_to_artists_page() {
-
-		IWC_ArtistsPage iwcArtists = new IWC_ArtistsPage(driver, wait);
-		
-		// iwcArtists.doNavigateMenu("Artists");
-		
-		driver.get("https://qa.iwantclips.com/artists/");
-		wait.until(ExpectedConditions.visibilityOf(iwcArtists.getSearchArtistsEdt()));
-			
-	}
 	
-	@Then("artist updates page is displayed")
-	public void artist_verify_updates_page_is_displayed() {
-	
-		IWC_ArtistHomePage artistHome = new IWC_ArtistHomePage(driver, wait);
-		
-		artistHome.verifyElementIsDisplayed(artistHome.getArtistLinkLnk());
-				
-	}
-	*/	
-	//@Given("^(.*) navigates to an artist(.*) store page$")
 	@Given("^(.*) navigates to an artist store page ([^\"]+)")
 	public void artistStore_navigate_to_artist_store(String userType, String artistId) throws Exception {
 
@@ -711,22 +696,6 @@ public class IWC_StepDefinitions {
 }
 		
 
-/*		
-	CrpBaseObjects crp = new CrpBaseObjects(driver, wait);
-	crp.startTimer("Initializing driver");
-	System.out.println();
-		System.setProperty("webdriver.chrome.driver", "drivers\\chromedriver.exe");
-		System.setProperty("webdriver.chrome.silentOutput", "true");
-		driver = new ChromeDriver();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-	crp.stopTimer();
 		
-	crp.startTimer("Loading home page");
-		driver.manage().deleteAllCookies();
-		driver.get("https://dev.admin.iwantglobal.com/review/dashboard");
-	crp.stopTimer();
-	System.out.println();
-
-*/		
 
 	

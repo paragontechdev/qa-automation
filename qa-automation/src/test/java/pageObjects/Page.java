@@ -20,12 +20,11 @@ public abstract class Page {
 	WebDriverWait wait;
 	public String siteUrl = "https://qa.iwantclips.com/";
 	
-	
 	// constructor
 	public Page(WebDriver driver, WebDriverWait wait) {
 		
 		this.driver = driver;
-		this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(30));
+		this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
 		
 	}
 	
@@ -53,6 +52,7 @@ public abstract class Page {
 	public abstract void doStartTimer(String description);
 	public abstract void doStopTimer();
 	public abstract void doScrollToElement(WebElement element);
+	public abstract void doHighlightElement(WebElement element) throws InterruptedException;
 	public abstract void doClick(WebElement element);
 	public abstract void doSendKeys(WebElement element, String text) throws Exception;
 	public abstract void doMouseOver(WebElement element);
@@ -79,6 +79,5 @@ public abstract class Page {
 				
 	}
 
-
-
+	
 }
