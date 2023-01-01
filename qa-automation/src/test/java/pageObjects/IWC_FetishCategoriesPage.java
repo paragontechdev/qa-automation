@@ -38,11 +38,11 @@ public class IWC_FetishCategoriesPage extends BasePage {
 	 * cannot be accessed outside of this class.
 	 */
 	private By fetishCategoriesLbl = By.xpath("((//h1)[2]"); 
-	
+	private By searchFetishCategoriesEdt = By.xpath("");
 	
 	/*
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
-	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
+	 * use public variables (getters/setters). Using getElement, encapsulated 'By' locators are 
 	 * converted to WebElements so that relative actions can be taken against the web element
 	 * instead of the locator.
 	 */
@@ -54,6 +54,11 @@ public class IWC_FetishCategoriesPage extends BasePage {
 	public WebElement getFetishCategoriesLbl() {
 		
 		return getElement(fetishCategoriesLbl);
+		
+	}
+	public WebElement getSearchFetishCategoriesEdt() {
+		
+		return getElement(searchFetishCategoriesEdt);
 		
 	}
 	
