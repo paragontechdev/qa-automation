@@ -10,5 +10,5 @@ Feature: Auto-138 Artist Page
     Then the artist store page <artistId> is displayed
 
     Examples: 
-      | username                | password   | artistId |
-      | kevin.m@stackunited.com | P123456789 |   138463 |
+      | artistId |
+      |   138463 |
