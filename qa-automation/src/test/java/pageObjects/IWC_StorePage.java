@@ -11,7 +11,7 @@ public class IWC_StorePage extends BasePage {
 	public static String storeArtistName;
 	public static String storeItemName;
 	
-	/**
+	/*
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
 	 * They are declared in the Page class, which is a super (parent) class of the BasePage 
 	 * class.
@@ -22,7 +22,7 @@ public class IWC_StorePage extends BasePage {
 		
 	}
 		
-	/**
+	/*
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
 	 * cannot be accessed outside of this class.
@@ -41,7 +41,7 @@ public class IWC_StorePage extends BasePage {
 	private By sendTipBtn = By.xpath("//button[text()='Send Tip']");
 	private By shoppingCartIco = By.xpath("//a[contains(@href, 'shopping_cart')]");
 	
-	/** 
+	/* 
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
 	 * converted to WebElements so that relative actions can be taken against the web element
@@ -80,8 +80,6 @@ public class IWC_StorePage extends BasePage {
 	public WebElement getShoppingCartIco() {
 		return getElement(shoppingCartIco);
 	}
-	
-	// runtime setters
 	public WebElement getAmountRad() {
 		return getElement(amountRad);
 	}
@@ -121,10 +119,10 @@ public class IWC_StorePage extends BasePage {
 	}
 	
 	
-	/** 
+	/* 
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
-	 * @throws Exception 
+	 *  
 	 */
 	public IWC_StorePage doNavigateToArtistStorePage(String artistId) throws Exception {
 		
@@ -144,7 +142,6 @@ public class IWC_StorePage extends BasePage {
 		
 		String currentUrl = driver.getCurrentUrl();
 		Assert.assertTrue(currentUrl.contains(artistId));
-		
 		return getInstance(IWC_StorePage.class);
 		
 	}

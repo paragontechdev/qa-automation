@@ -21,6 +21,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.BasePage;
 import pageObjects.IWC_ArtistHomePage;
+import pageObjects.IWC_FetishCategoriesPage;
 import pageObjects.IWC_HomePage;
 import pageObjects.IWC_MemberWishlistPage;
 import pageObjects.IWC_PersonalInformationPage;
@@ -78,13 +79,14 @@ public class IWC_StepDefinitions {
 		iwcHome.login(username, password);
 	}	
 	@Then("^([^\"]*) navigates to the \"([^\"]*)\" page$")
-	public void navigate_to_iwc_page(String userType, String iwcPage) throws Exception {
+	public void navigate_ToIwcPage(String userType, String iwcPage) throws Exception {
 		BasePage base = new BasePage(driver, wait);
 		base.doNavigateToPage(iwcPage);
 	}
 	
+	// Click
 	@When("^(.*) clicks the \"Show all 100 Top (.*)\" link$")
-	public void click_link(String userType, String link) throws Exception {
+	public void click_TopListsShowAllLink(String userType, String link) throws Exception {
 		
 		By element = null;
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
@@ -103,35 +105,28 @@ public class IWC_StepDefinitions {
 		// Wait for the list to fully load before continuing
 		wait.until(ExpectedConditions.presenceOfElementLocated(element));	
 	}
-	
 	@When("^([^\"]*) clicks a random top 100 (.*)$")
-	public void click_a_random_top_100_artist_profile_image(String userType, String listType) throws Exception {
+	public void click_RandomTop100ListElement(String userType, String listType) throws Exception {
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		topLists.doClickRandomTop100(listType);
+		topLists.doClickRandomTop100Element(listType);
 	}
-	/*
-	@When("^([^\"]*) clicks an artist profile image$")
-	public void click_a_top_100_artists_profile_image(String userType, String listType, int rank) throws Exception {
-		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
-		topLists.doClickRankedListElement(listType, rank);
-	}
-	*/
-		
+	
+	// Verifications
 	@Then("^the \"([^\"]*)\" page is displayed$")
-	public void verify_page_is_displayed(String page) throws Exception {
+	public void verify_PageIsdisplayed(String page) throws Exception {
 		BasePage base = new BasePage(driver, wait);
 		base.verifyPageIsDisplayed(page);
 	}
 	@Then("^the artist store page ([^\"]*) is displayed$")
-	public void verify_artist_store_is_displayed_by_id(String artistId) {
+	public void verify_CurrentUrlHasArtistId(String artistId) {
 		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
 		storePage.verifyCurrentUrlHasArtistId(artistId);
 	}
 	@Then("^the random ([^\"]*) page is displayed$")
-	public void verify_artist_store_is_displayed_by_name(String listType) {
-		
+	public void verify_CorrectTopListPageIsDisplayed(String listType) throws Exception {
 		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-			
+		IWC_FetishCategoriesPage fetishCategoriesPage = new IWC_FetishCategoriesPage(driver, wait);
+		
 		switch(listType) {
 		case "store":
 			storePage.verifyStorePageDisplaysArtistName(storePage.getStoreArtistName());
@@ -140,13 +135,15 @@ public class IWC_StepDefinitions {
 			storePage.verifyItemPageDisplaysItemName(storePage.getStoreItemName());
 			storePage.verifyItemPageDisplaysArtistName(storePage.getStoreArtistName());
 			break;
+		case "category":
+			fetishCategoriesPage.verifyPageDisplaysFetishCategory(fetishCategoriesPage.getfetishCategoryName());
+			break;
+		default:
+			throw new Exception("Invalid listType: $listType");
 		}
-		
-		
 	}
 	@Then("^there are no broken links on the page$")
-	public void verify_there_are_no_broken_links() throws Exception {
-		
+	public void verify_CurrentPageLinksStatuses() throws Exception {
 		BasePage basePage = new BasePage(driver, wait);
 		basePage.getStatusOfCurrentPageLinks(true);
 	}
@@ -155,6 +152,12 @@ public class IWC_StepDefinitions {
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
 		topLists.verifyTopListsAreDisplayed(listCount, listType);
 	}
+	@Then("^([^\"]*) verfies (.*) page links navigate to the correct page$")
+	public void verify_CategoryLinksNavigateToCorrectPage(String userTye, String allOrMaxCount) throws InterruptedException {
+		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
+		fetishPage.verifyFetishCategoryLinks(allOrMaxCount);
+	}
+	
 	
 	
 	/**

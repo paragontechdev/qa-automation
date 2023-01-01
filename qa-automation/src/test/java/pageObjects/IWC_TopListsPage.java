@@ -113,7 +113,7 @@ public class IWC_TopListsPage extends BasePage {
 	private String getRankedItem_ArtistName(int rank) {
 		WebElement element = null;
 		
-		// get the xPath of the ranked item link (ranked 1-3)
+		// get the xPath of the ranked item link
 		element = getElement(By.xpath("(//span[@class='pink'])[" + rank + "]"));
 				
 		// Parse text for the artist name 
@@ -123,14 +123,23 @@ public class IWC_TopListsPage extends BasePage {
 	private String getRankedItem_ItemName(int rank) {
 		WebElement element = null;
 		
-		// get the xPath of the ranked item link (ranked 1-3)
+		// get the xPath of the ranked item link 
 		element = getElement(By.xpath("(//p[@class='rankTitle'])[" + rank + "]"));
 				
 		// Parse text for the artist name 
 		IWC_StorePage.storeItemName = element.getText();
 		return IWC_StorePage.storeItemName;
 	}
-	
+	private String getRankedCategory_CategoryName(int rank) {
+		WebElement element = null;
+		
+		// get the xPath of the ranked category link 
+		element = getElement(By.xpath("(//h3[@class='rankCategory'])[" + rank + "]"));
+		
+		// Parse text for the artist name 
+		IWC_FetishCategoriesPage.fetishCategoryName = element.getText();
+		return IWC_FetishCategoriesPage.fetishCategoryName;
+	}
 	
 	/** Clicks a random Top List store, item or category. 
 	 * 
@@ -143,55 +152,70 @@ public class IWC_TopListsPage extends BasePage {
 	 * @throws	Exception 
 	 *  
 	 */	
-	public IWC_TopListsPage doClickRandomTop100(String listType) throws Exception {
+	public IWC_TopListsPage doClickRandomTop100Element(String listType) throws Exception {
 		
 		// generate a random number between 1 and 100
 		Random random = new Random();
 		int rank = random.nextInt(100) + 1;
 		
 		// use generated number to click a ranked list item (store, item or category)
-		doClickRankedListElement(listType, rank);
+		doClickRankedTop100Element(listType, rank);
 		
 		return getInstance(IWC_TopListsPage.class);
 	}
-	public IWC_TopListsPage doClickRankedListElement(String listType, int rank) throws Exception {
+	public IWC_TopListsPage doClickRankedTop100Element(String listType, int rank) throws Exception {
 		
-		WebElement element = null;
+				
+		if (rank <= 0 || rank > 100) {
+	        throw new IllegalArgumentException("$rank is invalid. Select between 1-100.");
+	    }
 		
-		if (rank > 0 && rank <=100) { 
-		
-			// find the web element on the page
-			try {
-				switch(listType) {
-				case "item":
-					getRankedItem_ItemName(rank);
-					getRankedItem_ArtistName(rank);
-					element = driver.findElement(By.xpath("(//h3[contains(text(), '#" + rank + "')])[3]"));
-					break;
-				case "store":
-					getRankedStore_ArtistName(rank);
-					if (rank <= 3){
-						element = driver.findElement(By.xpath("(//div[@class='roundModelPic'])[" + rank + "]/img[@class='img-circle img-responsive']"));
-					} else {
-						rank -= 3;
-						element = driver.findElement(By.xpath("(//div[@class='topBox'])[" + rank + "]/div/img[@class='img-circle img-responsive']"));
-					}
-					break;
-				case "category":
-					break;
+		Actions actions = new Actions(driver);
+	
+		/* Find the web element on the page, get names from the element, store those names to static
+		 * class variables and then click on the web element. 
+		 */
+		try {
+			switch(listType) {
+			
+			case "item":
+				// Get the item name as well as the name of the artist selling the item
+				WebElement itemName = getElement(By.xpath("(//p[@class='rankTitle'])[" + rank + "]"));
+				IWC_StorePage.storeItemName = itemName.getText();
+				
+				WebElement itemArtist = getElement(By.xpath("(//span[@class='pink'])[" + rank + "]"));
+				IWC_StorePage.storeArtistName = itemArtist.getText();
+				
+				actions.moveToElement(itemName).click().perform();
+				break;
+				
+			case "store":
+				WebElement storeLink = null;
+				
+				/* The top 3 stores appear at the top of the page, the other stores are listed in a
+				 * separate container where the 4th ranked store will index at 1 in the xPath. 
+				 */
+				if (rank <= 3){
+					storeLink  = getElement(By.xpath("(//h3[@class='topName'])[" + rank + "]"));
+				} else {
+					rank -= 3;
+					storeLink  = getElement(By.xpath("(//div[@class='topBox'])[" + rank + "]"));
 				}
 				
-				// move to element, then click on it				
-				Actions actions = new Actions(driver);
-				actions.moveToElement(element).click().perform();;
+				IWC_StorePage.storeArtistName = storeLink.getText().split("\n")[1];
+				actions.moveToElement(storeLink).click().perform();
+				break;
 				
-			} catch(Exception e) {
-				throw new Exception("Error finding or clicking ranked item link.");
+			case "category":
+				WebElement categoryLink = getElement(By.xpath("(//h3[@class='rankCategory'])[" + rank + "]"));
+				IWC_FetishCategoriesPage.fetishCategoryName = categoryLink.getText();
+				actions.moveToElement(categoryLink).click().perform();
+				break;
 			}
-		} else {
-			
-			throw new Exception("Rank must be between 1 and 100.");
-		}
+							
+		} catch(Exception e) {
+			throw new Exception("Error finding or clicking ranked item link.");
+		} 
 		
 		return getInstance(IWC_TopListsPage.class);
 		
@@ -211,7 +235,7 @@ public class IWC_TopListsPage extends BasePage {
 	        xPathIndex = listCount > 3 ? 3 : 2;
 	        break;
 	      case "categories":
-	        xPathIndex = listCount > 3 ? 4 : 3;
+	        xPathIndex = (listCount > 3) & (listCount < 3) ? 4 : 3;
 	        break;
 	      default:
 	        throw new IllegalArgumentException("Invalid listType: $listType");

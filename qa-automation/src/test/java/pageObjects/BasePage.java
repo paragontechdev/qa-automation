@@ -25,7 +25,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-// import stepdefinitions.DashboardPage;
 
 public class BasePage extends Page{
 	
@@ -55,6 +54,7 @@ public class BasePage extends Page{
 		if (currentUrl.contains("artist")) currentPage = "Artists";
 			else if (currentUrl.contains("store")) currentPage = "Store";
 			else if (currentUrl.contains("top_lists")) currentPage = "Top Lists";
+			else if (currentUrl.contains("fetishes")) currentPage = "Fetish Categories";
 		else currentPage = "Home";
 		
 		
@@ -289,10 +289,14 @@ public class BasePage extends Page{
 		String currentPage = driver.getTitle();
 		
 		try {
-			
-			if (currentPage.contains(expectedPage)) {
+//			if (currentPage.contains(expectedPage)) {
 				
 				switch(expectedPage.toLowerCase()){
+				case "categories":
+					IWC_FetishCategoriesPage iwcFetishCategoriesPage = new IWC_FetishCategoriesPage(driver, wait);
+					Assert.assertEquals(iwcFetishCategoriesPage.getCurrentPage(), "Fetish Categories");
+					break;
+				
 				case "top lists":
 					IWC_TopListsPage iwcTopListsPage = new IWC_TopListsPage(driver, wait);
 					Assert.assertEquals(iwcTopListsPage.getCurrentPage(), "Top Lists");
@@ -313,11 +317,12 @@ public class BasePage extends Page{
 					Assert.assertEquals(iwcHome.getCurrentPage(), "Home");
 					break;
 				}
-			} else {
+/*
+		} else {
 				IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 				Assert.assertTrue(iwcHome.getUserMenuLst().isDisplayed());
 			}
-			
+*/			
 		} catch(Exception e) {
 			throw new Exception("Error getting current page name.");
 		}
@@ -450,12 +455,12 @@ public class BasePage extends Page{
 		pageClassMap.put("Home", IWC_HomePage.class);
 		pageClassMap.put("Artists", IWC_ArtistsPage.class);
 		pageClassMap.put("Top Lists", IWC_TopListsPage.class);
-				
+		pageClassMap.put("Categories", IWC_FetishCategoriesPage.class);
 		try {
 			// Get the page class for the specified page name
 			Class<? extends BasePage> pageClass = pageClassMap.get(page);
 			if (pageClass == null) {
-				throw new IllegalArgumentException("Invalid page name: " + page);
+				throw new IllegalArgumentException("Invalid page name: $page");
 			} else {
 				try {
 					By menuItem = By.partialLinkText(page);
@@ -479,6 +484,12 @@ public class BasePage extends Page{
 						IWC_TopListsPage topListsPage = new IWC_TopListsPage(driver, wait);
 						Assert.assertEquals(topListsPage.getCurrentPage(), "Top Lists");
 						break;
+					
+					case "categories":
+						getElement(menuItem).click();
+						IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
+						Assert.assertTrue(fetishPage.getCurrentPage().contains("Categories"));
+						break;
 						
 					}
 				} catch (Exception e) {
@@ -490,7 +501,7 @@ public class BasePage extends Page{
 			getInstance(pageClass);
 		} catch (RuntimeException e) {
 			// Handle the error in a more meaningful way, such as by throwing a custom exception
-			throw new Exception("Error navigating to " + page + " page.");
+			throw new Exception("Error navigating to the " + page + " page.");
 		}
 	}
 	
