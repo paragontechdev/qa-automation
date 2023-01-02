@@ -21,6 +21,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.BasePage;
 import pageObjects.IWC_ArtistHomePage;
+import pageObjects.IWC_ArtistsPage;
 import pageObjects.IWC_FetishCategoriesPage;
 import pageObjects.IWC_HomePage;
 import pageObjects.IWC_MemberWishlistPage;
@@ -41,9 +42,8 @@ public class IWC_StepDefinitions {
 	public Page page;
 	public long startTime, endTime, totalTime;
 		
-	/**
-	 * Setup (@Before) and tear-down (@After) methods
-	 */
+	
+	// Setup (@Before) and tear-down (@After) methods
 	@Before
 	public void setUp() {
 		
@@ -68,21 +68,17 @@ public class IWC_StepDefinitions {
 		//driver.close();
 		//driver.quit();
 	}
-	
-	/**
-	 * Landing and login methods 
-	 *  
-	 */
 	@When("^([^\"]*) logs in with (.*) and (.*)$")
 	public void login(String userType, String username, String password) throws Exception {
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		iwcHome.login(username, password);
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.login(username, password);
 	}	
 	@Then("^([^\"]*) navigates to the \"([^\"]*)\" page$")
 	public void navigate_ToIwcPage(String userType, String iwcPage) throws Exception {
 		BasePage base = new BasePage(driver, wait);
 		base.doNavigateToPage(iwcPage);
 	}
+	
 	
 	// Click
 	@When("^(.*) clicks the \"Show all 100 Top (.*)\" link$")
@@ -110,33 +106,64 @@ public class IWC_StepDefinitions {
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
 		topLists.doClickRandomTop100Element(listType);
 	}
+	@When("^(.*) clicks the \"([^\"]*)\" link$")
+	public void click_Link(String userType, String link) throws Exception {
+		
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+			
+		switch(link.toLowerCase()) {
+		case "iwantcustomclips":
+		case "customs":
+			home.doClick(home.getCustomsLnk());
+			home.verifyPageIsDisplayed(link);
+			break;
+		
+		case "iwantphone":
+		case "phone":
+			home.doClick(home.getPhoneLnk());
+			home.verifyPageIsDisplayed(link);
+			break;
+		}
+		
+	}
+	@When("(.*) selects a random artist")
+	public void click_RandomArtist() {
+		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
+		artistPage.doSelectRandomArtist();
+	}
+	@When("(.*) selects a random store item")
+	public void click_RandomStoreItem() {
+		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
+		artistPage.doSelectRandomStoreItem();
+	}
+	
 	
 	// Verifications
 	@Then("^the \"([^\"]*)\" page is displayed$")
-	public void verify_PageIsdisplayed(String page) throws Exception {
+	public void verify_PageIsDisplayed(String page) throws Exception {
 		BasePage base = new BasePage(driver, wait);
 		base.verifyPageIsDisplayed(page);
 	}
 	@Then("^the artist store page ([^\"]*) is displayed$")
 	public void verify_CurrentUrlHasArtistId(String artistId) {
-		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-		storePage.verifyCurrentUrlHasArtistId(artistId);
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyCurrentUrlHasArtistId(artistId);
 	}
 	@Then("^the random ([^\"]*) page is displayed$")
 	public void verify_CorrectTopListPageIsDisplayed(String listType) throws Exception {
-		IWC_StorePage storePage = new IWC_StorePage(driver, wait);
-		IWC_FetishCategoriesPage fetishCategoriesPage = new IWC_FetishCategoriesPage(driver, wait);
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		IWC_FetishCategoriesPage fetishCategories = new IWC_FetishCategoriesPage(driver, wait);
 		
 		switch(listType) {
 		case "store":
-			storePage.verifyStorePageDisplaysArtistName(storePage.getStoreArtistName());
+			store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
 			break;
 		case "item":
-			storePage.verifyItemPageDisplaysItemName(storePage.getStoreItemName());
-			storePage.verifyItemPageDisplaysArtistName(storePage.getStoreArtistName());
+			store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+			store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
 			break;
 		case "category":
-			fetishCategoriesPage.verifyPageDisplaysFetishCategory(fetishCategoriesPage.getFetishCategoryName());
+			fetishCategories.verifyPageDisplaysFetishCategory(fetishCategories.getFetishCategoryName());
 			break;
 		default:
 			throw new Exception("Invalid listType: $listType");
@@ -154,9 +181,15 @@ public class IWC_StepDefinitions {
 	}
 	@Then("^([^\"]*) verfies (.*) page links navigate to the correct page$")
 	public void verify_CategoryLinksNavigateToCorrectPage(String userTye, String allOrMaxCount) throws InterruptedException {
-		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
-		fetishPage.verifyFetishCategoryLinks(allOrMaxCount);
+		IWC_FetishCategoriesPage fetishCategories = new IWC_FetishCategoriesPage(driver, wait);
+		fetishCategories.verifyFetishCategoryLinks(allOrMaxCount);
 	}
+	@Then("the item description page is displayed")
+	public void verify_ItemDescriptionPageElements() {
+		IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
+		artistsPage.verifyItemDescriptionPageElements();
+	}
+	
 	
 	// Search
 	@When("^(.*) searches for a fetish category (.*)$")
@@ -167,15 +200,13 @@ public class IWC_StepDefinitions {
 	}
 		
 	@Then("categories that contain the search term are displayed")
-	public void categories_that_contain_the_search_term_are_displayed() throws InterruptedException {
+	public void verify_ItemCategoriesAreDisplayed() throws InterruptedException {
 		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
 		fetishPage.verifyFetishCategorySearchResults(fetishPage.getFetishCategorySearchTerm());
 	}
 
 	
-	
-	
-	
+
 	/**
 	 * Artist and artist store methods
 	 * 

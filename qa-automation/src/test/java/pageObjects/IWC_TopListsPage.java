@@ -164,8 +164,6 @@ public class IWC_TopListsPage extends BasePage {
 		return getInstance(IWC_TopListsPage.class);
 	}
 	public IWC_TopListsPage doClickRankedTop100Element(String listType, int rank) throws Exception {
-		
-				
 		if (rank <= 0 || rank > 100) {
 	        throw new IllegalArgumentException("$rank is invalid. Select between 1-100.");
 	    }

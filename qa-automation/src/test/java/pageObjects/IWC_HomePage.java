@@ -41,6 +41,8 @@ public class IWC_HomePage extends BasePage {
 	private By categoriesMenuLnk = By.xpath("//a[text()='Categories']");
 	private By artistsMenuLnk = By.xpath("//a[text()='Artists']");
 	private By topListsMenuLnk = By.xpath("//a[text()='Top Lists']");
+	private By customsLnk = By.xpath("//a[@data-original-title='iWant Custom Clips']");
+	private By phoneLnk = By.xpath("//a[@data-original-title='iWantPhone']");
 	
 	/**
 	 *  Sign-up modal objects (member and artist)
@@ -219,7 +221,12 @@ public class IWC_HomePage extends BasePage {
 	public WebElement getAccountSuccessfullyCreatedLab(){
 		return getElement(accountSuccessfullyCreatedLab);
 	}
-	
+	public WebElement getCustomsLnk(){
+		return getElement(customsLnk);
+	}
+	public WebElement getPhoneLnk(){
+		return getElement(phoneLnk);
+	}
 		
 	/**
 	 * These custom methods will be used with this class. The return type should be the next

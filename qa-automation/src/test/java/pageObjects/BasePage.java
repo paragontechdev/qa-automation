@@ -253,7 +253,7 @@ public class BasePage extends Page{
 	 * Verify for object property
 	 */
 	@Override
-	public void verifyElementIsDisplayed(WebElement element) throws Exception{
+	public void verifyElementIsDisplayed(WebElement element){
 		Assert.assertTrue("Expected web element not displayed: " + element.toString(), element.isDisplayed());
 	}
 	@Override
@@ -289,7 +289,9 @@ public class BasePage extends Page{
 		
 		try {
 			switch(expectedPage.toLowerCase()){
-			case "iwantcustomclips": Assert.assertTrue(driver.getCurrentUrl().contains("custom-porn-videos"));
+			case "iwantphone": Assert.assertTrue(driver.getTitle().contains("Phone Sex"));
+				break;
+			case "iwantcustomclips": Assert.assertTrue(driver.getTitle().contains("Custom Porn Video"));
 				break;
 			case "store": Assert.assertTrue(driver.getCurrentUrl().contains("store"));
 				break;
@@ -426,30 +428,32 @@ public class BasePage extends Page{
 		
 	}
 	@Override
-	public void doNavigateToPage(String page) throws Exception {
-		
+	public void doNavigateToPage(String page) throws Exception {		
 		// Create a mapping of page names to page classes. Add more page names and classes as needed.
 		Map<String, Class<? extends BasePage>> pageClassMap = new HashMap<>();
 		pageClassMap.put("Home", IWC_HomePage.class);
 		pageClassMap.put("Artists", IWC_ArtistsPage.class);
 		pageClassMap.put("Top Lists", IWC_TopListsPage.class);
 		pageClassMap.put("Categories", IWC_FetishCategoriesPage.class);
+		//pageClassMap.put("IWantCustomClips", IWCC_CustomClipStoresPage.class);
+		
 		try {
 			// Get the page class for the specified page name
 			Class<? extends BasePage> pageClass = pageClassMap.get(page);
 			if (pageClass == null) {
 				throw new IllegalArgumentException("Invalid page name: $page");
 			} else {
-				By menuItem = By.partialLinkText(page);
-					
+				
+				By pageLink = By.partialLinkText(page);
+				
 				switch (page.toLowerCase()) {
 				case "home": driver.get("https://qa.iwantclips.com");
 					break;
-				case "artists":	getElement(menuItem).click();
+				case "artists":	getElement(pageLink).click();
 					break;
-				case "top lists": getElement(menuItem).click();
+				case "top lists": getElement(pageLink).click();
 					break;
-				case "categories":getElement(menuItem).click();
+				case "categories": getElement(pageLink).click();
 					break;
 				}
 				

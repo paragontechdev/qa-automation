@@ -1,5 +1,8 @@
 package pageObjects;
 
+import java.util.List;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,6 +38,11 @@ public class IWC_ArtistsPage extends BasePage{
 	private By alphabeticalOpt = By.xpath("//option[text()='Alphabetical']");
 	private By newestOpt = By.xpath("//option[text()='Newest']");
 	private By oldestOpt = By.xpath("//option[text()='Oldest']");
+	private By addToCartBtn = By.xpath("//button[contains(text(), 'Add to Cart')][1]");
+	private By storeItemDescriptionTxt = By.xpath("(//div[@class='col-xs-12 description fix']/span)[2]");
+	private By storeItemCategoriesTxt = By.xpath("(//div[@class='col-xs-12 category fix'])[2]");
+	private By previewClipImg = By.xpath("//img[@class='videoPlayer show-flexible-picture']");
+	
 	
 	/**
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
@@ -73,9 +81,73 @@ public class IWC_ArtistsPage extends BasePage{
 	}
 	
 	public WebElement getOldestOpt() {
-	
 		return getElement(oldestOpt);
+	}
+	public WebElement getAddToCartBtn() {
+		return getElement(addToCartBtn);
+	}
+	public WebElement getStoreItemDescriptionTxt() {
+		return getElement(storeItemDescriptionTxt);
+	}
+	public WebElement getStoreItemCategoriesTxt() {
+		return getElement(storeItemCategoriesTxt);
+	}
+	public WebElement getPreviewClipImg() {
+		return getElement(previewClipImg);
+	}
 	
+	
+	
+	public IWC_ArtistsPage doSelectRandomArtist(){
+		
+		Random random = new Random();
+		int xPathIndex = 0;
+		
+		/*
+		
+		// select random pagination between 1 and 7
+		xPathIndex = random.nextInt(7) + 1;
+		WebElement element = getElement(By.xpath("(//li[@class='ais-Pagination-item ais-Pagination-item--page'])[" + xPathIndex + "]"));
+		doClick(element);
+		
+		*/
+		
+		//get the total number of artist images on the page and click a random one
+		List<WebElement> artistImageLinks = driver.findElements(By.xpath("//a[@class='click-hit']"));
+		xPathIndex = random.nextInt(artistImageLinks.size()) + 1;
+		WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
+		doClick(artistLink);
+		
+		return getInstance(IWC_ArtistsPage.class);
+		
+	}
+	public IWC_ArtistsPage doSelectRandomStoreItem(){
+		
+		Random random = new Random();
+		int xPathIndex = 0;
+	
+		//get the total number of item images on the page and click a random one
+		List<WebElement> itemImageLinks = driver.findElements(By.xpath("//img[@class='lazy click-hit']"));
+		xPathIndex = random.nextInt(itemImageLinks.size()) + 1;
+		WebElement imageLink = getElement(By.xpath("(//img[@class='lazy click-hit'])[" + xPathIndex + "]"));
+		doClick(imageLink);
+				
+		return getInstance(IWC_ArtistsPage.class);
+	}
+	
+	public IWC_ArtistsPage verifyItemDescriptionPageElements(){
+		
+		verifyElementIsDisplayed(getAddToCartBtn());
+		verifyElementIsDisplayed(getPreviewClipImg());
+		verifyElementIsDisplayed(getStoreItemDescriptionTxt());
+		verifyElementIsDisplayed(getStoreItemCategoriesTxt());
+		
+		for (int i = 1; i <=4 ; i++) {
+			verifyElementIsDisplayed(getElement(By.xpath("//div[contains(@id, 'clip-')][1]")));
+		}
+		
+		//Items in the “Top Selling Content” section are displaying properly
+		return getInstance(IWC_ArtistsPage.class);
 	}
 	
 }
