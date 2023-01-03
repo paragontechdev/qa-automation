@@ -110,7 +110,7 @@ public class IWG_ReviewHistoryPage extends BasePage {
 	public IWG_ReviewHistoryPage clickSave() {
 		
 		doStartTimer("Click save button");
-		doScrollToElement(getSaveBtn());
+		doScrollTo(getSaveBtn());
 		getSaveBtn().click();
 		getContentReviewUpdatedAlr();
 		doStopTimer();

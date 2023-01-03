@@ -1,5 +1,5 @@
 #Author: Kevin McGowan
-Feature: Home Page: iWantCustomClips Link
+Feature: Auto-135 Home Page: iWantCustomClips Link
 
   Scenario: Home Page: iWantCustomClips Link
     Given a guest navigates to the "Home" page

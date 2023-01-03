@@ -181,18 +181,17 @@ public class BasePage extends Page{
 			System.out.println("Error retreiving link attributes: " + i + ": " + url + "\n");
 		}
 	}
+	@Override
 	public String getArtistId(String link){
 		return link;
 	}
 	
-	/**
+	/*
 	 * Wait for object property
 	 */
 	@Override
 	public void waitUntilElementIsEnabled(WebElement element) {
-
 		Assert.assertTrue(element.isEnabled());
-		
 	}
 	@Override
 	public void waitUntilElementIsDisabled(WebElement element) {
@@ -223,6 +222,12 @@ public class BasePage extends Page{
 		
 	}
 	@Override
+	public void waitUntilPresenceOfElementLocated(By element) {
+	
+		wait.until(ExpectedConditions.presenceOfElementLocated(element));
+	
+	}	
+	@Override
 	public void waitForPageTitle(String expectedPageTitle) {
 
 		try {
@@ -232,7 +237,8 @@ public class BasePage extends Page{
 		}
 		
 	}
-	public void waitForElementAttribute(WebElement element, String attribute, String attributeValue ) {
+	@Override
+	public void waitForElementAttribute(WebElement element, String attribute, String attributeValue) {
 		
 		try {	
 			attributeValue = element.getAttribute(attribute);
@@ -243,18 +249,19 @@ public class BasePage extends Page{
 		}
 		
 	}
-	public void waitUntilPresenceOfElementLocated(By element) {
-	
-		wait.until(ExpectedConditions.presenceOfElementLocated(element));
-	
-	}
 
-	/**
-	 * Verify for object property
+
+	/*
+	 * Verify object property
 	 */
 	@Override
-	public void verifyElementIsDisplayed(WebElement element){
-		Assert.assertTrue("Expected web element not displayed: " + element.toString(), element.isDisplayed());
+	public void verifyElementIsDisplayed(WebElement element) throws Exception{
+		try{
+			wait.until(ExpectedConditions.visibilityOf(element));
+			Assert.assertTrue(element.isDisplayed());
+		}catch(Exception e){
+			throw new Exception("Expected web element not displayed: " + element.toString());
+		}
 	}
 	@Override
 	public void verifyElementIsNotDisplayed(WebElement element) throws Exception {
@@ -334,7 +341,7 @@ public class BasePage extends Page{
 		}
 	}
 	@Override
-	public void doHighlightElement(WebElement element) throws InterruptedException {
+	public void doHighlight(WebElement element) throws InterruptedException {
 		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		int flashCount = 10;
@@ -354,7 +361,7 @@ public class BasePage extends Page{
 	
 	}
 	@Override
-	public void doScrollToElement(WebElement element) {
+	public void doScrollTo(WebElement element) {
 		
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -367,8 +374,8 @@ public class BasePage extends Page{
 	public void doClick(WebElement element) {
 		
 		try {
-			waitUntilElementIsDisplayed(element);
-			waitUntilElementIsEnabled(element);
+			// waitUntilElementIsDisplayed(element);
+			// waitUntilElementIsEnabled(element);
 			Actions actions = new Actions(driver);
 			actions.moveToElement(element).perform();
 			Thread.sleep(1000);
@@ -378,7 +385,7 @@ public class BasePage extends Page{
 		}
 	}	
 	@Override
-	public void doSendKeys(WebElement element, String text) throws Exception {
+	public void doSendKeys(WebElement element, String text) {
 		
 		try{
 			waitUntilElementIsDisplayed(element);
@@ -457,7 +464,7 @@ public class BasePage extends Page{
 					break;
 				}
 				
-				// confirm that the correct page is diaplayed
+				// confirm that the correct page is displayed
 				verifyPageIsDisplayed(page.toLowerCase());
 			}
 			

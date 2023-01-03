@@ -12,7 +12,7 @@ Feature: Auto-141 Top Lists: Top 100 Categories
     When the user clicks the "Show all 100 Top Categories" link
     Then the top 100 categories are displayed
     When the user clicks a random top 100 category
-    Then the random category page is displayed
+    Then the correct category page is displayed
 
     Examples: 
       | username                | password   |

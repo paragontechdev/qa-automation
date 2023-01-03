@@ -3,6 +3,7 @@ package stepdefinitions;
 //import static pageObjects.IWC_StorePage.artistName;
 
 import java.time.Duration;
+import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,11 +12,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -109,20 +112,31 @@ public class IWC_StepDefinitions {
 	@When("^(.*) clicks the \"([^\"]*)\" link$")
 	public void click_Link(String userType, String link) throws Exception {
 		
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		try {
+			IWC_HomePage home = new IWC_HomePage(driver, wait);
+				
+			switch(link.toLowerCase()) {
+			case "iwantcustomclips":
+			case "customs":
+				home.doClick(home.getCustomsLnk());
+				home.verifyPageIsDisplayed(link);
+				break;
 			
-		switch(link.toLowerCase()) {
-		case "iwantcustomclips":
-		case "customs":
-			home.doClick(home.getCustomsLnk());
-			home.verifyPageIsDisplayed(link);
-			break;
-		
-		case "iwantphone":
-		case "phone":
-			home.doClick(home.getPhoneLnk());
-			home.verifyPageIsDisplayed(link);
-			break;
+			case "iwantphone":
+			case "phone":
+				home.doClick(home.getPhoneLnk());
+				home.verifyPageIsDisplayed(link);
+				break;
+			
+			case "join free":
+			case "join free!":
+				home.doClick(home.getJoinFreeLnk());
+				home.verifyElementIsDisplayed(home.getMemberJoinBtn());
+				home.verifyElementIsDisplayed(home.getModelJoinBtn());
+				break;
+			}
+		} catch(Exception e) {
+			throw new Exception(link + " not defined in Java method.");
 		}
 		
 	}
@@ -136,6 +150,47 @@ public class IWC_StepDefinitions {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
 		artistPage.doSelectRandomStoreItem();
 	}
+	@When("^(.*) clicks the Join Now button on the (.*) modal$")
+	public void click_JoinNowButtonOnJoinNowModal(String userType, String fanOrArtist) {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		
+		switch(fanOrArtist.toLowerCase()) {
+		case "fan": 
+			home.doClick(home.getMemberJoinBtn());
+			break;
+		case "artist": 
+			home.doClick(home.getModelJoinBtn());
+			break;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	@When("^(.*) clicks on Featured Stores image link$")
+	public void click_FeaturedStoresImageLink(){
+		Random random = new Random();
+		
+		// select random page
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		int pageIdx = random.nextInt(3) + 1;
+		WebElement featuredStoresPagination = 
+		home.doClick(featuredStoresPagination);
+		
+		// select random Image
+		int imageIdx = random.nextInt(4) + 1;
+		WebElement featuredStoresImage = home.getElement(By.xpath("//div[@id='featuredStoresWrapper']//div[@style='display: block;']/h3[" + imageIdx + "]"));
+		IWC_StorePage.storeArtistName = featuredStoresImage.getText();
+		home.doClick(featuredStoresImage);
+		
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+	
+	}
+	
+	
 	
 	
 	// Verifications
@@ -149,7 +204,7 @@ public class IWC_StepDefinitions {
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
 		store.verifyCurrentUrlHasArtistId(artistId);
 	}
-	@Then("^the random ([^\"]*) page is displayed$")
+	@Then("^the correct ([^\"]*) page is displayed$")
 	public void verify_CorrectTopListPageIsDisplayed(String listType) throws Exception {
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
 		IWC_FetishCategoriesPage fetishCategories = new IWC_FetishCategoriesPage(driver, wait);
@@ -185,11 +240,27 @@ public class IWC_StepDefinitions {
 		fetishCategories.verifyFetishCategoryLinks(allOrMaxCount);
 	}
 	@Then("the item description page is displayed")
-	public void verify_ItemDescriptionPageElements() {
+	public void verify_ItemDescriptionPageElements() throws Exception {
 		IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
 		artistsPage.verifyItemDescriptionPageElements();
 	}
+	@Then("the Join Now modals are displayed")
+	public void verify_JoinNowModalsAreDisplayed() throws Exception {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.verifyElementIsDisplayed(home.getMemberJoinBtn());
+		home.verifyElementIsDisplayed(home.getModelJoinBtn());
+	}
+	public void verify_AccountCreationFormIsDisplayed(String userType) throws Exception {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.verifyElementIsDisplayed(home.getJoinNowBtn());
 	
+	}
+	@Then("categories that contain the search term are displayed")
+	public void verify_ItemCategoriesAreDisplayed() throws InterruptedException {
+		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
+		fetishPage.verifyFetishCategorySearchResults(fetishPage.getFetishCategorySearchTerm());
+	}
+
 	
 	// Search
 	@When("^(.*) searches for a fetish category (.*)$")
@@ -199,12 +270,7 @@ public class IWC_StepDefinitions {
 	    IWC_FetishCategoriesPage.fetishCategorySearchTerm = searchTerm;
 	}
 		
-	@Then("categories that contain the search term are displayed")
-	public void verify_ItemCategoriesAreDisplayed() throws InterruptedException {
-		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
-		fetishPage.verifyFetishCategorySearchResults(fetishPage.getFetishCategorySearchTerm());
-	}
-
+	
 	
 
 	/**

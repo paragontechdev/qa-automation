@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class IWC_HomePage extends BasePage {
 
-	/**
+	/*
 	 * CONSTRUCTOR: Ensure the driver and wait variables are initialized using a constructor.
 	 * They are declared in the Page class, which is a super (parent) class of the BasePage 
 	 * class.
@@ -24,12 +24,12 @@ public class IWC_HomePage extends BasePage {
 		
 	}
 
-	/**
+	/*
 	 * ENCAPSULATION: The page locators are encapsulated in private (class-level) object 
 	 * references (variables). These references have been declared private and as such, 
 	 * cannot be accessed outside of this class.
 	 */
-	private By joinFreeLnk = By.id("join-btn");
+	private By joinFreeLnk = By.linkText("Join Free!"); 
 	private By signInLnk = By.linkText("Sign in");
 	private By iAmNot18Lnk = By.linkText("I am NOT 18+");
 	private By termsOfUseAlr = By.id("consentFailed");
@@ -44,11 +44,11 @@ public class IWC_HomePage extends BasePage {
 	private By customsLnk = By.xpath("//a[@data-original-title='iWant Custom Clips']");
 	private By phoneLnk = By.xpath("//a[@data-original-title='iWantPhone']");
 	
-	/**
+	/*
 	 *  Sign-up modal objects (member and artist)
 	 */
-	private By memberJoinBtn = By.xpath("//a[contains(@class, 'memberJoin')]");
-	private By modelJoinBtn = By.xpath("//button[contains(@class, 'modelJoin')]");
+	private By memberJoinBtn = By.xpath("//div[@class='memberSide']//a[text()='Join Now']");
+	private By modelJoinBtn = By.xpath("//div[@class='modelSide']//button[text()='Join Now']");
 	private By joinUsernameEdt = By.id("username"); 
 	private By joinEmailEdt = By.id("email");
 	private By joinPasswordEdt = By.id("password"); 
@@ -57,8 +57,8 @@ public class IWC_HomePage extends BasePage {
 	private By joinSecurityAnswerEdt = By.id("security_ans");
 	private By joinCountryDrp = By.id("country");
 	private By joinCaptcha = By.xpath("//div[@class='recaptcha-checkbox-border']");
-	private By joinNowBtn = By.id("modal_send");
-	private By joinCancelBtn = By.className("btn.newMemberButton.cancelButton");
+	private By joinNowBtn = By.xpath("//button[text()='Join now!']");
+	private By joinCancelBtn = By.xpath("//button[text()='Cancel']");
 	private	By applyNowBtn = By.id("model-signup-link-1");
 	private	By artistAccountRad = By.xpath("//input[@name='accountType' and @class='modelRadio']");
 	private	By studioAccountRad = By.xpath("//input[@name='accountType' and @class='studioRadio']");
@@ -74,16 +74,14 @@ public class IWC_HomePage extends BasePage {
 	private By emailAvailableAlr = By.xpath("//b[contains(text(), 'Email Available')]");
 	private	By accountSuccessfullyCreatedLab = By.xpath("//h1[contains(text(), 'Account successfully created !')]");
 	
-	/**
+	/*
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
 	 * converted to WebElements so that relative actions can be taken against the web element
 	 * instead of the locator.
 	 */
 	public WebElement getTermsOfUseEnterBtn() {
-		
 		return getElement(termsOfUseEnterBtn);
-		
 	}
 	public WebElement getJoinFreeLnk(){
 		
@@ -137,14 +135,10 @@ public class IWC_HomePage extends BasePage {
 		
 	}
 	public WebElement getMemberJoinBtn() {
-		
 		return getElement(memberJoinBtn);
-			
 	}
 	public WebElement getModelJoinBtn() {
-		
 		return getElement(modelJoinBtn);
-				
 	}
 	public WebElement getJoinUsernameEdt() {
 		return getElement(joinUsernameEdt);
@@ -228,7 +222,7 @@ public class IWC_HomePage extends BasePage {
 		return getElement(phoneLnk);
 	}
 		
-	/**
+	/*
 	 * These custom methods will be used with this class. The return type should be the next
 	 * landing page object class.
 	 * @throws Exception 

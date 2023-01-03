@@ -135,7 +135,7 @@ public class IWC_ArtistsPage extends BasePage{
 		return getInstance(IWC_ArtistsPage.class);
 	}
 	
-	public IWC_ArtistsPage verifyItemDescriptionPageElements(){
+	public IWC_ArtistsPage verifyItemDescriptionPageElements() throws Exception{
 		
 		verifyElementIsDisplayed(getAddToCartBtn());
 		verifyElementIsDisplayed(getPreviewClipImg());

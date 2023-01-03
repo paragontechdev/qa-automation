@@ -9,4 +9,4 @@ Feature: Auto-139 Top Lists: Top 100 Stores
     When the user clicks the "Show all 100 Top Stores" link
     Then the top 100 stores are displayed
     When the user clicks a random top 100 store
-    Then the random store page is displayed
+    Then the correct store page is displayed

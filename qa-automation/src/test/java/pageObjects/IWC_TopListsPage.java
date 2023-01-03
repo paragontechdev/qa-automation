@@ -240,7 +240,7 @@ public class IWC_TopListsPage extends BasePage {
 	    }
     
         By tmp = By.xpath("(//*[(text()='#" + listCount + "')])[" + xPathIndex + "]");
-        doScrollToElement(getElement(tmp));
+        doScrollTo(getElement(tmp));
 		verifyElementIsEnabled(getElement(tmp));
 	    
 	    return getInstance(IWC_TopListsPage.class);

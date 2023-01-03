@@ -34,8 +34,11 @@ public abstract class Page {
 	public abstract String getPageHeader(By locator);
 	public abstract String getText(WebElement locator); 
 	public abstract String getCurrentMethodName();
+	public abstract String getArtistId(String link);
+	public abstract void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException;
 	public abstract int getHttpResponseCode(String linkUrl) throws MalformedURLException, IOException;
 	public abstract WebElement getElement(By locator);
+	
 	
 	public abstract void waitUntilElementIsDisplayed(WebElement element);
 	public abstract void waitUntilElementIsNotDisplayed(WebElement element);
@@ -48,25 +51,24 @@ public abstract class Page {
 	public abstract void verifyElementIsEnabled(WebElement locator) throws Exception;
 	public abstract void verifyElementIsDisabled(WebElement element) throws Exception;
 	public abstract void verifyPageIsDisplayed(String webPage) throws Exception;
+	public abstract void waitForElementAttribute(WebElement element, String attribute, String attributeValue);
+	public abstract void waitUntilPresenceOfElementLocated(By element);
 	
 	public abstract void doStartTimer(String description);
 	public abstract void doStopTimer();
-	
 	public abstract void doNavigateToPage(String page) throws Exception;
-	public abstract void doScrollToElement(WebElement element);
-	public abstract void doHighlightElement(WebElement element) throws InterruptedException;
+	public abstract void doScrollTo(WebElement element);
+	public abstract void doHighlight(WebElement element) throws InterruptedException;
 	public abstract void doClick(WebElement element);
 	public abstract void doSendKeys(WebElement element, String text) throws Exception;
 	public abstract void doMouseOver(WebElement element);
 	public abstract void doSelect(WebElement element, String option); 
 	public abstract void doClear(WebElement element); 
 	public abstract void doFileUpload(WebElement element, String filepath);
-	
-	public abstract void getStatusOfCurrentPageLinks(boolean logBrokenLinksOnly) throws MalformedURLException, IOException;
 	public abstract void doCreateFile(String filepath);
 	public abstract void doLogMessage(String logMessage);
 	
-	/**
+	/*
 	 *  GENERIC CLASSES & METHODS 
 	 */
 	public <TPage extends BasePage> TPage getInstance(Class<TPage> pageClass) {
@@ -80,5 +82,7 @@ public abstract class Page {
 		}
 				
 	}
+
+	
 	
 }
