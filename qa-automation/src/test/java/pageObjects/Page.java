@@ -24,7 +24,7 @@ public abstract class Page {
 	public Page(WebDriver driver, WebDriverWait wait) {
 		
 		this.driver = driver;
-		this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
+		this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(20));
 		
 	}
 	

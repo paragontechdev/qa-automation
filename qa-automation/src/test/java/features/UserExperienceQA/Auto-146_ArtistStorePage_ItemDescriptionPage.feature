@@ -6,6 +6,6 @@ Feature: Auto-146 Artist Store Page: Item Description Page
     And the guest accepts terms of use
    	When the guest navigates to the "Artists" page
     Then the "Artists" page is displayed
-    When the guest selects a random artist
+    When the guest clicks a random artist image
     And the guest selects a random store item
     Then the item description page is displayed

@@ -3,7 +3,6 @@ package stepdefinitions;
 //import static pageObjects.IWC_StorePage.artistName;
 
 import java.time.Duration;
-import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -12,13 +11,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -84,7 +81,7 @@ public class IWC_StepDefinitions {
 	
 	
 	// Click
-	@When("^(.*) clicks the \"Show all 100 Top (.*)\" link$")
+	@When("^(.*) clicks \"Show all 100 Top (.*)\"$")
 	public void click_TopListsShowAllLink(String userType, String link) throws Exception {
 		
 		By element = null;
@@ -140,7 +137,8 @@ public class IWC_StepDefinitions {
 		}
 		
 	}
-	@When("(.*) selects a random artist")
+	// @When("(.*) selects a random artist")
+	@When("(.*) clicks a random artist image")
 	public void click_RandomArtist() {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
 		artistPage.doSelectRandomArtist();
@@ -163,35 +161,21 @@ public class IWC_StepDefinitions {
 			break;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	@When("^(.*) clicks on Featured Stores image link$")
-	public void click_FeaturedStoresImageLink(){
-		Random random = new Random();
+	@When("^(.*) clicks on Featured Stores widget image link$")
+	public void click_FeaturedStoresImageLink(String userType){
 		
-		// select random page
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		int pageIdx = random.nextInt(3) + 1;
-		WebElement featuredStoresPagination = 
-		home.doClick(featuredStoresPagination);
-		
-		// select random Image
-		int imageIdx = random.nextInt(4) + 1;
-		WebElement featuredStoresImage = home.getElement(By.xpath("//div[@id='featuredStoresWrapper']//div[@style='display: block;']/h3[" + imageIdx + "]"));
-		IWC_StorePage.storeArtistName = featuredStoresImage.getText();
-		home.doClick(featuredStoresImage);
-		
-		IWC_StorePage store = new IWC_StorePage(driver, wait);
-		store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+		home.doClickRandomFeaturedStoreImage();
 	
 	}
+	@When("^(.*) clicks on Featured Phone Stores widget image link$")
+	public void click_FeaturedPhoneStoresImageLink(String userType){
+		
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.doClickRandomFeaturedPhoneStoreImage();
 	
-	
-	
+	}
+		
 	
 	// Verifications
 	@Then("^the \"([^\"]*)\" page is displayed$")
@@ -230,7 +214,7 @@ public class IWC_StepDefinitions {
 		basePage.getStatusOfCurrentPageLinks(true);
 	}
 	@Then("^the top (.*) ([^\"]*) are displayed$")
-	public void verify_top_items_are_displayed(int listCount, String listType) throws Exception{
+	public void verify_TopListItemsAreDisplayed(int listCount, String listType) throws Exception{
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
 		topLists.verifyTopListsAreDisplayed(listCount, listType);
 	}
@@ -250,17 +234,18 @@ public class IWC_StepDefinitions {
 		home.verifyElementIsDisplayed(home.getMemberJoinBtn());
 		home.verifyElementIsDisplayed(home.getModelJoinBtn());
 	}
-	public void verify_AccountCreationFormIsDisplayed(String userType) throws Exception {
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.verifyElementIsDisplayed(home.getJoinNowBtn());
-	
-	}
 	@Then("categories that contain the search term are displayed")
 	public void verify_ItemCategoriesAreDisplayed() throws InterruptedException {
 		IWC_FetishCategoriesPage fetishPage = new IWC_FetishCategoriesPage(driver, wait);
 		fetishPage.verifyFetishCategorySearchResults(fetishPage.getFetishCategorySearchTerm());
 	}
-
+	@Then("(.*) account creation form is displayed")
+	public void verify_AccountCreationFormIsDisplayed(String userType) throws Exception {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.verifyElementIsDisplayed(home.getJoinNowBtn());
+	
+	}
+	
 	
 	// Search
 	@When("^(.*) searches for a fetish category (.*)$")

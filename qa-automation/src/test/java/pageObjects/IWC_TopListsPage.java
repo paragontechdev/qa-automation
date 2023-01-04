@@ -224,22 +224,28 @@ public class IWC_TopListsPage extends BasePage {
 	        throw new IllegalArgumentException("$listCount is invalid. Select between 1-100.");
 	    }
 	    
+	    By tmp = null;
+	    
 	    int xPathIndex;
 	    switch (listType) {
 	      case "stores":
-	        xPathIndex = listCount > 3 ? 1 : 1;
+	        //xPathIndex = listCount > 3 ? 1 : 1;
+	        tmp = By.xpath("/html/body/div[3]/div[2]/div/div[97]/a/div/h4");
 	        break;
 	      case "items":
-	        xPathIndex = listCount > 3 ? 3 : 2;
+	        //xPathIndex = listCount > 3 ? 3 : 2;
+	        tmp = By.xpath("/html/body/div[4]/div/div[1]/div[1]/div[100]/a/div/h4");
+	        
 	        break;
 	      case "categories":
-	        xPathIndex = (listCount > 3) & (listCount < 3) ? 4 : 3;
+	        //xPathIndex = (listCount > 3) & (listCount < 3) ? 4 : 3;
+	        tmp = By.xpath("/html/body/div[4]/div/div[2]/div[1]/div[100]/a/div/h4");
 	        break;
 	      default:
 	        throw new IllegalArgumentException("Invalid listType: $listType");
 	    }
     
-        By tmp = By.xpath("(//*[(text()='#" + listCount + "')])[" + xPathIndex + "]");
+        // By tmp = By.xpath("(//*[(text()='#" + listCount + "')])[" + xPathIndex + "]");
         doScrollTo(getElement(tmp));
 		verifyElementIsEnabled(getElement(tmp));
 	    

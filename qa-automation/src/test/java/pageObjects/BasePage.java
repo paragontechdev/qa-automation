@@ -374,7 +374,7 @@ public class BasePage extends Page{
 	public void doClick(WebElement element) {
 		
 		try {
-			// waitUntilElementIsDisplayed(element);
+			waitUntilElementIsDisplayed(element);
 			// waitUntilElementIsEnabled(element);
 			Actions actions = new Actions(driver);
 			actions.moveToElement(element).perform();

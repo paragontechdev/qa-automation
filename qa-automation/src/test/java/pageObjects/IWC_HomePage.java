@@ -1,5 +1,7 @@
 package pageObjects;
 
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -330,4 +332,65 @@ public class IWC_HomePage extends BasePage {
 		
  	}
 	
+ 	public IWC_StorePage doClickRandomFeaturedStoreImage() {
+ 		Random random = new Random();
+		
+		// select a random widget page
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		int pageIdx = random.nextInt(3) + 1;
+		WebElement widgetPageControl = home.getElement((By.xpath("//*[@id='featuredStores']/div/div[2]/ol/li[" + pageIdx + "]")));
+		home.waitUntilElementIsDisplayed(widgetPageControl);
+		home.doClick(widgetPageControl);
+	
+		// select a random image
+		int imageIdx = 0;
+		
+		switch (pageIdx) {
+		case 1: imageIdx = random.nextInt(4) + 1; break;
+		case 2: imageIdx = random.nextInt(4) + 5; break;
+		case 3: imageIdx = random.nextInt(4) + 9; break;
+		}
+			
+		WebElement image = home.getElement(By.xpath("//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a"));
+		home.waitUntilElementIsDisplayed(image);
+		IWC_StorePage.storeArtistName = home.getElement(By.xpath("(//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+		home.doClick(image);
+		
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+		
+		return getInstance(IWC_StorePage.class);
+				
+ 	}
+ 	public IWC_StorePage doClickRandomFeaturedPhoneStoreImage() {
+ 		Random random = new Random();
+		
+		// select a random widget page
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		int pageIdx = random.nextInt(3) + 1;
+		WebElement widgetPageControl = home.getElement((By.xpath("//*[@id='phoneStores']/div/div[2]/ol/li[" + pageIdx + "]")));
+		home.waitUntilElementIsDisplayed(widgetPageControl);
+		home.doClick(widgetPageControl);
+	
+		// select a random image
+		int imageIdx = 0;
+		
+		switch (pageIdx) {
+		case 1: imageIdx = random.nextInt(4) + 1; break;
+		case 2: imageIdx = random.nextInt(4) + 5; break;
+		case 3: imageIdx = random.nextInt(4) + 9; break;
+		}
+				
+		WebElement image = home.getElement(By.xpath("//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a"));
+		home.waitUntilElementIsDisplayed(image);
+		IWC_StorePage.storeArtistName = home.getElement(By.xpath("(//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+		home.doClick(image);
+
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+		
+		return getInstance(IWC_StorePage.class);
+				
+ 	}
+ 	
 }

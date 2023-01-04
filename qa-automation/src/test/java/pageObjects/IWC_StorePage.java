@@ -147,7 +147,7 @@ public class IWC_StorePage extends BasePage {
 	}
 	public IWC_StorePage verifyStorePageDisplaysArtistName(String expectedArtistName) {
 		
-		String currentPageArtistName = getElement(By.xpath("//span/h1")).getText();
+		String currentPageArtistName = getElement(By.xpath("//div[2]/div/span/h1")).getText();
 		Assert.assertEquals(expectedArtistName + " clicked, but current page is " + currentPageArtistName, currentPageArtistName, expectedArtistName);
 		return getInstance(IWC_StorePage.class);
 	}
