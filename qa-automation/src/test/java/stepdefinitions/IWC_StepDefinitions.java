@@ -137,7 +137,6 @@ public class IWC_StepDefinitions {
 		}
 		
 	}
-	// @When("(.*) selects a random artist")
 	@When("(.*) clicks a random artist image")
 	public void click_RandomArtist() {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
@@ -175,7 +174,12 @@ public class IWC_StepDefinitions {
 		home.doClickRandomFeaturedPhoneStoreImage();
 	
 	}
-		
+	@When("^(.*) clicks on Top Selling Content widget image link")
+	public void click_TopSellingContentImageLink(String userType) {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.doClickRandomTopSellingContentImage();
+	}
+	
 	
 	// Verifications
 	@Then("^the \"([^\"]*)\" page is displayed$")
