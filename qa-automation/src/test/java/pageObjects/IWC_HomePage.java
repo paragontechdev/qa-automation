@@ -1,5 +1,6 @@
 package pageObjects;
 
+import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -332,17 +333,126 @@ public class IWC_HomePage extends BasePage {
 		
  	}
 	
+ 	
+ 	public IWC_StorePage doSelectRandomWidgetItem(String widget) throws InterruptedException{
+ 		Random random = new Random();
+ 		WebElement pageSelector = null;
+ 		WebElement thumbnail = null;
+ 		String itemArtist = null;
+ 		
+ 		IWC_HomePage home = new IWC_HomePage(driver, wait);
+ 		IWC_StorePage store = new IWC_StorePage(driver, wait);
+				
+		int rangeIdx = random.nextInt(3) + 1;
+		int pageIdx = random.nextInt(3) + 1;
+		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
+				
+		switch (widget.toLowerCase()){
+		
+			case "featured stores":
+				pageSelector = home.getElement(By.xpath("(//*[@id='featuredStores']/div/div[2]/ol/li)[" + pageIdx + "]"));
+				thumbnail = home.getElement(By.xpath("//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a"));
+				itemArtist = home.getElement(By.xpath("(//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+				
+				home.doClick(pageSelector);
+				home.waitUntilElementIsDisplayed(thumbnail);
+				IWC_StorePage.storeItemName = thumbnail.getText();
+				IWC_StorePage.storeArtistName = itemArtist;
+				
+				home.doClick(thumbnail);
+				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+				
+				break;
+				
+			case "featured phone stores":
+				pageSelector = home.getElement(By.xpath("(//*[@id='phoneStores']/div/div[2]/ol/li)[" + pageIdx + "]"));
+				thumbnail = home.getElement(By.xpath("//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a"));
+				itemArtist = home.getElement(By.xpath("(//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+				
+				home.doClick(pageSelector);
+				home.waitUntilElementIsDisplayed(thumbnail);
+				IWC_StorePage.storeItemName = thumbnail.getText();
+				IWC_StorePage.storeArtistName = itemArtist;
+				
+				home.doClick(thumbnail);
+				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+				
+				break;
+				
+			case "top selling content":
+				WebElement rangeSelector = home.getElement(By.xpath("(//*[@id='topContentType']/label)[" + rangeIdx + "]"));
+				home.doClick(rangeSelector);
+				pageSelector = home.getElement(By.xpath("(//*[@id='topContent']/div/div[3]/ol/li)[" + pageIdx + "]"));
+				thumbnail = home.getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/span/a)[" + imageIdx + "]"));
+				itemArtist = getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/h3/a)[" + imageIdx + "]")).getText();
+				
+				home.doClick(pageSelector);
+				home.waitUntilElementIsDisplayed(thumbnail);
+				IWC_StorePage.storeItemName = thumbnail.getText();
+				IWC_StorePage.storeArtistName = itemArtist;
+				
+				home.doClick(thumbnail);
+				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+				store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
+				
+				break;
+				
+			case "newest content":
+				pageIdx = random.nextInt(7) + 1;
+				//imageIdx = (pageIdx - 1) * 4 + random.nextInt(40) + 1;
+				imageIdx = random.nextInt(40) + 1;
+				pageSelector = home.getElement(By.xpath("(//*[@id='pagination']/div/ul/li/a)[" + pageIdx + "]"));
+				thumbnail = home.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[3]/span[4]/a)[" + imageIdx + "]"));
+				itemArtist = home.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[3]/span[6]/a)[" + imageIdx + "]")).getText();
+				
+				home.doClick(pageSelector);
+				home.waitUntilElementIsDisplayed(thumbnail);
+				IWC_StorePage.storeItemName = thumbnail.getText();
+				IWC_StorePage.storeArtistName = itemArtist;
+				
+				//Thread.sleep(10000);
+				driver.get(thumbnail.getAttribute("href"));
+				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+				store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
+				
+				break;	
+		}
+		
+		//WebElement pageSelector = home.getElement((By.xpath("(//*[@id='featuredStores']/div/div[2]/ol/li)[" + pageIdx + "]")));
+		//home.doClick(pageSelector);
+
+		// Randomly selected 1 of 4 images displayed on 1 of 3 randomly selected pages. Images are indexed 1-12.
+		//int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
+		
+		// Save item name and store artist name
+		//home.waitUntilElementIsDisplayed(thumbnail);
+		//IWC_StorePage.storeItemName = thumbnail.getText();
+		//IWC_StorePage.storeArtistName = itemArtist;
+
+		// Click the thumbnail and verify the correct page is displayed
+		//home.doClick(thumbnail);
+		
+		// Verify that the correct page is displayed
+		//IWC_StorePage store = new IWC_StorePage(driver, wait);
+		//store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+		//if (!widget.contains("stores")) {
+		//	store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
+		//}
+		
+		return getInstance(IWC_StorePage.class);
+				
+ 	}
+ 	
  	public IWC_StorePage doClickRandomFeaturedStoreImage() {
  		Random random = new Random();
 		
-		// select a random image page
+ 		// Select a random thumbnail page (1 of 3)
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		int pageIdx = random.nextInt(3) + 1;
-		WebElement widgetPageControl = home.getElement((By.xpath("(//*[@id='featuredStores']/div/div[2]/ol/li)[" + pageIdx + "]")));
-		home.waitUntilElementIsDisplayed(widgetPageControl);
-		home.doClick(widgetPageControl);
+		WebElement pageSelector = home.getElement((By.xpath("(//*[@id='featuredStores']/div/div[2]/ol/li)[" + pageIdx + "]")));
+		home.doClick(pageSelector);
 	
-		// select a random image
+		/* select a random clip
 		int imageIdx = 0;
 		
 		switch (pageIdx) {
@@ -350,7 +460,12 @@ public class IWC_HomePage extends BasePage {
 		case 2: imageIdx = random.nextInt(4) + 5; break;
 		case 3: imageIdx = random.nextInt(4) + 9; break;
 		}
-			
+		*/
+		
+		// Randomly selected 1 of 4 images displayed on 1 of 3 randomly selected pages. Images are indexed 1-12.
+		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
+		
+		// Save store artist name	
 		WebElement image = home.getElement(By.xpath("//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a"));
 		home.waitUntilElementIsDisplayed(image);
 		IWC_StorePage.storeArtistName = home.getElement(By.xpath("(//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
@@ -365,14 +480,13 @@ public class IWC_HomePage extends BasePage {
  	public IWC_StorePage doClickRandomFeaturedPhoneStoreImage() {
  		Random random = new Random();
 		
-		// select a random image page
+ 		// Select a random thumbnail page (1 of 3)
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		int pageIdx = random.nextInt(3) + 1;
 		WebElement pageSelector = home.getElement((By.xpath("(//*[@id='phoneStores']/div/div[2]/ol/li)[" + pageIdx + "]")));
-		home.waitUntilElementIsDisplayed(pageSelector);
 		home.doClick(pageSelector);
-	
-		// select a random image
+
+		/* select a random clip
 		int imageIdx = 0;
 		
 		switch (pageIdx) {
@@ -380,7 +494,12 @@ public class IWC_HomePage extends BasePage {
 		case 2: imageIdx = random.nextInt(4) + 5; break;
 		case 3: imageIdx = random.nextInt(4) + 9; break;
 		}
-				
+		*/
+		
+		// Randomly selected 1 of 4 images displayed on 1 of 3 randomly selected pages. Images are indexed 1-12.
+		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
+		
+		// Save store artist name		
 		WebElement image = home.getElement(By.xpath("//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a"));
 		home.waitUntilElementIsDisplayed(image);
 		IWC_StorePage.storeArtistName = home.getElement(By.xpath("(//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
@@ -395,20 +514,18 @@ public class IWC_HomePage extends BasePage {
  	public IWC_StorePage doClickRandomTopSellingContentImage() {
  		Random random = new Random();
 		
- 		// select a random range (daily, weekly, monthly)
+ 		// Select a random range (daily, weekly, monthly)
  		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		int rangeIdx = random.nextInt(3) + 1;
 		WebElement rangeSelector = home.getElement((By.xpath("(//*[@id='topContentType']/label)[" + rangeIdx + "]")));
-		home.waitUntilElementIsDisplayed(rangeSelector);
 		home.doClick(rangeSelector);
 
-		// select a random image page
+		// Select a random thumbnail page (1 of 3)
 		int pageIdx = random.nextInt(3) + 1;
 		WebElement pageSelector = home.getElement((By.xpath("(//*[@id='topContent']/div/div[3]/ol/li)[" + pageIdx + "]")));
-		home.waitUntilElementIsDisplayed(pageSelector);
 		home.doClick(pageSelector);
 
-		// select a random clip
+		/* select a random clip
 		int imageIdx = 0;
 		
 		switch (pageIdx) {
@@ -416,16 +533,26 @@ public class IWC_HomePage extends BasePage {
 		case 2: imageIdx = random.nextInt(4) + 5; break;
 		case 3: imageIdx = random.nextInt(4) + 9; break;
 		}
-				
+		*/
+		
+		// Randomly selected 1 of 4 images displayed on 1 of 3 randomly selected pages. Images are indexed 1-12.
+		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
+		
+		// Save item name and store artist name
 		WebElement image = home.getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/span/a)[" + imageIdx + "]"));
 		home.waitUntilElementIsDisplayed(image);
-		IWC_StorePage.storeArtistName = image.getText();
+		IWC_StorePage.storeItemName = image.getText();
+		WebElement itemArtist = getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/h3/a)[" + imageIdx + "]"));
+		IWC_StorePage.storeArtistName = itemArtist.getText();
+		
+		// Click the thumbnail and verify the correct page is displayed
 		home.doClick(image);
-
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
-		store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+		store.verifyItemPageDisplaysItemName(store.getStoreItemName());
+		store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
 		
 		return getInstance(IWC_StorePage.class);
 				
  	} 	
+
 }

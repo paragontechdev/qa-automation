@@ -41,7 +41,7 @@ public class IWC_StepDefinitions {
 	public WebDriverWait wait;
 	public Page page;
 	public long startTime, endTime, totalTime;
-		
+	
 	
 	// Setup (@Before) and tear-down (@After) methods
 	@Before
@@ -64,19 +64,32 @@ public class IWC_StepDefinitions {
 	}
 	@After
 	public void teardown() {
-		
-		//driver.close();
-		//driver.quit();
+	//	driver.quit();
 	}
+	
+	
+	// Actions
 	@When("^([^\"]*) logs in with (.*) and (.*)$")
-	public void login(String userType, String username, String password) throws Exception {
+	public void do_Login(String userType, String username, String password) throws Exception {
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		home.login(username, password);
 	}	
 	@Then("^([^\"]*) navigates to the \"([^\"]*)\" page$")
-	public void navigate_ToIwcPage(String userType, String iwcPage) throws Exception {
+	public void do_NavigateToPage(String userType, String iwcPage) throws Exception {
 		BasePage base = new BasePage(driver, wait);
 		base.doNavigateToPage(iwcPage);
+	}
+	@When("^([^\"]*) accepts terms of use$")
+	public void do_AcceptTermsOfUse(String userType) throws Exception {
+	    
+		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+		iwcHome.acceptTermsOfUse();
+				
+	}
+	@When("^([^\"]*) rejects terms of use$")
+	public void do_RejectTermsOfUse() throws Exception {
+		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+		iwcHome.rejectTermsOfUse();
 	}
 	
 	
@@ -179,6 +192,11 @@ public class IWC_StepDefinitions {
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		home.doClickRandomTopSellingContentImage();
 	}
+	@When("^(.*) clicks on (.*) (widget|section) link")
+	public void click_RandomWidgetLink(String userType, String sectionName, String widgetOrSection) throws InterruptedException {
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.doSelectRandomWidgetItem(sectionName);
+	}
 	
 	
 	// Verifications
@@ -248,6 +266,17 @@ public class IWC_StepDefinitions {
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		home.verifyElementIsDisplayed(home.getJoinNowBtn());
 	
+	}
+	@Then("terms of use alert is displayed")
+	public void verify_TermsOfUseAlertIsDisplayed() {
+		
+		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+		Assert.assertTrue(iwcHome.getIAmNot18Lnk().isDisplayed());
+	}
+	@Then("terms of use alert is not displayed")
+	public void verify_TermsOfUseAlertIsNotDisplayed() {
+		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
+		Assert.assertFalse(iwcHome.getIAmNot18Lnk().isDisplayed());
 	}
 	
 	
@@ -353,40 +382,6 @@ public class IWC_StepDefinitions {
 	 * Terms of Use modal methods
 	 *  
 	 */
-	@When("^([^\"]*) accepts terms of use$")
-	public void termsOfUse_accepted(String userType) throws Exception {
-	    
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-				
-		iwcHome.acceptTermsOfUse();
-				
-	}
-
-	@When("^([^\"]*) rejects terms of use$")
-	public void termsOfUse_rejected() throws Exception {
-	    
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		iwcHome.rejectTermsOfUse();
-				
-	}
-
-	@Then("terms of use alert is displayed")
-	public void termsOfUse_alert_is_displayed() {
-		
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		Assert.assertTrue(iwcHome.getIAmNot18Lnk().isDisplayed());
-	}
-	
-	@Then("terms of use alert is not displayed")
-	public void termsOfUse_alert_is_not_displayed() {
-		
-		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
-		
-		Assert.assertFalse(iwcHome.getIAmNot18Lnk().isDisplayed());
-	}
-	
 	
 	
 	/**

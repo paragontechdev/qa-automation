@@ -204,6 +204,7 @@ public class BasePage extends Page{
 
 		try {
 			wait.until(ExpectedConditions.visibilityOf(element));
+			doScrollTo(element);
 		} catch(Exception e){
 			System.out.println("Element not found: " + element.toString());
 			e.printStackTrace();
@@ -229,13 +230,11 @@ public class BasePage extends Page{
 	}	
 	@Override
 	public void waitForPageTitle(String expectedPageTitle) {
-
 		try {
 			wait.until(ExpectedConditions.titleContains(expectedPageTitle));
 		} catch(Exception e){
-			System.out.println("Error occurred while waiting for page title: " + expectedPageTitle);
+			System.out.println("Error occurred while waiting for page title.");
 		}
-		
 	}
 	@Override
 	public void waitForElementAttribute(WebElement element, String attribute, String attributeValue) {
@@ -258,6 +257,7 @@ public class BasePage extends Page{
 	public void verifyElementIsDisplayed(WebElement element) throws Exception{
 		try{
 			wait.until(ExpectedConditions.visibilityOf(element));
+			doScrollTo(element);
 			Assert.assertTrue(element.isDisplayed());
 		}catch(Exception e){
 			throw new Exception("Expected web element not displayed: " + element.toString());
@@ -362,12 +362,11 @@ public class BasePage extends Page{
 	}
 	@Override
 	public void doScrollTo(WebElement element) {
-		
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("arguments[0].scrollIntoView(true); window.scrollBy(0,-100);", element);     
 		} catch(Exception e){
-			System.out.println("Error occurred while trying to locate element: " + element);
+			System.out.println("Error scrolling to element.");
 		}
 	}	
 	@Override

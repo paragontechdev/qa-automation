@@ -226,28 +226,25 @@ public class IWC_TopListsPage extends BasePage {
 	    
 	    By tmp = null;
 	    
-	    int xPathIndex;
+	    /* Verify that '100' exists. Store items will index at 3 because top 3 are displayed at the top of the
+	     * page.  So check for '97'
+	     */
 	    switch (listType) {
 	      case "stores":
 	        //xPathIndex = listCount > 3 ? 1 : 1;
 	        tmp = By.xpath("/html/body/div[3]/div[2]/div/div[97]/a/div/h4");
 	        break;
 	      case "items":
-	        //xPathIndex = listCount > 3 ? 3 : 2;
 	        tmp = By.xpath("/html/body/div[4]/div/div[1]/div[1]/div[100]/a/div/h4");
-	        
 	        break;
 	      case "categories":
-	        //xPathIndex = (listCount > 3) & (listCount < 3) ? 4 : 3;
 	        tmp = By.xpath("/html/body/div[4]/div/div[2]/div[1]/div[100]/a/div/h4");
 	        break;
 	      default:
 	        throw new IllegalArgumentException("Invalid listType: $listType");
 	    }
     
-        // By tmp = By.xpath("(//*[(text()='#" + listCount + "')])[" + xPathIndex + "]");
-        doScrollTo(getElement(tmp));
-		verifyElementIsEnabled(getElement(tmp));
+        verifyElementIsDisplayed(getElement(tmp));
 	    
 	    return getInstance(IWC_TopListsPage.class);
 	}
