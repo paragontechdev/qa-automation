@@ -1,5 +1,5 @@
 #Author: Kevin McGowan
-Feature: Auto-131 Home Page: Newest Content Section
+Feature: Auto-132 Home Page: Newest Content Section
   
   Scenario: Home Page: Newest Content Section
     Given a guest navigates to the "Home" page

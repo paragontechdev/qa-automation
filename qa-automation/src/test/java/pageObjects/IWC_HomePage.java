@@ -336,9 +336,7 @@ public class IWC_HomePage extends BasePage {
  	
  	public IWC_StorePage doSelectRandomWidgetItem(String widget) throws InterruptedException{
  		Random random = new Random();
- 		WebElement pageSelector = null;
- 		WebElement thumbnail = null;
- 		String itemArtist = null;
+ 		WebElement pageSelector, thumbnail, itemArtist = null;
  		
  		IWC_HomePage home = new IWC_HomePage(driver, wait);
  		IWC_StorePage store = new IWC_StorePage(driver, wait);
@@ -352,27 +350,26 @@ public class IWC_HomePage extends BasePage {
 			case "featured stores":
 				pageSelector = home.getElement(By.xpath("(//*[@id='featuredStores']/div/div[2]/ol/li)[" + pageIdx + "]"));
 				thumbnail = home.getElement(By.xpath("//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a"));
-				itemArtist = home.getElement(By.xpath("(//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+				itemArtist = home.getElement(By.xpath("//*[@id='featuredStoresWrapper']/div[" + imageIdx + "]/div/a/div/img"));
 				
 				home.doClick(pageSelector);
 				home.waitUntilElementIsDisplayed(thumbnail);
 				IWC_StorePage.storeItemName = thumbnail.getText();
-				IWC_StorePage.storeArtistName = itemArtist;
+				IWC_StorePage.storeArtistName = itemArtist.getAttribute("alt");
 				
 				home.doClick(thumbnail);
-				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
-				
+				store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
 				break;
 				
 			case "featured phone stores":
 				pageSelector = home.getElement(By.xpath("(//*[@id='phoneStores']/div/div[2]/ol/li)[" + pageIdx + "]"));
 				thumbnail = home.getElement(By.xpath("//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a"));
-				itemArtist = home.getElement(By.xpath("(//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)")).getAttribute("alt");
+				itemArtist = home.getElement(By.xpath("(//*[@id='phoneStoresWrapper']/div[" + imageIdx + "]/div/a/div/img)"));
 				
 				home.doClick(pageSelector);
 				home.waitUntilElementIsDisplayed(thumbnail);
 				IWC_StorePage.storeItemName = thumbnail.getText();
-				IWC_StorePage.storeArtistName = itemArtist;
+				IWC_StorePage.storeArtistName = itemArtist.getAttribute("alt");
 				
 				home.doClick(thumbnail);
 				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
@@ -384,12 +381,12 @@ public class IWC_HomePage extends BasePage {
 				home.doClick(rangeSelector);
 				pageSelector = home.getElement(By.xpath("(//*[@id='topContent']/div/div[3]/ol/li)[" + pageIdx + "]"));
 				thumbnail = home.getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/span/a)[" + imageIdx + "]"));
-				itemArtist = getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/h3/a)[" + imageIdx + "]")).getText();
+				itemArtist = getElement(By.xpath("(//*[contains(@id, 'topClip-')]/div[2]/div[2]/h3/a)[" + imageIdx + "]"));
 				
 				home.doClick(pageSelector);
 				home.waitUntilElementIsDisplayed(thumbnail);
 				IWC_StorePage.storeItemName = thumbnail.getText();
-				IWC_StorePage.storeArtistName = itemArtist;
+				IWC_StorePage.storeArtistName = itemArtist.getText();
 				
 				home.doClick(thumbnail);
 				store.verifyItemPageDisplaysItemName(store.getStoreItemName());
@@ -403,12 +400,12 @@ public class IWC_HomePage extends BasePage {
 				imageIdx = random.nextInt(40) + 1;
 				pageSelector = home.getElement(By.xpath("(//*[@id='pagination']/div/ul/li/a)[" + pageIdx + "]"));
 				thumbnail = home.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[3]/span[4]/a)[" + imageIdx + "]"));
-				itemArtist = home.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[3]/span[6]/a)[" + imageIdx + "]")).getText();
+				itemArtist = home.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[3]/span[6]/a)[" + imageIdx + "]"));
 				
 				home.doClick(pageSelector);
 				home.waitUntilElementIsDisplayed(thumbnail);
 				IWC_StorePage.storeItemName = thumbnail.getText();
-				IWC_StorePage.storeArtistName = itemArtist;
+				IWC_StorePage.storeArtistName = itemArtist.getText();
 				
 				//Thread.sleep(10000);
 				driver.get(thumbnail.getAttribute("href"));

@@ -173,27 +173,25 @@ public class IWC_StepDefinitions {
 			break;
 		}
 	}
-	@When("^(.*) clicks on Featured Stores widget image link$")
-	public void click_FeaturedStoresImageLink(String userType){
-		
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doClickRandomFeaturedStoreImage();
 	
+	
+	@When("^(.*) clicks on (.*) section link$")
+	public void click_FeaturedStoresImageLink(String userType, String widget) throws Exception{
+		IWC_HomePage home = new IWC_HomePage(driver, wait);
+		home.doSelectRandomWidgetItem(widget);
 	}
-	@When("^(.*) clicks on Featured Phone Stores widget image link$")
-	public void click_FeaturedPhoneStoresImageLink(String userType){
-		
+	@When("^(.*) cli cks on (.*) widget link$")
+	public void click_FeaturedPhoneStoresImageLink(String userType, String widget) throws Exception{
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		home.doClickRandomFeaturedPhoneStoreImage();
-	
 	}
-	@When("^(.*) clicks on Top Selling Content widget image link")
-	public void click_TopSellingContentImageLink(String userType) {
+	@When("^(.*) cli cks on Top Selling Content widget link")
+	public void click_TopSellingContentImageLink(String userType, String widget) throws Exception {
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doClickRandomTopSellingContentImage();
+		home.doSelectRandomWidgetItem(widget);
 	}
-	@When("^(.*) clicks on (.*) (widget|section) link")
-	public void click_RandomWidgetLink(String userType, String sectionName, String widgetOrSection) throws InterruptedException {
+	@When("^(.*) cli cks on (.*) (widget|section) link")
+	public void click_RandomWidgetLink(String userType, String sectionName, String widgetOrSection) throws  Exception {
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		home.doSelectRandomWidgetItem(sectionName);
 	}
