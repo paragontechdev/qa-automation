@@ -175,25 +175,25 @@ public class IWC_StepDefinitions {
 	}
 	
 	
+	
 	@When("^(.*) clicks on (.*) section link$")
-	public void click_FeaturedStoresImageLink(String userType, String widget) throws Exception{
+	public void click_FeaturedStoresImageLink(String userType, String sectionName) throws Exception{
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doSelectRandomWidgetItem(widget);
-	}
-	@When("^(.*) cli cks on (.*) widget link$")
-	public void click_FeaturedPhoneStoresImageLink(String userType, String widget) throws Exception{
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doClickRandomFeaturedPhoneStoreImage();
-	}
-	@When("^(.*) cli cks on Top Selling Content widget link")
-	public void click_TopSellingContentImageLink(String userType, String widget) throws Exception {
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doSelectRandomWidgetItem(widget);
-	}
-	@When("^(.*) cli cks on (.*) (widget|section) link")
-	public void click_RandomWidgetLink(String userType, String sectionName, String widgetOrSection) throws  Exception {
-		IWC_HomePage home = new IWC_HomePage(driver, wait);
-		home.doSelectRandomWidgetItem(sectionName);
+		
+		switch(sectionName.toLowerCase()) {
+		case "featured stores":
+			home.doSelectRandomFeaturedStore();
+			break;
+		case "featured phone stores":
+			home.doSelectRandomFeaturedPhoneStore();
+			break;
+		case "top selling content":
+			home.doSelectRandomTopSellingContent();
+			break;
+		case "newest content":
+			home.doSelectRandomNewestContent();
+			break;
+		}
 	}
 	
 	
@@ -215,11 +215,11 @@ public class IWC_StepDefinitions {
 		
 		switch(listType) {
 		case "store":
-			store.verifyStorePageDisplaysArtistName(store.getStoreArtistName());
+			store.verifyStoreHomeDisplaysArtistName(store.getStoreArtistName());
 			break;
 		case "item":
-			store.verifyItemPageDisplaysItemName(store.getStoreItemName());
-			store.verifyItemPageDisplaysArtistName(store.getStoreArtistName());
+			store.verifyStoreItemPageDisplaysItemName(store.getStoreItemName());
+			store.verifyStoreItemPageDisplaysArtistName(store.getStoreArtistName());
 			break;
 		case "category":
 			fetishCategories.verifyPageDisplaysFetishCategory(fetishCategories.getFetishCategoryName());

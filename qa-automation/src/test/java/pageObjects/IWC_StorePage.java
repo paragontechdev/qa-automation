@@ -145,24 +145,32 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 		
 	}
-	public IWC_StorePage verifyStorePageDisplaysArtistName(String expectedArtistName) {
-		
-		String currentPageArtistName = getElement(By.xpath("//div[2]/div/span/h1")).getText();
-		Assert.assertEquals(expectedArtistName + " clicked, but current page is " + currentPageArtistName, currentPageArtistName, expectedArtistName);
+	public IWC_StorePage verifyStoreHomeDisplaysTopSellingContent(String itemName){
+		String currentPagetxt = getElement(By.xpath("//div[7]/div/div/div[1]/div[1]/span/a")).getText();
+		Assert.assertEquals("Error:", itemName, currentPagetxt);
 		return getInstance(IWC_StorePage.class);
 	}
-	public IWC_StorePage verifyItemPageDisplaysItemName(String itemName){
-		
-		String currentPageItemName = getElement(By.xpath("//span[@class='headline hidden-xs']")).getText();
-		Assert.assertEquals(itemName + " clicked, but current page shows " + currentPageItemName, currentPageItemName, itemName);
+	public IWC_StorePage verifyStoreHomeDisplaysArtistName(String artistName) throws Exception{
+		String currentPagetxt = getElement(By.xpath("//div[2]/div/span/h1")).getText();
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
 		return getInstance(IWC_StorePage.class);
 	}
-	public IWC_StorePage verifyItemPageDisplaysArtistName(String artistName){
-		
-		String currentPageArtistName = getElement(By.xpath("//a[@class='modelLink']")).getText();
-		Assert.assertEquals(artistName + " expected, but current page shows " + currentPageArtistName, currentPageArtistName, artistName);
+	public IWC_StorePage verifyStoreItemPageDisplaysItemName(String itemName){
+		String currentPagetxt = getElement(By.xpath("//div[2]/div/div[2]/span[1]")).getText();
+		Assert.assertEquals("Error:", itemName, currentPagetxt);
 		return getInstance(IWC_StorePage.class);
 	}
+	public IWC_StorePage verifyStoreItemPageDisplaysArtistName(String artistName){
+		String currentPagetxt = getElement(By.xpath("//a[@class='modelLink']")).getText();
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStorePhonePageDisplaysArtistName(String artistName){
+		String currentPagetxt = getElement(By.xpath("//div[(@class='col-sm-12 profileName')]//h1")).getText();
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	
 	
 	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
