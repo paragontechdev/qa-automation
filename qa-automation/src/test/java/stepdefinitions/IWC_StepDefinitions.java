@@ -91,6 +91,11 @@ public class IWC_StepDefinitions {
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		iwcHome.rejectTermsOfUse();
 	}
+	@When("^(.*) navigates to a random artist store page$")
+	public void do_NavigateToRandomArtistStorePage(String userType) throws Exception{
+		IWC_ArtistsPage artists = new IWC_ArtistsPage(driver, wait);
+		artists.selectAndVerifyRandomArtistPage();
+	}
 	
 	
 	// Click
@@ -151,9 +156,9 @@ public class IWC_StepDefinitions {
 		
 	}
 	@When("(.*) clicks a random artist image")
-	public void click_RandomArtist() {
+	public void click_RandomArtist() throws Exception {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
-		artistPage.doSelectRandomArtist();
+		artistPage.selectAndVerifyRandomArtistPage();
 	}
 	@When("(.*) selects a random store item")
 	public void click_RandomStoreItem() {
@@ -174,9 +179,7 @@ public class IWC_StepDefinitions {
 		}
 	}
 	
-	
-	
-	@When("^(.*) clicks on (.*) section link$")
+
 	public void click_FeaturedStoresImageLink(String userType, String sectionName) throws Exception{
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		
@@ -238,12 +241,21 @@ public class IWC_StepDefinitions {
 		IWC_TopListsPage topLists = new IWC_TopListsPage(driver, wait);
 		topLists.verifyTopListsAreDisplayed(listCount, listType);
 	}
-	@Then("^([^\"]*) verfies (.*) page links navigate to the correct page$")
-	public void verify_CategoryLinksNavigateToCorrectPage(String userTye, String allOrMaxCount) throws InterruptedException {
-		IWC_FetishCategoriesPage fetishCategories = new IWC_FetishCategoriesPage(driver, wait);
-		fetishCategories.verifyFetishCategoryLinks(allOrMaxCount);
+	@Then("^([^\"]*) verfies (.*) \"(.*)\" page links navigate to the correct page$")
+	public void verify_PageLinksNavigateToCorrectPage(String userTye, String allOrMaxCount, String iwcPage) throws Exception {
+		switch(iwcPage.toLowerCase()) {
+		case "artists":
+			IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
+			artistsPage.selectAndVerifyAllArtistLinks(allOrMaxCount);
+			break;
+			
+		//case "categories":
+		case "fetishes":
+			IWC_FetishCategoriesPage fetishCategories = new IWC_FetishCategoriesPage(driver, wait);
+			fetishCategories.verifyFetishCategoryLinks(allOrMaxCount);
+			break;
+		}
 	}
-	@Then("the item description page is displayed")
 	public void verify_ItemDescriptionPageElements() throws Exception {
 		IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
 		artistsPage.verifyItemDescriptionPageElements();

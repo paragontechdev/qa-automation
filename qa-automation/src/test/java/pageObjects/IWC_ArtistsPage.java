@@ -3,10 +3,12 @@ package pageObjects;
 import java.util.List;
 import java.util.Random;
 
+import org.testng.asserts.SoftAssert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 /** 
  * PAGE OBJECT MODEL (POM): These are assignments for all page objects using 'By' locators. 
@@ -43,7 +45,6 @@ public class IWC_ArtistsPage extends BasePage{
 	private By storeItemCategoriesTxt = By.xpath("(//div[@class='col-xs-12 category fix'])[2]");
 	private By previewClipImg = By.xpath("//img[@class='videoPlayer show-flexible-picture']");
 	
-	
 	/**
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
@@ -55,31 +56,18 @@ public class IWC_ArtistsPage extends BasePage{
 		return getElement(searchArtistsEdt);
 	
 	}
-	
 	public WebElement getSortLst() {
-		
 		return getElement(sortLst);
-	
 	}
-	
 	public WebElement getRecentlyActiveOpt() {
-		
 		return getElement(recentlyActiveOpt);
-	
 	}
-	
 	public WebElement getAlphabeticalOpt() {
-		
 		return getElement(alphabeticalOpt);
-	
 	}
-	
 	public WebElement getNewestOpt() {
-	
 		return getElement(newestOpt);
-	
 	}
-	
 	public WebElement getOldestOpt() {
 		return getElement(oldestOpt);
 	}
@@ -98,28 +86,55 @@ public class IWC_ArtistsPage extends BasePage{
 	
 	
 	
-	public IWC_ArtistsPage doSelectRandomArtist(){
+	Random random = new Random();
+	SoftAssert softAssert = new SoftAssert();
+	
+	public IWC_ArtistsPage selectAndVerifyAllArtistLinks(String allOrMaxCount) throws Exception{
+	
+		int xPathIndex = 0;
+		long loopCounterMax = 0;
 		
-		Random random = new Random();
+		// Get the total number of artist images on the page and click a random one
+		List<WebElement> artistImageLinks = driver.findElements(By.xpath("//a[@class='click-hit']"));
+		
+		// convert the value of the parameter to a number
+		if (allOrMaxCount.equals("all")) {
+			loopCounterMax = artistImageLinks.size();
+		} else {
+			loopCounterMax = Long.parseLong(allOrMaxCount);
+		}
+	
+		// check each category link in the collection
+		for (xPathIndex = 1; xPathIndex <= loopCounterMax; xPathIndex++) {
+			//driver.get(siteUrl + "artists");
+			doNavigateToPage("Artists");
+			WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
+			IWC_StorePage.storeArtistName = artistLink.getAttribute("alt");
+			doClick(artistLink);
+			
+			// Store the artist name to a IWC_StorePage class variable
+			IWC_StorePage store = new IWC_StorePage(driver, wait);
+			store.verifyStoreHomeDisplaysArtistName(store.getStoreArtistName());
+		}
+		softAssert.assertAll();
+		
+		return getInstance(IWC_ArtistsPage.class);
+	}
+	public IWC_ArtistsPage selectAndVerifyRandomArtistPage() throws Exception{
 		int xPathIndex = 0;
 		
-		/*
-		
-		// select random pagination between 1 and 7
-		xPathIndex = random.nextInt(7) + 1;
-		WebElement element = getElement(By.xpath("(//li[@class='ais-Pagination-item ais-Pagination-item--page'])[" + xPathIndex + "]"));
-		doClick(element);
-		
-		*/
-		
-		//get the total number of artist images on the page and click a random one
+		// Get the total number of artist images on the page and click a random one
 		List<WebElement> artistImageLinks = driver.findElements(By.xpath("//a[@class='click-hit']"));
 		xPathIndex = random.nextInt(artistImageLinks.size()) + 1;
 		WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
+		IWC_StorePage.storeArtistName = artistLink.getAttribute("alt");
 		doClick(artistLink);
 		
-		return getInstance(IWC_ArtistsPage.class);
+		// Store the artist name to a IWC_StorePage class variable
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyStoreHomeDisplaysArtistName(store.getStoreArtistName());
 		
+		return getInstance(IWC_ArtistsPage.class);
 	}
 	public IWC_ArtistsPage doSelectRandomStoreItem(){
 		
@@ -134,7 +149,6 @@ public class IWC_ArtistsPage extends BasePage{
 				
 		return getInstance(IWC_ArtistsPage.class);
 	}
-	
 	public IWC_ArtistsPage verifyItemDescriptionPageElements() throws Exception{
 		
 		verifyElementIsDisplayed(getAddToCartBtn());

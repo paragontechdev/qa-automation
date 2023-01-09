@@ -6,6 +6,6 @@ Feature: Auto-136 Categories Page: Category Links
     And the guest accepts terms of use
    	When the guest navigates to the "Categories" page
     Then the "Categories" page is displayed
-    And the guest verfies all page links navigate to the correct page
+    And the guest verfies all "Categories" page links navigate to the correct page
 
  
