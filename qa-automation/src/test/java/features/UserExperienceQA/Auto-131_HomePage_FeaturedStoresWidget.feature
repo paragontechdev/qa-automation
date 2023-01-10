@@ -1,6 +1,7 @@
 #Author: Kevin McGowan
 Feature: Auto-132 Home Page: Featured Stores Widget
   
+  @userexperience @homepage
   Scenario: Home Page: Featured Stores Widget
     Given a guest navigates to the "Home" page
     And the guest accepts terms of use

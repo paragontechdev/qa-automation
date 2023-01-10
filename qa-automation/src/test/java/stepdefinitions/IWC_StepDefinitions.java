@@ -4,6 +4,7 @@ package stepdefinitions;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -295,18 +296,25 @@ public class IWC_StepDefinitions {
 
 	
 	// Store Page
+	@When("^(.*) enters My Content search content (.*)$")
+	public void storePage_submit_SearchContentText(String userType, String searchContent) throws Exception{
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		
+		store.doSendKeys(store.getSearchContentEdt(), searchContent);
+		store.doClick(store.getSearchContentSubmitBtn());
+		Thread.sleep(2500);
+	}
 	
 	@When("^(.*) selects My Content filter category (.*)$")
-	public void storePage_select_FilterCategory(String userType, String category) throws InterruptedException {
+	public void storePage_select_FilterCategory(String userType, String category) throws Exception {
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
 		
 		store.getFilterDrp().click();
 		store.getElement(By.xpath("//*[@id='menu-select']/div/select/option[contains(text(), '" + category + "')][1]")).click();
 		store.getFilterDrp().click();
-		Thread.sleep(1000);
+		Thread.sleep(2500);
 	}
-	
-	
+		
 	@Then("^the results show the selected term in the clip details (.*)$")
 	public void storePage_verify_FilterResultsShowCategoryInDescription(String category) {
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
@@ -323,15 +331,33 @@ public class IWC_StepDefinitions {
 		softAssert.assertAll();
 	}
 	
+	@Then("^the results show items with descriptions containing search content (.*)$")
+	public void storePage_verify_SearchResultsShowSearchContentInDescription(String searchText) {
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		SoftAssert softAssert = new SoftAssert();
+		Actions action = new Actions(driver);
+		
+		// Loop through all of the clip results and verify that the category exists in the description
+		List<WebElement> clipResults = driver.findElements(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[@class='clip-thumb text-center'])"));
+		for (int i = 1; i <= clipResults.size(); i++) {
+			action.moveToElement(store.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2])[" + i + "]"))).perform();
+			String clipDescription = store.getElement(By.xpath("(//p[@class='pop-desc'])[" + i + "]")).getText();
+			
+			// look for each word of the search term in the description 
+			for(String word: searchText.split(" ")) {
+				Assert.assertTrue("Search not found in clip description.", clipDescription.contains(word));
+			}
+		}
+		softAssert.assertAll();
+	}
+	
 	@Then("^the artist store page ([^\"]*) is displayed$")
 	public void storePage_verify_CurrentUrlHasArtistId(String artistId) {
-		// IWC_StorePage store = new IWC_StorePage(driver, wait);
-		// store.verifyCurrentUrlHasArtistId(artistId);
 		String currentUrl = driver.getCurrentUrl();
 		Assert.assertTrue(currentUrl.contains(artistId));
 	}
 	
-
+	
 	
 	
 	

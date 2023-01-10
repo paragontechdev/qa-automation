@@ -10,5 +10,9 @@ Feature: Auto-144 Artist Store Page: Artist Store Search Box
   Scenario Outline: Artist Page
     When the guest navigates to a random artist store page
     Then the correct store page is displayed
-		When the guest selects My Content filter item
-		Then results how items tagged with filter selected
+    When the guest enters My Content search content <searchContent>
+    Then the results show items with descriptions containing search content <searchContent>
+
+    Examples: 
+      | searchContent |
+      | legs          |

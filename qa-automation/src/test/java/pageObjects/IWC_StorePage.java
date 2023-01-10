@@ -45,7 +45,8 @@ public class IWC_StorePage extends BasePage {
 	private By shoppingCartIco = By.xpath("//a[contains(@href, 'shopping_cart')]");
 	
 	private By filterDrp = By.xpath("//*[@id='menu-select']/div/select");
-	
+	private By searchContentEdt = By.xpath("//*[@id='searchbox']/div/form/input");
+	private By searchContentSubmitBtn = By.xpath("//*[@id='searchbox']/div/form/button[1]");
 	
 	/* 
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
@@ -104,6 +105,13 @@ public class IWC_StorePage extends BasePage {
 	public WebElement getFilterDrp() {
 		return getElement(filterDrp);
 	}
+	public WebElement getSearchContentEdt(){
+		return getElement(searchContentEdt);
+	}
+	public WebElement getSearchContentSubmitBtn(){
+		return getElement(searchContentSubmitBtn);
+	}
+	
 	
 	public String getStoreArtistName() {
 		return (storeArtistName);
@@ -205,11 +213,14 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 	}
 	
+	/*
 	public IWC_StorePage verifyCurrentUrlHasArtistId(String artistId) {
 		String currentUrl = driver.getCurrentUrl();
 		Assert.assertTrue(currentUrl.contains(artistId));
 		return getInstance(IWC_StorePage.class);
 	}
+	*/
+	
 	public IWC_StorePage verifyStoreHomeDisplaysTopSellingContent(String itemName){
 		String currentPagetxt = getElement(By.xpath("//div[7]/div/div/div[1]/div[1]/span/a")).getText();
 		Assert.assertEquals("Error:", itemName, currentPagetxt);
