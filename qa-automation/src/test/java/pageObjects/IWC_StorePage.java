@@ -1,5 +1,8 @@
 package pageObjects;
 
+import java.util.List;
+import java.util.Random;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -41,12 +44,30 @@ public class IWC_StorePage extends BasePage {
 	private By sendTipBtn = By.xpath("//button[text()='Send Tip']");
 	private By shoppingCartIco = By.xpath("//a[contains(@href, 'shopping_cart')]");
 	
+	private By filterDrp = By.xpath("//*[@id='menu-select']/div/select");
+	
+	
 	/* 
 	 * TYPE-CONVERSION: To access the page objects whose references were declared private, 
 	 * use public variables (getters). Using getElement, encapsulated 'By' locators are 
 	 * converted to WebElements so that relative actions can be taken against the web element
 	 * instead of the locator.
 	 */
+	public WebElement getAmountRad() {
+		return getElement(amountRad);
+	}
+	public WebElement getTipAmountAlr() {
+		return getElement(tipAmountAlr);
+	}
+	public WebElement getArtistClipImg() {
+		return getElement(artistClipImg);
+	}
+	public WebElement getArtistClipAddToCartBtn() {
+		return getElement(artistClipAddToCartBtn);
+	}
+	public WebElement getInCartLbl() {
+		return getElement(inCartLbl);
+	}
 	public WebElement getBuyMyClipsBtn() {
 		
 		return getElement(buyMyClipsBtn);
@@ -80,21 +101,10 @@ public class IWC_StorePage extends BasePage {
 	public WebElement getShoppingCartIco() {
 		return getElement(shoppingCartIco);
 	}
-	public WebElement getAmountRad() {
-		return getElement(amountRad);
+	public WebElement getFilterDrp() {
+		return getElement(filterDrp);
 	}
-	public WebElement getTipAmountAlr() {
-		return getElement(tipAmountAlr);
-	}
-	public WebElement getArtistClipImg() {
-		return getElement(artistClipImg);
-	}
-	public WebElement getArtistClipAddToCartBtn() {
-		return getElement(artistClipAddToCartBtn);
-	}
-	public WebElement getInCartLbl() {
-		return getElement(inCartLbl);
-	}
+	
 	public String getStoreArtistName() {
 		return (storeArtistName);
 	}
@@ -117,7 +127,9 @@ public class IWC_StorePage extends BasePage {
 	public void setInCartLbl(By inCartLbl) {
 		this.inCartLbl = inCartLbl;
 	}
-	
+	public void setFilterDrp(By filterDrp) {
+		this.filterDrp = filterDrp;
+	}
 	
 	/* 
 	 * These custom methods will be used with this class. The return type should be the next
@@ -138,40 +150,6 @@ public class IWC_StorePage extends BasePage {
 	public IWC_StorePage doNavigateToRandomArtistStorePage() throws Exception {
 		return getInstance(IWC_StorePage.class);
 	}
-	
-	public IWC_StorePage verifyCurrentUrlHasArtistId(String artistId) {
-		
-		String currentUrl = driver.getCurrentUrl();
-		Assert.assertTrue(currentUrl.contains(artistId));
-		return getInstance(IWC_StorePage.class);
-		
-	}
-	public IWC_StorePage verifyStoreHomeDisplaysTopSellingContent(String itemName){
-		String currentPagetxt = getElement(By.xpath("//div[7]/div/div/div[1]/div[1]/span/a")).getText();
-		Assert.assertEquals("Error:", itemName, currentPagetxt);
-		return getInstance(IWC_StorePage.class);
-	}
-	public IWC_StorePage verifyStoreHomeDisplaysArtistName(String artistName) throws Exception{
-		String currentPagetxt = getText(getElement(By.xpath("//div[2]/div/span/h1")));
-		Assert.assertEquals("Error:", artistName, currentPagetxt);
-		return getInstance(IWC_StorePage.class);
-	}
-	public IWC_StorePage verifyStoreItemPageDisplaysItemName(String itemName){
-		String currentPagetxt = getElement(By.xpath("//div[2]/div/div[2]/span[1]")).getText();
-		Assert.assertEquals("Error:", itemName, currentPagetxt);
-		return getInstance(IWC_StorePage.class);
-	}
-	public IWC_StorePage verifyStoreItemPageDisplaysArtistName(String artistName){
-		String currentPagetxt = getElement(By.xpath("//a[@class='modelLink']")).getText();
-		Assert.assertEquals("Error:", artistName, currentPagetxt);
-		return getInstance(IWC_StorePage.class);
-	}
-	public IWC_StorePage verifyStorePhonePageDisplaysArtistName(String artistName){
-		String currentPagetxt = getElement(By.xpath("//div[(@class='col-sm-12 profileName')]//h1")).getText();
-		Assert.assertEquals("Error:", artistName, currentPagetxt);
-		return getInstance(IWC_StorePage.class);
-	}
-		
 	public IWC_StorePage tipOrTribute(String userType, String amount) throws Exception {
 		
 		setAmountRad(By.xpath("//input[@type='radio' and @value='" + amount + "']"));
@@ -213,6 +191,51 @@ public class IWC_StorePage extends BasePage {
 		return getInstance(IWC_StorePage.class);
 	}
 	
+	public IWC_StorePage clickRandomStoreItem(){
+		
+		Random random = new Random();
+		int xPathIndex = 0;
+	
+		//get the total number of item images on the page and click a random one
+		List<WebElement> itemImageLinks = driver.findElements(By.xpath("//img[@class='lazy click-hit']"));
+		xPathIndex = random.nextInt(itemImageLinks.size()) + 1;
+		WebElement imageLink = getElement(By.xpath("(//img[@class='lazy click-hit'])[" + xPathIndex + "]"));
+		doClick(imageLink);
+				
+		return getInstance(IWC_StorePage.class);
+	}
+	
+	public IWC_StorePage verifyCurrentUrlHasArtistId(String artistId) {
+		String currentUrl = driver.getCurrentUrl();
+		Assert.assertTrue(currentUrl.contains(artistId));
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStoreHomeDisplaysTopSellingContent(String itemName){
+		String currentPagetxt = getElement(By.xpath("//div[7]/div/div/div[1]/div[1]/span/a")).getText();
+		Assert.assertEquals("Error:", itemName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStoreHomeDisplaysArtistName(String artistName) throws Exception{
+		String currentPagetxt = getText(getElement(By.xpath("//div[2]/div/span/h1")));
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStoreItemPageDisplaysItemName(String itemName){
+		String currentPagetxt = getElement(By.xpath("//div[2]/div/div[2]/span[1]")).getText();
+		Assert.assertEquals("Error:", itemName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStoreItemPageDisplaysArtistName(String artistName){
+		String currentPagetxt = getElement(By.xpath("//a[@class='modelLink']")).getText();
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+	public IWC_StorePage verifyStorePhonePageDisplaysArtistName(String artistName){
+		String currentPagetxt = getElement(By.xpath("//div[(@class='col-sm-12 profileName')]//h1")).getText();
+		Assert.assertEquals("Error:", artistName, currentPagetxt);
+		return getInstance(IWC_StorePage.class);
+	}
+		
 	public IWC_ShoppingCartPage goToShoppingCart() throws Exception{
 		
 		IWC_ShoppingCartPage iwcCart = new IWC_ShoppingCartPage(driver, wait);

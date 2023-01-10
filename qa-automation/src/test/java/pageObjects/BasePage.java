@@ -204,7 +204,9 @@ public class BasePage extends Page{
 
 		try {
 			wait.until(ExpectedConditions.visibilityOf(element));
-			doScrollTo(element);
+			Actions actions = new Actions(driver);
+			actions.moveToElement(element).perform();
+			//doScrollTo(element);
 		} catch(Exception e){
 			System.out.println("Element not found: " + element.toString());
 			e.printStackTrace();
@@ -400,10 +402,9 @@ public class BasePage extends Page{
 	public void doMouseOver(WebElement element) {
 		try {
 			waitUntilElementIsDisplayed(element);
-			element.clear();
-			
+			//element.clear();
 			Actions actions = new Actions(driver);
-			actions.moveToElement(element);
+			actions.moveToElement(element).perform();
 		}catch (Exception e){
 			System.out.println("Error mousing over object: " + element.toString());
 			e.printStackTrace();

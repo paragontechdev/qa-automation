@@ -336,12 +336,11 @@ public class IWC_HomePage extends BasePage {
  	// Home page sections
  	public IWC_StorePage doSelectRandomFeaturedStore() throws Exception {
  		Random random = new Random();
- 		WebElement rangeSelector, pageSelector, thumbnail, artistName = null;
+ 		WebElement pageSelector, thumbnail, artistName = null;
  		
  		IWC_HomePage home = new IWC_HomePage(driver, wait);
  		IWC_StorePage store = new IWC_StorePage(driver, wait);
 				
-		int rangeIdx = random.nextInt(3) + 1;
 		int pageIdx = random.nextInt(3) + 1;
 		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
 		
@@ -363,12 +362,11 @@ public class IWC_HomePage extends BasePage {
  	}
  	public IWC_StorePage doSelectRandomFeaturedPhoneStore() throws Exception {
  		Random random = new Random();
- 		WebElement rangeSelector, pageSelector, thumbnail, artistName = null;
+ 		WebElement pageSelector, thumbnail, artistName = null;
  		
  		IWC_HomePage home = new IWC_HomePage(driver, wait);
  		IWC_StorePage store = new IWC_StorePage(driver, wait);
 				
-		int rangeIdx = random.nextInt(3) + 1;
 		int pageIdx = random.nextInt(3) + 1;
 		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
 		
@@ -420,12 +418,11 @@ public class IWC_HomePage extends BasePage {
  	}
  	public IWC_StorePage doSelectRandomNewestContent() throws Exception{
  		Random random = new Random();
- 		WebElement rangeSelector, pageSelector, thumbnail, artistName = null;
+ 		WebElement pageSelector, thumbnail, artistName = null;
  		
  		IWC_HomePage home = new IWC_HomePage(driver, wait);
  		IWC_StorePage store = new IWC_StorePage(driver, wait);
 				
-		int rangeIdx = random.nextInt(3) + 1;
 		int pageIdx = random.nextInt(3) + 1;
 		int imageIdx = (pageIdx - 1) * 4 + random.nextInt(4) + 1;
 		

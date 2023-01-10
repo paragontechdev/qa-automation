@@ -1,5 +1,5 @@
 #Author: Kevin McGowan
-Feature: Auto-138 Artist Page
+Feature: Auto-144 Artist Store Page: Artist Store Search Box
 
   Background: 
     Given a guest navigates to the "Home" page
@@ -8,17 +8,12 @@ Feature: Auto-138 Artist Page
     Then the "Artists" page is displayed
 
   Scenario Outline: Artist Page
-    When the guest navigates to an artist store page <artistId>
-    Then the artist store page <artistId> is displayed
-
-    Examples: 
-      | artistId |
-      |   138463 |
-
-  Scenario: Artist Page
     When the guest navigates to a random artist store page
     Then the correct store page is displayed
+    When the guest selects My Content filter category <category>
+    Then the results show the selected term in the clip details <category>
 
-  Scenario: Artist Page
-    And the guest verfies 10 "Artists" page links navigate to the correct page
-  
+    Examples: 
+      | category |
+      | Fetish   |
+      

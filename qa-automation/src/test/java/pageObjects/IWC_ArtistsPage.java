@@ -89,8 +89,25 @@ public class IWC_ArtistsPage extends BasePage{
 	Random random = new Random();
 	SoftAssert softAssert = new SoftAssert();
 	
-	public IWC_ArtistsPage selectAndVerifyAllArtistLinks(String allOrMaxCount) throws Exception{
-	
+	public IWC_ArtistsPage clickArtistPaginationNumber(int pageNum){
+		
+		//Navigate to the content page and verify that the correct page is referenced 
+		driver.get(siteUrl + "artists?page=" + pageNum);
+		
+		return getInstance(IWC_ArtistsPage.class);
+	}
+	public IWC_ArtistsPage clickRandomArtistPaginationNumber(){
+		Random random = new Random();
+ 		
+		// Initialize web elements and random indexes
+		int pageNum = random.nextInt(17) + 1;
+				
+		//Navigate to the content page and verify that the correct page is referenced 
+		driver.get(siteUrl + "artists?page=" + pageNum);
+		
+		return getInstance(IWC_ArtistsPage.class);
+	}
+	public IWC_ArtistsPage clickAndVerifyAllArtistPageLinks(String allOrMaxCount) throws Exception{
 		int xPathIndex = 0;
 		long loopCounterMax = 0;
 		
@@ -108,6 +125,7 @@ public class IWC_ArtistsPage extends BasePage{
 		for (xPathIndex = 1; xPathIndex <= loopCounterMax; xPathIndex++) {
 			//driver.get(siteUrl + "artists");
 			doNavigateToPage("Artists");
+			clickRandomArtistPaginationNumber();
 			WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
 			IWC_StorePage.storeArtistName = artistLink.getAttribute("alt");
 			doClick(artistLink);
@@ -120,23 +138,45 @@ public class IWC_ArtistsPage extends BasePage{
 		
 		return getInstance(IWC_ArtistsPage.class);
 	}
-	public IWC_ArtistsPage selectAndVerifyRandomArtistPage() throws Exception{
+	public IWC_ArtistsPage clickAndVerifyRandomArtistPageLink() throws Exception{
 		int xPathIndex = 0;
 		
-		// Get the total number of artist images on the page and click a random one
+		// Get the total number of artist images on the page
 		List<WebElement> artistImageLinks = driver.findElements(By.xpath("//a[@class='click-hit']"));
+		
+		// select a random link in the collection, save its Artist's name and click it
 		xPathIndex = random.nextInt(artistImageLinks.size()) + 1;
 		WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
 		IWC_StorePage.storeArtistName = artistLink.getAttribute("alt");
 		doClick(artistLink);
 		
-		// Store the artist name to a IWC_StorePage class variable
+		// Verify that the saved artist name appears on teh resulting page
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
 		store.verifyStoreHomeDisplaysArtistName(store.getStoreArtistName());
 		
 		return getInstance(IWC_ArtistsPage.class);
 	}
-	public IWC_ArtistsPage doSelectRandomStoreItem(){
+	public IWC_ArtistsPage clickAndVerifyMultipleRandomArtistPageLinks(int maxLinks) throws Exception{
+		int xPathIndex = 0;
+		
+		// Get the total number of artist images on the page
+		List<WebElement> artistImageLinks = driver.findElements(By.xpath("//a[@class='click-hit']"));
+
+		// select a random link in the collection, save its Artist's name and click it
+		for (int i = 1; i <= maxLinks; i++) {
+			xPathIndex = random.nextInt(artistImageLinks.size()) + 1;
+			WebElement artistLink = getElement(By.xpath("(//img[@class='img-responsive img-circle click-hit'])[" + xPathIndex + "]"));
+			IWC_StorePage.storeArtistName = artistLink.getAttribute("alt");
+			doClick(artistLink);
+		}
+		
+		// Verify that the saved artist name appears on teh resulting page
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.verifyStoreHomeDisplaysArtistName(store.getStoreArtistName());
+		
+		return getInstance(IWC_ArtistsPage.class);
+	}
+	public IWC_ArtistsPage clickRandomStoreItem(){
 		
 		Random random = new Random();
 		int xPathIndex = 0;

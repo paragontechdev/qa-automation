@@ -3,6 +3,7 @@ package stepdefinitions;
 //import static pageObjects.IWC_StorePage.artistName;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,8 +12,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.asserts.SoftAssert;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -41,7 +44,6 @@ public class IWC_StepDefinitions {
 	public WebDriverWait wait;
 	public Page page;
 	public long startTime, endTime, totalTime;
-	
 	
 	// Setup (@Before) and tear-down (@After) methods
 	@Before
@@ -94,7 +96,7 @@ public class IWC_StepDefinitions {
 	@When("^(.*) navigates to a random artist store page$")
 	public void do_NavigateToRandomArtistStorePage(String userType) throws Exception{
 		IWC_ArtistsPage artists = new IWC_ArtistsPage(driver, wait);
-		artists.selectAndVerifyRandomArtistPage();
+		artists.clickAndVerifyRandomArtistPageLink();
 	}
 	
 	
@@ -158,12 +160,12 @@ public class IWC_StepDefinitions {
 	@When("(.*) clicks a random artist image")
 	public void click_RandomArtist() throws Exception {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
-		artistPage.selectAndVerifyRandomArtistPage();
+		artistPage.clickAndVerifyRandomArtistPageLink();
 	}
 	@When("(.*) selects a random store item")
 	public void click_RandomStoreItem() {
 		IWC_ArtistsPage artistPage = new IWC_ArtistsPage(driver, wait);
-		artistPage.doSelectRandomStoreItem();
+		artistPage.clickRandomStoreItem();
 	}
 	@When("^(.*) clicks the Join Now button on the (.*) modal$")
 	public void click_JoinNowButtonOnJoinNowModal(String userType, String fanOrArtist) {
@@ -178,8 +180,7 @@ public class IWC_StepDefinitions {
 			break;
 		}
 	}
-	
-
+	@When("^(.*) clicks on (.*) (section|widget) link$")
 	public void click_FeaturedStoresImageLink(String userType, String sectionName) throws Exception{
 		IWC_HomePage home = new IWC_HomePage(driver, wait);
 		
@@ -199,6 +200,7 @@ public class IWC_StepDefinitions {
 		}
 	}
 	
+	// Select
 	
 	// Verifications
 	@Then("^the \"([^\"]*)\" page is displayed$")
@@ -206,11 +208,7 @@ public class IWC_StepDefinitions {
 		BasePage base = new BasePage(driver, wait);
 		base.verifyPageIsDisplayed(page);
 	}
-	@Then("^the artist store page ([^\"]*) is displayed$")
-	public void verify_CurrentUrlHasArtistId(String artistId) {
-		IWC_StorePage store = new IWC_StorePage(driver, wait);
-		store.verifyCurrentUrlHasArtistId(artistId);
-	}
+
 	@Then("^the correct ([^\"]*) page is displayed$")
 	public void verify_CorrectTopListPageIsDisplayed(String listType) throws Exception {
 		IWC_StorePage store = new IWC_StorePage(driver, wait);
@@ -246,7 +244,7 @@ public class IWC_StepDefinitions {
 		switch(iwcPage.toLowerCase()) {
 		case "artists":
 			IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
-			artistsPage.selectAndVerifyAllArtistLinks(allOrMaxCount);
+			artistsPage.clickAndVerifyAllArtistPageLinks(allOrMaxCount);
 			break;
 			
 		//case "categories":
@@ -256,6 +254,7 @@ public class IWC_StepDefinitions {
 			break;
 		}
 	}
+	@Then("the item description page is displayed")
 	public void verify_ItemDescriptionPageElements() throws Exception {
 		IWC_ArtistsPage artistsPage = new IWC_ArtistsPage(driver, wait);
 		artistsPage.verifyItemDescriptionPageElements();
@@ -279,7 +278,6 @@ public class IWC_StepDefinitions {
 	}
 	@Then("terms of use alert is displayed")
 	public void verify_TermsOfUseAlertIsDisplayed() {
-		
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		Assert.assertTrue(iwcHome.getIAmNot18Lnk().isDisplayed());
 	}
@@ -288,6 +286,66 @@ public class IWC_StepDefinitions {
 		IWC_HomePage iwcHome = new IWC_HomePage(driver, wait);
 		Assert.assertFalse(iwcHome.getIAmNot18Lnk().isDisplayed());
 	}
+	
+
+	
+	// Home
+	
+	
+
+	
+	// Store Page
+	
+	@When("^(.*) selects My Content filter category (.*)$")
+	public void storePage_select_FilterCategory(String userType, String category) throws InterruptedException {
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		
+		store.getFilterDrp().click();
+		store.getElement(By.xpath("//*[@id='menu-select']/div/select/option[contains(text(), '" + category + "')][1]")).click();
+		store.getFilterDrp().click();
+		Thread.sleep(1000);
+	}
+	
+	
+	@Then("^the results show the selected term in the clip details (.*)$")
+	public void storePage_verify_FilterResultsShowCategoryInDescription(String category) {
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		SoftAssert softAssert = new SoftAssert();
+		Actions action = new Actions(driver);
+	    
+		// Loop through all of the clip results and verify that the category exists in the description
+		List<WebElement> clipResults = driver.findElements(By.xpath("(//*[contains(@id, 'clip-')]/div[2]/div[@class='clip-thumb text-center'])"));
+		for (int i = 1; i <= clipResults.size(); i++) {
+			action.moveToElement(store.getElement(By.xpath("(//*[contains(@id, 'clip-')]/div[2])[" + i + "]"))).perform();
+			String clipDetails = store.getElement(By.xpath("(//p[@class='pop-categories'])[" + i + "]")).getText();
+			Assert.assertTrue("Category not found in clip description.", clipDetails.contains(category));
+		}
+		softAssert.assertAll();
+	}
+	
+	@Then("^the artist store page ([^\"]*) is displayed$")
+	public void storePage_verify_CurrentUrlHasArtistId(String artistId) {
+		// IWC_StorePage store = new IWC_StorePage(driver, wait);
+		// store.verifyCurrentUrlHasArtistId(artistId);
+		String currentUrl = driver.getCurrentUrl();
+		Assert.assertTrue(currentUrl.contains(artistId));
+	}
+	
+
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	// Search

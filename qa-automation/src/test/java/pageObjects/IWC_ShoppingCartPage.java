@@ -176,7 +176,8 @@ public class IWC_ShoppingCartPage extends BasePage {
 		return getInstance(IWC_ShoppingCartPage.class);
 	
 	}
-	protected IWC_ShoppingCartPage submitPaymentInfo(String userType) throws Exception {
+	
+	public IWC_ShoppingCartPage submitPaymentInfo(String userType) throws Exception {
 		
 		// cc info, name , address and phone
 		doSendKeys(getCreditCardNumberEdt(), "378282246310005");
@@ -204,6 +205,25 @@ public class IWC_ShoppingCartPage extends BasePage {
 		
 		return getInstance(IWC_ShoppingCartPage.class);
 	}
-	
+	public IWC_ShoppingCartPage goToShoppingCart() throws Exception{
+		
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		
+		doClick(store.getShoppingCartIco());
+		verifyElementIsDisplayed(getCheckoutBtn());
+		
+		return getInstance(IWC_ShoppingCartPage.class);
+	}
+	public IWC_ShoppingCartPage verifyTipOrTributeSent(String amount) throws Exception {
+		
+		IWC_StorePage store = new IWC_StorePage(driver, wait);
+		store.setTipAmountAlr(By.xpath("//span[text()='" + amount + ".00'"));
+		
+		verifyElementIsDisplayed(getTipOrTributeSentAlr());
+		verifyElementIsDisplayed(store.getTipAmountAlr());
+		
+		return getInstance(IWC_ShoppingCartPage.class);
+	}
+
 
 }
