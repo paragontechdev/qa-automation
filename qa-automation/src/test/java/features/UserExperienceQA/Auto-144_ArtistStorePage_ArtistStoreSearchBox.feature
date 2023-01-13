@@ -7,6 +7,7 @@ Feature: Auto-144 Artist Store Page: Artist Store Search Box
     When the guest navigates to the "Artists" page
     Then the "Artists" page is displayed
 
+	@userexperience @artiststorepage
   Scenario Outline: Artist Page
     When the guest navigates to a random artist store page
     Then the correct store page is displayed
@@ -15,4 +16,4 @@ Feature: Auto-144 Artist Store Page: Artist Store Search Box
 
     Examples: 
       | searchContent |
-      | legs          |
+      | legs arms     |

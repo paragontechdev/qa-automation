@@ -6,20 +6,19 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-		features = {"src/test/java/features.UserExperienceQA/",
-				//"src/test/java/features/2022.07.19/Demo",
-				//"src/test/java/features/2022.08.2"
-				}
-		//,tags = "@basicFunctionality"
-		,glue = {"src/test/java/stepdefinitions/IWC_StepDefinitions.java"}
-		,monochrome = true,
+		features = {"classpath:features/UserExperienceQA"},
+		glue = {"classpath:stepdefinitions"},
+		tags = "@userexperience",
 		plugin = {"pretty",
 				 "junit:test-output/reports/JUnitReport.xml",
 				 "json:test-output/reports/JSONReport.json",
 				 "html:test-output/reports/HTMLReport.html",
 				 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
-				}
-		,dryRun = true
+				},
+		monochrome = true,
+		dryRun = false
 		)
 
-public class TestRunner {}
+public class TestRunner {
+	
+}

@@ -1,8 +1,8 @@
 #Author: Kevin McGowan
-Feature: Auto-132 Home Page: Featured Stores Widget
+Feature: Auto-131 Home Page: Featured Stores Widget
   
   @userexperience @homepage
-  Scenario: Home Page: Featured Stores Widget
+  Scenario: Auto-131 Home Page: Featured Stores Widget
     Given a guest navigates to the "Home" page
     And the guest accepts terms of use
 		And the guest clicks on Featured Stores section link

@@ -2,7 +2,7 @@
 Feature: Auto-134 Home Page: iWantPhone Link
 
 	@userexperience @homepage
-  Scenario: Home Page: iWantPhone Link
+  Scenario: Auto-134 Home Page: iWantPhone Link
     Given a guest navigates to the "Home" page
     And the guest accepts terms of use
    	When the guest clicks the "iWantPhone" link

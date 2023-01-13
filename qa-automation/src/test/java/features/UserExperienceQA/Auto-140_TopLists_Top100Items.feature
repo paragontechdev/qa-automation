@@ -1,6 +1,7 @@
 #Author: Kevin McGowan
 Feature: Auto-140 Top Lists: Top 100 Items
 
+	@userexperience @toplists
   Scenario: Top Lists: Top 100 Items
     Given a guest navigates to the "Home" page
     And the guest accepts terms of use

@@ -1,6 +1,7 @@
 #Author: Kevin McGowan
 Feature: Auto-141 Top Lists: Top 100 Categories
 
+	@userexperience @toplists
   Scenario Outline: Top Lists: Top 100 Categories
     Given a user navigates to the "Home" page
     And the user accepts terms of use

@@ -1,6 +1,7 @@
 #Author: Kevin McGowan
 Feature: Auto-146 Artist Store Page: Item Description Page
 
+	@userexperience @artiststorepage
   Scenario: Artist Store Page: Item Description Page
     Given a guest navigates to the "Home" page
     And the guest accepts terms of use

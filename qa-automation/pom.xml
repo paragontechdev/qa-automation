@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project> xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.iwantclips</groupId>
@@ -92,7 +93,7 @@
 		    <version>4.13.2</version>
 		    <scope>test</scope>
 		</dependency>
-       
+ <!--      
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
@@ -106,10 +107,10 @@
 		    <version>5.9.1</version>
 		    <scope>test</scope>
 		</dependency>        
-<!-- /JUnit -->
+ /JUnit -->
 
 
-<!-- Bill of Materials -->       
+<!-- Bill of Materials ->      
 		<dependency>
 		    <groupId>org.junit</groupId>
 		    <artifactId>junit-bom</artifactId>
@@ -117,7 +118,7 @@
 		    <type>pom</type>
 		    <scope>import</scope>
 		</dependency>
-	
+ 	
 		<dependency>
 		    <groupId>io.cucumber</groupId>
 		    <artifactId>cucumber-bom</artifactId>
@@ -125,7 +126,7 @@
 		    <type>pom</type>
 		    <scope>test</scope>
 		</dependency>
-<!-- /Bill of Materials -->
+<!- /Bill of Materials -->
 
 
 <!-- Jira 
@@ -243,8 +244,8 @@
                 <version>3.10.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 

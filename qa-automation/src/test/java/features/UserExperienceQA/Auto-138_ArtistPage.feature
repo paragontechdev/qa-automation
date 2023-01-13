@@ -7,6 +7,7 @@ Feature: Auto-138 Artist Page
     When the guest navigates to the "Artists" page
     Then the "Artists" page is displayed
 
+	@userexperience @artistpage
   Scenario Outline: Artist Page
     When the guest navigates to an artist store page <artistId>
     Then the artist store page <artistId> is displayed
@@ -15,10 +16,12 @@ Feature: Auto-138 Artist Page
       | artistId |
       |   138463 |
 
+	@userexperience @artistpage
   Scenario: Artist Page
     When the guest navigates to a random artist store page
     Then the correct store page is displayed
 
+	@userexperience @artistpage
   Scenario: Artist Page
     And the guest verfies 10 "Artists" page links navigate to the correct page
   
