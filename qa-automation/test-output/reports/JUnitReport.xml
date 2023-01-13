@@ -1,77 +1,319 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="2" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="6" time="150.371">
-    <testcase classname="Member Login" name="Member Login" time="20.589">
-        <system-out><![CDATA[Given a member navigates to IWC home page...................................passed
-When member accepts terms of use............................................passed
-And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
-Then the IWC home page is displayed.........................................passed
-]]></system-out>
-    </testcase>
-    <testcase classname="Add Item to Wishlist" name="Add Item to Wishlist" time="16.12">
-        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
-When member accepts terms of use............................................passed
-And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
-Then the IWC home page is displayed.........................................passed
-When user adds item 3128469 to wishlist.....................................passed
-Then item 3128469 is displayed in user wishlist.............................passed
-]]></system-out>
-    </testcase>
-    <testcase classname="Update My Account Information" name="Update My Account Information" time="21.154">
-        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
-When member accepts terms of use............................................passed
-And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
-Then the IWC home page is displayed.........................................passed
-When user navigates to IWC sub page My Account..............................passed
-And user updates account information from P123456789 to P123456789..........passed
-Then updated account information is saved...................................passed
-]]></system-out>
-    </testcase>
-    <testcase classname="Update My Account Information" name="Update My Account Information 2" time="45.92">
-        <failure message="Cannot invoke &quot;org.openqa.selenium.WebElement.isDisplayed()&quot; because &quot;element&quot; is null" type="java.lang.NullPointerException"><![CDATA[Given user navigates to IWC home page.......................................passed
-When member accepts terms of use............................................passed
-And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
-Then the IWC home page is displayed.........................................failed
-When user navigates to IWC sub page My Account..............................skipped
-And user updates account information from P12345 to P123456789..............skipped
-Then updated account information is saved...................................skipped
+<testsuite errors="0" failures="6" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="8" time="62.271">
+    <testcase classname="Auto-129 Home Page: Top Selling Content" name="Home Page: Top Selling Content" time="7.141">
+        <failure message="Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.&#10;However, the gherkin step has 3 arguments:&#10; * the guest&#10; * Top Selling Content&#10; * widget&#10;Step text: the guest clicks on Top Selling Content widget link" type="io.cucumber.core.exception.CucumberException"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+And the guest clicks on Top Selling Content widget link.....................failed
+Then the correct item page is displayed.....................................skipped
 
 StackTrace:
-java.lang.NullPointerException: Cannot invoke "org.openqa.selenium.WebElement.isDisplayed()" because "element" is null
-	at org.openqa.selenium.support.ui.ExpectedConditions.elementIfVisible(ExpectedConditions.java:307)
-	at org.openqa.selenium.support.ui.ExpectedConditions.access$000(ExpectedConditions.java:40)
-	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:293)
-	at org.openqa.selenium.support.ui.ExpectedConditions$10.apply(ExpectedConditions.java:290)
-	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:208)
-	at stepdefinitions.IWC_MemberSteps.the_iwc_home_page_is_displayed(IWC_MemberSteps.java:120)
-	at ✽.the IWC home page is displayed(file:///C:/Users/Kevin%20McGowan/repository/qa-automation/src/test/java/features/2022.07.19/Demo/Auto_016_UpdateMyAccountInformation.feature:9)
+io.cucumber.core.exception.CucumberException: Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.
+However, the gherkin step has 3 arguments:
+ * the guest
+ * Top Selling Content
+ * widget
+Step text: the guest clicks on Top Selling Content widget link
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.arityMismatch(PickleStepDefinitionMatch.java:83)
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:42)
+	at io.cucumber.core.runner.ExecutionMode$1.execute(ExecutionMode.java:10)
+	at io.cucumber.core.runner.TestStep.executeStep(TestStep.java:85)
+	at io.cucumber.core.runner.TestStep.run(TestStep.java:57)
+	at io.cucumber.core.runner.PickleStepTestStep.run(PickleStepTestStep.java:51)
+	at io.cucumber.core.runner.TestCase.run(TestCase.java:84)
+	at io.cucumber.core.runner.Runner.runPickle(Runner.java:75)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.lambda$run$0(PickleRunners.java:151)
+	at io.cucumber.core.runtime.CucumberExecutionContext.lambda$runTestCase$5(CucumberExecutionContext.java:129)
+	at io.cucumber.core.runtime.RethrowingThrowableCollector.executeAndThrow(RethrowingThrowableCollector.java:23)
+	at io.cucumber.core.runtime.CucumberExecutionContext.runTestCase(CucumberExecutionContext.java:129)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.run(PickleRunners.java:148)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:144)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:28)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at io.cucumber.junit.FeatureRunner.run(FeatureRunner.java:137)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:196)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:89)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at io.cucumber.junit.Cucumber$RunBeforeAllHooks.evaluate(Cucumber.java:266)
+	at io.cucumber.junit.Cucumber$RunAfterAllHooks.evaluate(Cucumber.java:281)
+	at io.cucumber.junit.Cucumber$StartTestRun.evaluate(Cucumber.java:233)
+	at io.cucumber.junit.Cucumber$FinishTestRun.evaluate(Cucumber.java:248)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:95)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:91)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:60)
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:98)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
 ]]></failure>
     </testcase>
-    <testcase classname="Add Artists To My Favorites" name="Add Artists To My Favorites" time="31.825">
-        <system-out><![CDATA[Given user navigates to IWC home page.......................................passed
-When member accepts terms of use............................................passed
-And user submits IWC usernamekevin.m@stackunited.com and passwordP123456789.passed
-Then the IWC home page is displayed.........................................passed
-When user navigates to Artists page.........................................passed
-And user navigates to artist store 800302...................................passed
-]]></system-out>
-    </testcase>
-    <testcase classname="Artist Login" name="Artist Login" time="14.591">
-        <failure message="Compound class names not permitted&#10;For documentation on this error, please visit: https://selenium.dev/exceptions/#invalid_selector_exception&#10;Build info: version: '4.2.2', revision: '683ccb65d6'&#10;System info: host: 'KEVIKNMSTACKU', ip: '192.168.0.108', os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.1.1'&#10;Driver info: driver.version: unknown" type="org.openqa.selenium.InvalidSelectorException"><![CDATA[Given artist navigates to IWC home page.....................................passed
-When member accepts terms of use............................................passed
-And artist submits IWC usernameqaartist@stackunited.com and passwordqaartist.passed
-Then the artist updates page is displayed...................................failed
+    <testcase classname="Auto-130 Home Page: Featured Phone Stores Widget" name="Home Page: Featured Phone Stores Widget" time="5.094">
+        <failure message="Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.&#10;However, the gherkin step has 3 arguments:&#10; * the guest&#10; * Featured Phone Stores&#10; * widget&#10;Step text: the guest clicks on Featured Phone Stores widget link" type="io.cucumber.core.exception.CucumberException"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+And the guest clicks on Featured Phone Stores widget link...................failed
+Then the correct store page is displayed....................................skipped
 
 StackTrace:
-org.openqa.selenium.InvalidSelectorException: Compound class names not permitted
-For documentation on this error, please visit: https://selenium.dev/exceptions/#invalid_selector_exception
-Build info: version: '4.2.2', revision: '683ccb65d6'
-System info: host: 'KEVIKNMSTACKU', ip: '192.168.0.108', os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.1.1'
-Driver info: driver.version: unknown
-	at org.openqa.selenium.By$ByClassName.<init>(By.java:310)
-	at org.openqa.selenium.By.className(By.java:100)
-	at pageObjects.IWC_ArtistHomePage.<init>(IWC_ArtistHomePage.java:53)
-	at stepdefinitions.IWC_MemberSteps.artist_updates_page_is_displayed(IWC_MemberSteps.java:270)
-	at ✽.the artist updates page is displayed(file:///C:/Users/Kevin%20McGowan/repository/qa-automation/src/test/java/features/2022.07.19/Demo/Auto_025_ArtistLogin.feature:9)
+io.cucumber.core.exception.CucumberException: Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.
+However, the gherkin step has 3 arguments:
+ * the guest
+ * Featured Phone Stores
+ * widget
+Step text: the guest clicks on Featured Phone Stores widget link
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.arityMismatch(PickleStepDefinitionMatch.java:83)
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:42)
+	at io.cucumber.core.runner.ExecutionMode$1.execute(ExecutionMode.java:10)
+	at io.cucumber.core.runner.TestStep.executeStep(TestStep.java:85)
+	at io.cucumber.core.runner.TestStep.run(TestStep.java:57)
+	at io.cucumber.core.runner.PickleStepTestStep.run(PickleStepTestStep.java:51)
+	at io.cucumber.core.runner.TestCase.run(TestCase.java:84)
+	at io.cucumber.core.runner.Runner.runPickle(Runner.java:75)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.lambda$run$0(PickleRunners.java:151)
+	at io.cucumber.core.runtime.CucumberExecutionContext.lambda$runTestCase$5(CucumberExecutionContext.java:129)
+	at io.cucumber.core.runtime.RethrowingThrowableCollector.executeAndThrow(RethrowingThrowableCollector.java:23)
+	at io.cucumber.core.runtime.CucumberExecutionContext.runTestCase(CucumberExecutionContext.java:129)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.run(PickleRunners.java:148)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:144)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:28)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at io.cucumber.junit.FeatureRunner.run(FeatureRunner.java:137)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:196)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:89)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at io.cucumber.junit.Cucumber$RunBeforeAllHooks.evaluate(Cucumber.java:266)
+	at io.cucumber.junit.Cucumber$RunAfterAllHooks.evaluate(Cucumber.java:281)
+	at io.cucumber.junit.Cucumber$StartTestRun.evaluate(Cucumber.java:233)
+	at io.cucumber.junit.Cucumber$FinishTestRun.evaluate(Cucumber.java:248)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:95)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:91)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:60)
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:98)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
 ]]></failure>
+    </testcase>
+    <testcase classname="Auto-132 Home Page: Featured Stores Widget" name="Home Page: Featured Stores Widget" time="5.654">
+        <failure message="Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.&#10;However, the gherkin step has 3 arguments:&#10; * the guest&#10; * Featured Stores&#10; * section&#10;Step text: the guest clicks on Featured Stores section link" type="io.cucumber.core.exception.CucumberException"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+And the guest clicks on Featured Stores section link........................failed
+Then the correct store page is displayed....................................skipped
+
+StackTrace:
+io.cucumber.core.exception.CucumberException: Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.
+However, the gherkin step has 3 arguments:
+ * the guest
+ * Featured Stores
+ * section
+Step text: the guest clicks on Featured Stores section link
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.arityMismatch(PickleStepDefinitionMatch.java:83)
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:42)
+	at io.cucumber.core.runner.ExecutionMode$1.execute(ExecutionMode.java:10)
+	at io.cucumber.core.runner.TestStep.executeStep(TestStep.java:85)
+	at io.cucumber.core.runner.TestStep.run(TestStep.java:57)
+	at io.cucumber.core.runner.PickleStepTestStep.run(PickleStepTestStep.java:51)
+	at io.cucumber.core.runner.TestCase.run(TestCase.java:84)
+	at io.cucumber.core.runner.Runner.runPickle(Runner.java:75)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.lambda$run$0(PickleRunners.java:151)
+	at io.cucumber.core.runtime.CucumberExecutionContext.lambda$runTestCase$5(CucumberExecutionContext.java:129)
+	at io.cucumber.core.runtime.RethrowingThrowableCollector.executeAndThrow(RethrowingThrowableCollector.java:23)
+	at io.cucumber.core.runtime.CucumberExecutionContext.runTestCase(CucumberExecutionContext.java:129)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.run(PickleRunners.java:148)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:144)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:28)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at io.cucumber.junit.FeatureRunner.run(FeatureRunner.java:137)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:196)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:89)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at io.cucumber.junit.Cucumber$RunBeforeAllHooks.evaluate(Cucumber.java:266)
+	at io.cucumber.junit.Cucumber$RunAfterAllHooks.evaluate(Cucumber.java:281)
+	at io.cucumber.junit.Cucumber$StartTestRun.evaluate(Cucumber.java:233)
+	at io.cucumber.junit.Cucumber$FinishTestRun.evaluate(Cucumber.java:248)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:95)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:91)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:60)
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:98)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
+]]></failure>
+    </testcase>
+    <testcase classname="Auto-132 Home Page: Newest Content Section" name="Home Page: Newest Content Section" time="5.762">
+        <failure message="Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.&#10;However, the gherkin step has 3 arguments:&#10; * the guest&#10; * Newest Content&#10; * section&#10;Step text: the guest clicks on Newest Content section link" type="io.cucumber.core.exception.CucumberException"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+And the guest clicks on Newest Content section link.........................failed
+Then the correct store page is displayed....................................skipped
+
+StackTrace:
+io.cucumber.core.exception.CucumberException: Step [^(.*) clicks on (.*) (section|widget) link$] is defined with 2 parameters at 'stepdefinitions.IWC_StepDefinitions.click_FeaturedStoresImageLink(java.lang.String,java.lang.String)'.
+However, the gherkin step has 3 arguments:
+ * the guest
+ * Newest Content
+ * section
+Step text: the guest clicks on Newest Content section link
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.arityMismatch(PickleStepDefinitionMatch.java:83)
+	at io.cucumber.core.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:42)
+	at io.cucumber.core.runner.ExecutionMode$1.execute(ExecutionMode.java:10)
+	at io.cucumber.core.runner.TestStep.executeStep(TestStep.java:85)
+	at io.cucumber.core.runner.TestStep.run(TestStep.java:57)
+	at io.cucumber.core.runner.PickleStepTestStep.run(PickleStepTestStep.java:51)
+	at io.cucumber.core.runner.TestCase.run(TestCase.java:84)
+	at io.cucumber.core.runner.Runner.runPickle(Runner.java:75)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.lambda$run$0(PickleRunners.java:151)
+	at io.cucumber.core.runtime.CucumberExecutionContext.lambda$runTestCase$5(CucumberExecutionContext.java:129)
+	at io.cucumber.core.runtime.RethrowingThrowableCollector.executeAndThrow(RethrowingThrowableCollector.java:23)
+	at io.cucumber.core.runtime.CucumberExecutionContext.runTestCase(CucumberExecutionContext.java:129)
+	at io.cucumber.junit.PickleRunners$NoStepDescriptions.run(PickleRunners.java:148)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:144)
+	at io.cucumber.junit.FeatureRunner.runChild(FeatureRunner.java:28)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at io.cucumber.junit.FeatureRunner.run(FeatureRunner.java:137)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:196)
+	at io.cucumber.junit.Cucumber.runChild(Cucumber.java:89)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at io.cucumber.junit.Cucumber$RunBeforeAllHooks.evaluate(Cucumber.java:266)
+	at io.cucumber.junit.Cucumber$RunAfterAllHooks.evaluate(Cucumber.java:281)
+	at io.cucumber.junit.Cucumber$StartTestRun.evaluate(Cucumber.java:233)
+	at io.cucumber.junit.Cucumber$FinishTestRun.evaluate(Cucumber.java:248)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:95)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:91)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:60)
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:98)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)
+]]></failure>
+    </testcase>
+    <testcase classname="Auto-133 Home Page: Join Free! Button" name="Home Page: Join Free! Button (Fan)" time="9.803">
+        <failure message="The scenario has pending or undefined step(s)" type="java.lang.Exception"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+When the guest clicks the "Join Free!" link.................................passed
+Then the Join Now modals are displayed......................................passed
+When the guest clicks the Join Now button on the fan modal..................passed
+Then the member account creation form is displayed..........................undefined
+]]></failure>
+    </testcase>
+    <testcase classname="Auto-133 Home Page: Join Free! Button" name="Home Page: Join Free! Button (Artist)" time="10.496">
+        <failure message="The scenario has pending or undefined step(s)" type="java.lang.Exception"><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+When the guest clicks the "Join Free!" link.................................passed
+Then the Join Now modals are displayed......................................passed
+When the guest clicks the Join Now button on the artist modal...............passed
+Then the artist account creation form is displayed..........................undefined
+]]></failure>
+    </testcase>
+    <testcase classname="Auto-134 Home Page: iWantPhone Link" name="Home Page: iWantPhone Link" time="9.203">
+        <system-out><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+When the guest clicks the "iWantPhone" link.................................passed
+Then the "iWantPhone" page is displayed.....................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Auto-135 Home Page: iWantCustomClips Link" name="Home Page: iWantCustomClips Link" time="8.908">
+        <system-out><![CDATA[Given a guest navigates to the "Home" page..................................passed
+And the guest accepts terms of use..........................................passed
+When the guest clicks the "iWantCustomClips" link...........................passed
+Then the "iWantCustomClips" page is displayed...............................passed
+]]></system-out>
     </testcase>
 </testsuite>
